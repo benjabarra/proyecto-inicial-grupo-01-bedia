@@ -126,3 +126,10 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "reportes:lista"
+LOGOUT_REDIRECT_URL = "login"
+
+LANGUAGE_CODE = "es"
+TIME_ZONE = "America/Santiago"
