@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block titulo %}Reportes del campus{% endblock %}</title>
+</head>
+<body>
+  <nav>
+    <a href="{% url 'reportes:lista' %}">Todos los reportes</a>
+    {% if user.is_authenticated %}
+      | <a href="{% url 'reportes:mis_reportes' %}">Mis reportes</a>
+      | <a href="{% url 'reportes:crear' %}">Nuevo reporte</a>
+      <form method="post" action="{% url 'logout' %}" style="display:inline">
+        {% csrf_token %}
+        <button type="submit">Salir ({{ user.username }})</button>
+      </form>
+    {% else %}
+      | <a href="{% url 'login' %}">Iniciar sesión</a>
+    {% endif %}
+  </nav>
+  <hr>
+  {% block contenido %}{% endblock %}
+</body>
+</html>
