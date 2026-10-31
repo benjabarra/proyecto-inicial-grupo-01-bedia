@@ -28,6 +28,7 @@ class Reporte(models.Model):
     ubicacion = models.CharField(
         max_length=150, help_text="Edificio, sala o zona del campus"
     )
+    foto = models.ImageField(upload_to="reportes/%Y/%m/", blank=True)
     latitud = models.FloatField(null=True, blank=True)
     longitud = models.FloatField(null=True, blank=True)
     estado = models.CharField(

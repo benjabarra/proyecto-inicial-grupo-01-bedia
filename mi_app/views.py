@@ -28,7 +28,7 @@ def mis_reportes(request):
 @login_required
 def crear_reporte(request):
     if request.method == "POST":
-        form = ReporteForm(request.POST)
+        form = ReporteForm(request.POST, request.FILES)
         if form.is_valid():
             reporte = form.save(commit=False)
             reporte.autor = request.user
