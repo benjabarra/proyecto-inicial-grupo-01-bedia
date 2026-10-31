@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,12 +21,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-#pdf6(c5np&+8-(#e#s-a+tqci!el69lf7(4ep$3uqna=y9-pr'
+SECRET_KEY = os.environ.get(
+    'DJANGO_SECRET_KEY',
+    'clave-solo-para-desarrollo-no-usar-en-produccion',
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG', '1') == '1'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    h for h in os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(',') if h
+]
 
 
 # Application definition
@@ -103,9 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/6.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
@@ -121,11 +125,6 @@ STATIC_URL = 'static/'
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
 
-MAILERS = {
-    'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
-    },
-}
 
 LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "reportes:lista"
@@ -133,3 +132,7 @@ LOGOUT_REDIRECT_URL = "login"
 
 LANGUAGE_CODE = "es"
 TIME_ZONE = "America/Santiago"
+
+# fotos subidas por usuarios
+MEDIA_URL = "media/"
+MEDIA_ROOT = BASE_DIR / "media"
