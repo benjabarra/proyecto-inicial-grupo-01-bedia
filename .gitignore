@@ -20,3 +20,4 @@ Thumbs.db
 
 # Archivos estáticos recolectados (solo si usas collectstatic)
 staticfiles/
+media/
