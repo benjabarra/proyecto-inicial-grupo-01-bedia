@@ -6,6 +6,7 @@
 {% for r in reportes %}
   <article>
     <h3><a href="{% url 'reportes:detalle' r.pk %}">{{ r.titulo }}</a></h3>
+    {% if r.foto %}<img src="{{ r.foto.url }}" alt="" style="max-height:80px">{% endif %}
     <p>{{ r.categoria }} · {{ r.ubicacion }} · <strong>{{ r.get_estado_display }}</strong></p>
     <small>Por {{ r.autor.username }} el {{ r.creado|date:"d/m/Y H:i" }}</small>
   </article>
