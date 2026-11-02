@@ -6,6 +6,9 @@
 <p><strong>Categoría:</strong> {{ reporte.categoria }}</p>
 <p><strong>Ubicación:</strong> {{ reporte.ubicacion }}</p>
 <p>{{ reporte.descripcion|linebreaks }}</p>
+{% if reporte.foto %}
+  <p><img src="{{ reporte.foto.url }}" alt="foto del reporte" style="max-width:100%;max-height:400px"></p>
+{% endif %}
 <small>
   Reportado por {{ reporte.autor.username }} el {{ reporte.creado|date:"d/m/Y H:i" }}
   · Última actualización: {{ reporte.actualizado|date:"d/m/Y H:i" }}
