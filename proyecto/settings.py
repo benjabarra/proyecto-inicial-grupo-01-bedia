@@ -33,6 +33,11 @@ ALLOWED_HOSTS = [
     h for h in os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(',') if h
 ]
 
+# para probar en codespaces: DJANGO_CSRF_TRUSTED_ORIGINS=https://*.app.github.dev
+CSRF_TRUSTED_ORIGINS = [
+    o for o in os.environ.get('DJANGO_CSRF_TRUSTED_ORIGINS', '').split(',') if o
+]
+
 
 # Application definition
 
@@ -68,6 +73,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'mi_app.context_processors.tema',
             ],
         },
     },
@@ -124,6 +130,19 @@ STATIC_URL = 'static/'
 
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
+
+# sin configurar, los correos (codigo de verificacion) salen en la terminal.
+# para mandarlos de verdad: DJANGO_EMAIL_HOST, DJANGO_EMAIL_USER y DJANGO_EMAIL_PASSWORD
+EMAIL_HOST = os.environ.get("DJANGO_EMAIL_HOST", "")
+if EMAIL_HOST:
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_PORT = int(os.environ.get("DJANGO_EMAIL_PORT", "587"))
+    EMAIL_HOST_USER = os.environ.get("DJANGO_EMAIL_USER", "")
+    EMAIL_HOST_PASSWORD = os.environ.get("DJANGO_EMAIL_PASSWORD", "")
+    EMAIL_USE_TLS = True
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+DEFAULT_FROM_EMAIL = os.environ.get("DJANGO_EMAIL_FROM", "U-Pin <no-responder@upin.cl>")
 
 
 LOGIN_URL = "login"

@@ -1,0 +1,32 @@
+{% extends "reportes/base.html" %}
+{% load static %}
+
+{% block titulo %}Bienvenida{% endblock %}
+
+{% block principal %}
+<main class="portada">
+  <form class="portada-in" method="post">
+    {% csrf_token %}
+    <div class="logo"><img src="{% static 'mi_app/marca/pin.svg' %}" alt="" width="38" height="40">U-Pin</div>
+    <h1>Reporta lo que no funciona.</h1>
+    <p class="lema">Elige tu universidad y tu campus para empezar.</p>
+    {% with primera=universidades.0 %}
+      {% if primera.imagen %}<img class="foto" src="{% static primera.imagen %}" alt="Campus {{ primera.campus }} desde el aire">{% endif %}
+    {% endwith %}
+    <p class="etiqueta">Universidad y campus</p>
+    {% for u in universidades %}
+      <label class="opcion-uni">
+        <span class="sigla" style="background: {{ u.color_primario }}">{{ u.sigla }}</span>
+        <span><b>{{ u.nombre }}</b><small>Campus {{ u.campus }}</small></span>
+        <input type="radio" name="universidad" value="{{ u.pk }}" {% if forloop.first %}checked{% endif %}>
+      </label>
+    {% empty %}
+      <p class="nota">Todavía no hay universidades cargadas.</p>
+    {% endfor %}
+    <div class="acciones">
+      <button type="submit" class="btn btn-block">Continuar</button>
+    </div>
+    <p class="aparte">¿No tienes cuenta? <a href="{% url 'registro' %}">Crear cuenta</a></p>
+  </form>
+</main>
+{% endblock %}
