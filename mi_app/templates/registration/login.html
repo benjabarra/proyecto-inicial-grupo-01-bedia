@@ -1,10 +1,21 @@
 {% extends "reportes/base.html" %}
 
+{% block titulo %}Iniciar sesión{% endblock %}
+
 {% block contenido %}
-<h1>Iniciar sesión</h1>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Entrar</button>
-</form>
+<div class="panel">
+  {% if tema.campus %}<span class="chip-uni"><span class="sigla">{{ tema.sigla }}</span>Campus {{ tema.campus }}</span>{% endif %}
+  <h1>Inicia sesión</h1>
+  <p class="sub">Usa tu correo institucional.</p>
+  <form method="post">
+    {% csrf_token %}
+    {% if error %}<div class="errores"><p>{{ error }}</p></div>{% endif %}
+    {% include "reportes/_form.html" %}
+    <input type="hidden" name="next" value="{{ next }}">
+    <div class="acciones">
+      <button type="submit" class="btn btn-block">Entrar</button>
+    </div>
+  </form>
+  <p class="aparte">¿No tienes cuenta? <a href="{% url 'registro' %}">Crear cuenta</a></p>
+</div>
 {% endblock %}

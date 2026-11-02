@@ -1,0 +1,19 @@
+{% extends "reportes/base.html" %}
+
+{% block titulo %}Crear cuenta{% endblock %}
+
+{% block contenido %}
+<div class="panel">
+  <h1>Crea tu cuenta</h1>
+  <p class="sub">Solo con tu correo institucional.</p>
+  <form method="post">
+    {% csrf_token %}
+    {% include "reportes/_form.html" %}
+    <p class="nota">Se aceptan correos <b>@usm.cl</b> y subdominios como <b>@sansano.usm.cl</b>. Te enviaremos un código para confirmar que el correo es tuyo.</p>
+    <div class="acciones">
+      <button type="submit" class="btn btn-block">Crear cuenta</button>
+    </div>
+  </form>
+  <p class="aparte">¿Ya tienes cuenta? <a href="{% url 'login' %}">Inicia sesión</a></p>
+</div>
+{% endblock %}

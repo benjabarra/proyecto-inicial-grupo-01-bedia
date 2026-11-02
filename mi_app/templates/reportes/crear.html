@@ -1,10 +1,17 @@
 {% extends "reportes/base.html" %}
 
+{% block titulo %}Nuevo reporte{% endblock %}
+
 {% block contenido %}
-<h1>Nuevo reporte</h1>
-<form method="post" enctype="multipart/form-data">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Enviar reporte</button>
-</form>
+<div class="panel panel-ancho">
+  <h1>Nuevo reporte</h1>
+  <p class="sub">Cuéntanos qué pasa y dónde. Evita fotografiar a personas.</p>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% include "reportes/_form.html" %}
+    <div class="acciones">
+      <button type="submit" class="btn btn-block">Enviar reporte</button>
+    </div>
+  </form>
+</div>
 {% endblock %}
