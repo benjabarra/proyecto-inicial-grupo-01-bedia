@@ -1,6 +1,6 @@
 from types import SimpleNamespace
 
-from .models import Universidad, iniciales, rol_de, universidad_para_correo
+from .models import Campus, Universidad, iniciales, rol_de, universidad_para_correo
 
 # tema por defecto (antes de elegir universidad): colores de u-pin
 TEMA_UPIN = SimpleNamespace(
@@ -18,9 +18,13 @@ def tema(request):
     usuario = getattr(request, "user", None)
     uni = None
     datos = {}
+    campus = None
     if usuario is not None and usuario.is_authenticated:
         uni = universidad_para_correo(usuario.email or usuario.username)
         datos = {"iniciales": iniciales(usuario), "rol": rol_de(usuario)}
+        perfil = getattr(usuario, "perfil", None)
+        campus = perfil.campus if perfil else None
     elif hasattr(request, "session") and request.session.get("universidad_id"):
         uni = Universidad.objects.filter(pk=request.session["universidad_id"]).first()
-    return {"tema": uni or TEMA_UPIN, **datos}
+        campus = Campus.objects.filter(pk=request.session.get("campus_id")).first()
+    return {"tema": uni or TEMA_UPIN, "campus_actual": campus, **datos}

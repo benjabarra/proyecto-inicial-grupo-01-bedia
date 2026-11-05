@@ -1,0 +1,63 @@
+{% extends "reportes/base.html" %}
+
+{% block titulo %}Mi perfil{% endblock %}
+
+{% block contenido %}
+<div class="perfil">
+  <div class="perfil-cab">
+    <span class="avatar grande" aria-hidden="true">{{ iniciales }}</span>
+    <div>
+      <h1>{{ user.first_name|default:user.username }}</h1>
+      <p class="meta">{{ user.email }}</p>
+      <p class="meta">{{ campus_actual.universidad.nombre|default:"Sin campus elegido" }}{% if campus_actual %} · {{ campus_actual.nombre }}{% endif %}</p>
+      <span class="rol">{{ user.perfil.get_rol_display }}</span>
+    </div>
+  </div>
+
+  <div class="cifras">
+    <div><b>{{ total }}</b><span>Reportes</span></div>
+    <div><b>{{ resueltos }}</b><span>Resueltos</span></div>
+  </div>
+
+  <section class="panel">
+    <h2>Mis reportes recientes</h2>
+    {% for r in recientes %}
+      <p class="fila"><a href="{% url 'reportes:detalle' r.pk %}">{{ r.titulo }}</a> <span class="estado estado-{{ r.estado }}">{{ r.get_estado_display }}</span></p>
+    {% empty %}
+      <p class="meta">Todavía no has reportado nada.</p>
+    {% endfor %}
+    {% if total %}<p class="aparte"><a href="{% url 'reportes:mis_reportes' %}">Ver todos</a></p>{% endif %}
+  </section>
+
+  <section class="panel">
+    <h2>Mi nombre</h2>
+    <form method="post" class="en-linea">
+      {% csrf_token %}
+      <input type="hidden" name="accion" value="nombre">
+      <input type="text" name="nombre" value="{{ user.first_name }}" maxlength="150" aria-label="Nombre">
+      <button type="submit" class="btn btn-sm">Guardar</button>
+    </form>
+  </section>
+
+  <section class="panel">
+    <h2>Mi campus</h2>
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="accion" value="campus">
+      {% for c in campus_activos %}
+        <label class="campus-op">
+          <span><b>{{ c.universidad.sigla }} · {{ c.nombre }}</b><small>{{ c.ciudad }}</small></span>
+          <input type="radio" name="campus" value="{{ c.pk }}" {% if c == campus_actual %}checked{% endif %}>
+        </label>
+      {% endfor %}
+      <p class="nota">Las demás sedes y universidades aparecerán cuando tengan mapa.</p>
+      <button type="submit" class="btn btn-sm">Cambiar campus</button>
+    </form>
+  </section>
+
+  <form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-borde btn-block">Cerrar sesión</button>
+  </form>
+</div>
+{% endblock %}
