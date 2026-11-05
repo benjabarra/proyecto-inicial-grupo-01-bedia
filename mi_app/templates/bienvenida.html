@@ -10,29 +10,34 @@
     <div class="logo"><img src="{% static 'mi_app/marca/pin.svg' %}" alt="" width="38" height="40">U-Pin</div>
     <h1>Reporta lo que no funciona.</h1>
     <p class="lema">Elige tu universidad y tu campus para empezar.</p>
-    {% for u in universidades %}{% if u.imagen and forloop.first %}<img class="foto" src="{% static u.imagen %}" alt="Campus San Joaquín desde el aire">{% endif %}{% endfor %}
     <p class="etiqueta">Universidad y campus</p>
     {% for u in universidades %}
       {% if u.activa %}
-        <div class="uni-caja">
-          <div class="uni-cab">
+        <div class="uni-caja" data-uni>
+          <button type="button" class="uni-cab" aria-expanded="false" aria-controls="campus-{{ u.pk }}">
             <span class="sigla" style="background: {{ u.color_primario }}">{{ u.sigla }}</span>
-            <span><b>{{ u.nombre }}</b><small>Elige tu campus</small></span>
-          </div>
-          <div class="campus-lista">
-            {% for c in u.campus_set.all %}
-              {% if c.activo %}
-                <label class="campus-op">
-                  <span><b>{{ c.nombre }}</b><small>{{ c.ciudad }}</small></span>
-                  <input type="radio" name="campus" value="{{ c.pk }}">
-                </label>
-              {% else %}
-                <div class="campus-op apagado" aria-disabled="true">
-                  <span><b>{{ c.nombre }}</b><small>{{ c.ciudad }}</small></span>
-                  <span class="prox">Próximamente</span>
-                </div>
-              {% endif %}
-            {% endfor %}
+            <span><b>{{ u.nombre }}</b><small>Toca para elegir tu campus</small></span>
+            <svg class="flecha" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="desplegable" id="campus-{{ u.pk }}">
+            <div>
+              {% if u.imagen %}<img class="foto-uni" src="{% static u.imagen %}" alt="Campus {{ u.campus }} desde el aire">{% endif %}
+              <div class="campus-lista">
+                {% for c in u.campus_set.all %}
+                  {% if c.activo %}
+                    <label class="campus-op">
+                      <span><b>{{ c.nombre }}</b><small>{{ c.ciudad }}</small></span>
+                      <input type="radio" name="campus" value="{{ c.pk }}">
+                    </label>
+                  {% else %}
+                    <div class="campus-op apagado" aria-disabled="true">
+                      <span><b>{{ c.nombre }}</b><small>{{ c.ciudad }}</small></span>
+                      <span class="prox">Próximamente</span>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
           </div>
         </div>
       {% else %}
@@ -53,6 +58,14 @@
     <script>
       // el boton se activa cuando eliges un campus
       (function () {
+        document.documentElement.classList.add("js");
+        document.querySelectorAll("[data-uni]").forEach(function (caja) {
+          var cab = caja.querySelector(".uni-cab");
+          cab.addEventListener("click", function () {
+            var abierta = caja.classList.toggle("abierta");
+            cab.setAttribute("aria-expanded", abierta ? "true" : "false");
+          });
+        });
         var boton = document.getElementById("continuar");
         document.querySelectorAll('input[name="campus"]').forEach(function (r) {
           r.addEventListener("change", function () { boton.disabled = false; });

@@ -392,3 +392,8 @@ class CampusYPerfilTests(TestCase):
         resp = self.client.post(reverse("bienvenida"), {})
         self.assertEqual(resp.status_code, 200)
         self.assertContains(resp, "Elige tu campus")
+
+    def test_bienvenida_trae_la_foto_dentro_de_la_universidad(self):
+        resp = self.client.get(reverse("bienvenida"))
+        self.assertContains(resp, 'class="foto-uni"')
+        self.assertContains(resp, "data-uni")
