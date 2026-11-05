@@ -196,9 +196,68 @@ button.link:hover { opacity: 1; }
 .opcion-uni b { display: block; font-size: 1rem; line-height: 1.3; }
 .opcion-uni small { color: var(--muted); font-size: 0.85rem; }
 
-@media (max-width: 560px) {
+/* universidad y campus */
+.uni-caja { border: 1.5px solid var(--ink); border-radius: 16px; overflow: hidden; margin-bottom: 10px; background: var(--surface); }
+.uni-cab { display: flex; align-items: center; gap: 14px; padding: 14px 16px; }
+.uni-cab .sigla { width: 40px; height: 40px; border-radius: 10px; font-size: 0.8rem; flex: none; }
+.uni-cab b, .campus-op b { display: block; font-size: 1rem; line-height: 1.3; }
+.uni-cab small, .campus-op small { color: var(--muted); font-size: 0.85rem; }
+.campus-lista { padding: 4px 12px 12px; display: flex; flex-direction: column; gap: 6px; border-top: 1px solid var(--line); }
+.campus-op { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 48px; padding: 8px 12px; border: 1.5px solid var(--line); border-radius: 12px; cursor: pointer; margin-top: 6px; }
+.campus-op b { font-size: 0.95rem; }
+.campus-op:has(input:checked) { border-color: var(--ink); }
+.campus-op input { accent-color: var(--ink); width: 20px; height: 20px; margin: 0; }
+.apagado { background: var(--bg); cursor: default; opacity: 0.6; }
+.apagado b { color: var(--muted); }
+.opcion-uni.apagado { border-color: var(--line); }
+.opcion-uni.apagado .sigla { opacity: 0.5; font-size: 0.7rem; }
+.prox { font-size: 0.75rem; font-weight: 600; color: var(--muted); white-space: nowrap; }
+.nota.centro { text-align: center; margin-top: 12px; }
+
+/* perfil */
+.perfil { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
+.perfil-cab { display: flex; align-items: center; gap: 18px; }
+.perfil-cab h1 { margin: 0; font-size: 1.6rem; }
+.perfil-cab .meta { margin: 2px 0 0; }
+.avatar.grande { width: 72px; height: 72px; font-size: 1.5rem; }
+.rol { display: inline-block; margin-top: 8px; font-size: 0.78rem; font-weight: 600; padding: 0.25em 0.8em; border-radius: 980px; background: var(--brand-soft); color: var(--text); }
+.cifras { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.cifras div { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; text-align: center; }
+.cifras b { display: block; font-size: 1.8rem; }
+.cifras span { color: var(--muted); font-size: 0.88rem; }
+.perfil h2 { font-size: 1.05rem; margin: 0 0 10px; }
+.fila { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin: 6px 0; }
+.en-linea { display: flex; gap: 10px; }
+.en-linea input { flex: 1; min-width: 0; min-height: 38px; padding: 0 12px; border: 1.5px solid var(--line); border-radius: 12px; font: inherit; background: var(--surface); color: var(--text); }
+
+/* barra inferior (solo celular) */
+.barra-inferior { display: none; }
+
+@media (max-width: 700px) {
   .nav-in { padding: 0 14px; }
-  .nav nav { gap: 12px; font-size: 0.85rem; }
-  .solo-ancho { display: none; }
-  .hero-txt { padding: 20px; }
+  .solo-ancho { display: none !important; }
+  body { padding-bottom: 76px; }
+  .barra-inferior {
+    display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+    justify-content: space-around; align-items: flex-end;
+    padding: 6px 8px calc(8px + env(safe-area-inset-bottom));
+    background: var(--surface); border-top: 1px solid var(--line);
+  }
+  .barra-inferior a {
+    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 48px; justify-content: center;
+    font-size: 0.7rem; font-weight: 600; color: var(--muted); text-decoration: none;
+  }
+  .barra-inferior a[aria-current="page"] { color: var(--text); }
+  .barra-inferior svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .barra-inferior .mas { color: var(--text); }
+  .barra-inferior .mas span { width: 46px; height: 46px; margin-top: -22px; border-radius: 50%; background: var(--brand); color: var(--brand-ink); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,.2); }
+  .barra-inferior .mas svg { stroke-width: 2.4; }
 }
+
+/* arreglos */
+.nav nav a.avatar { color: var(--ink-text); opacity: 1; }
+.perfil .panel { width: 100%; max-width: none; margin: 0; }
+.perfil { width: 100%; box-sizing: border-box; }
+.en-linea { align-items: center; }
+.en-linea .btn { flex: none; }
+.opcion-uni.apagado .sigla { font-size: 0.62rem; letter-spacing: -0.02em; padding: 0; }

@@ -12,7 +12,7 @@ from django.urls import reverse
 from django.utils import timezone
 from PIL import Image
 
-from .models import Categoria, Perfil, Reporte, iniciales
+from .models import Categoria, Edificio, Perfil, Reporte, Sala, iniciales
 
 MEDIA_TMP = tempfile.mkdtemp()
 
@@ -104,9 +104,9 @@ class CuentasTests(TestCase):
         self.assertContains(resp, "Santa María")
 
     def test_elegir_universidad_lleva_al_login_con_su_tema(self):
-        from .models import Universidad
-        usm = Universidad.objects.get(dominio="usm.cl")
-        resp = self.client.post(reverse("bienvenida"), {"universidad": usm.pk})
+        from .models import Campus
+        sj = Campus.objects.get(nombre="Campus San Joaquín")
+        resp = self.client.post(reverse("bienvenida"), {"campus": sj.pk})
         self.assertRedirects(resp, reverse("login"))
         resp = self.client.get(reverse("login"))
         self.assertContains(resp, "#004B85")
@@ -242,7 +242,7 @@ class CuentasTests(TestCase):
         resp = self.client.get(reverse("reportes:lista"))
         self.assertContains(resp, "#004B85")
         self.assertContains(resp, "usm-san-joaquin.jpg")
-        self.assertContains(resp, ">AP</span>")
+        self.assertContains(resp, ">AP</a>")
 
 
 class EstadosTests(TestCase):
@@ -259,3 +259,119 @@ class EstadosTests(TestCase):
     def test_filtro_activos_oculta_resueltos(self):
         resp = self.client.get(reverse("reportes:lista") + "?ver=activos")
         self.assertEqual({r.titulo for r in resp.context["reportes"]}, {"pendiente", "en_proceso"})
+
+
+@override_settings(MEDIA_ROOT=MEDIA_TMP)
+class SalasTests(TestCase):
+    """edificios y salas cargados desde el plano"""
+
+    def setUp(self):
+        get_user_model().objects.create_user("ana", password="clave-segura-123")
+        self.client.login(username="ana", password="clave-segura-123")
+        self.a010 = Sala.objects.get(nombre="A010")
+        self.datos = {
+            "titulo": "La luz parpadea",
+            "categoria": Categoria.objects.get(nombre="Baño").pk,
+            "descripcion": "El tubo del fondo parpadea",
+        }
+
+    def test_salas_cargadas(self):
+        self.assertGreaterEqual(Sala.objects.count(), 100)
+        self.assertEqual(self.a010.edificio.letra, "A")
+        self.assertEqual(self.a010.piso, 1)
+        self.assertTrue(len(self.a010.forma) >= 4)
+        self.assertIn(-2, Edificio.objects.get(letra="K").pisos)
+        self.assertTrue(Sala.objects.filter(edificio__letra="K", piso=3).exists())
+
+    def test_reporte_con_sala(self):
+        resp = self.client.post(reverse("reportes:crear"), {**self.datos, "sala": self.a010.pk, "foto": foto_de_prueba()})
+        reporte = Reporte.objects.get()
+        self.assertRedirects(resp, reverse("reportes:detalle", kwargs={"pk": reporte.pk}))
+        self.assertEqual(reporte.sala, self.a010)
+        self.assertEqual(reporte.ubicacion, "A010 · Edificio A · Piso 1")
+        resp = self.client.get(reverse("reportes:detalle", kwargs={"pk": reporte.pk}))
+        self.assertContains(resp, "<dt>Sala</dt>")
+
+    def test_reporte_con_sala_y_detalle(self):
+        self.client.post(reverse("reportes:crear"), {**self.datos, "sala": self.a010.pk, "ubicacion": "al fondo", "foto": foto_de_prueba()})
+        self.assertEqual(Reporte.objects.get().ubicacion, "A010 · Edificio A · Piso 1 · al fondo")
+
+    def test_sin_sala_ni_ubicacion(self):
+        resp = self.client.post(reverse("reportes:crear"), {**self.datos, "foto": foto_de_prueba()})
+        self.assertEqual(Reporte.objects.count(), 0)
+        self.assertIn("ubicacion", resp.context["form"].errors)
+
+    def test_reportar_aqui_marca_la_sala(self):
+        resp = self.client.get(reverse("reportes:crear") + f"?sala={self.a010.pk}")
+        self.assertEqual(str(resp.context["form"]["sala"].value()), str(self.a010.pk))
+
+
+class CampusYPerfilTests(TestCase):
+    def setUp(self):
+        self.usuario = get_user_model().objects.create_user(
+            "ana@usm.cl", email="ana@usm.cl", password="clave-segura-123", first_name="Ana Pérez"
+        )
+        from .models import Campus, Universidad
+        self.usm = Universidad.objects.get(dominio="usm.cl")
+        self.sj = Campus.objects.get(nombre="Campus San Joaquín")
+        Perfil.objects.create(usuario=self.usuario, universidad=self.usm, campus=self.sj)
+
+    def test_bienvenida_muestra_otras_universidades_bloqueadas(self):
+        resp = self.client.get(reverse("bienvenida"))
+        for sigla in ("UCH", "PUC", "USACH"):
+            self.assertContains(resp, sigla)
+        self.assertContains(resp, "Próximamente")
+        self.assertContains(resp, "Casa Central")
+
+    def test_no_se_puede_elegir_campus_bloqueado(self):
+        from .models import Campus
+        casa = Campus.objects.get(nombre="Casa Central")
+        resp = self.client.post(reverse("bienvenida"), {"campus": casa.pk})
+        self.assertEqual(resp.status_code, 200)
+        self.assertNotIn("campus_id", self.client.session)
+
+    def test_universidad_bloqueada_no_acepta_correos(self):
+        from .models import universidad_para_correo
+        self.assertIsNone(universidad_para_correo("x@uc.cl"))
+        self.assertEqual(universidad_para_correo("x@usm.cl"), self.usm)
+
+    def test_campus_elegido_se_guarda_al_entrar(self):
+        self.usuario.perfil.campus = None
+        self.usuario.perfil.save()
+        self.client.post(reverse("bienvenida"), {"campus": self.sj.pk})
+        self.client.post(reverse("login"), {"correo": "ana@usm.cl", "password": "clave-segura-123"})
+        self.usuario.perfil.refresh_from_db()
+        self.assertEqual(self.usuario.perfil.campus, self.sj)
+
+    def test_perfil_requiere_sesion(self):
+        resp = self.client.get(reverse("reportes:perfil"))
+        self.assertEqual(resp.status_code, 302)
+
+    def test_perfil_muestra_datos_y_cifras(self):
+        self.client.login(username="ana@usm.cl", password="clave-segura-123")
+        cat = Categoria.objects.get(nombre="Baño")
+        Reporte.objects.create(titulo="a", descripcion="d", categoria=cat, ubicacion="x", autor=self.usuario)
+        Reporte.objects.create(titulo="b", descripcion="d", categoria=cat, ubicacion="x", autor=self.usuario,
+                               estado=Reporte.Estado.RESUELTO)
+        resp = self.client.get(reverse("reportes:perfil"))
+        self.assertContains(resp, "Ana Pérez")
+        self.assertContains(resp, "Campus San Joaquín")
+        self.assertEqual(resp.context["total"], 2)
+        self.assertEqual(resp.context["resueltos"], 1)
+
+    def test_cambiar_nombre(self):
+        self.client.login(username="ana@usm.cl", password="clave-segura-123")
+        self.client.post(reverse("reportes:perfil"), {"accion": "nombre", "nombre": "Ana María"})
+        self.usuario.refresh_from_db()
+        self.assertEqual(self.usuario.first_name, "Ana María")
+        self.client.post(reverse("reportes:perfil"), {"accion": "nombre", "nombre": "  "})
+        self.usuario.refresh_from_db()
+        self.assertEqual(self.usuario.first_name, "Ana María")
+
+    def test_registro_sin_mencion_a_sansano(self):
+        self.assertNotContains(self.client.get(reverse("registro")), "sansano")
+
+    def test_barra_inferior_solo_con_sesion(self):
+        self.assertNotContains(self.client.get(reverse("login")), "barra-inferior")
+        self.client.login(username="ana@usm.cl", password="clave-segura-123")
+        self.assertContains(self.client.get(reverse("reportes:lista")), "barra-inferior")

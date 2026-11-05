@@ -8,7 +8,7 @@ from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
 from PIL import Image, ImageOps
 
-from .models import Reporte, Universidad, universidad_para_correo
+from .models import Reporte, Sala, Universidad, universidad_para_correo
 
 MAX_MB = 8
 LADO_MAX = 1280
@@ -27,11 +27,12 @@ def reducir_imagen(archivo):
 class ReporteForm(forms.ModelForm):
     class Meta:
         model = Reporte
-        fields = ["titulo", "categoria", "ubicacion", "descripcion", "foto"]
+        fields = ["titulo", "categoria", "sala", "ubicacion", "descripcion", "foto"]
         labels = {
             "titulo": "Título",
             "categoria": "Categoría",
-            "ubicacion": "Ubicación",
+            "sala": "Sala o lugar",
+            "ubicacion": "Detalle de la ubicación",
             "descripcion": "Descripción",
             "foto": "Foto de evidencia",
         }
@@ -42,6 +43,20 @@ class ReporteForm(forms.ModelForm):
         # la foto es obligatoria al crear un reporte
         self.fields["foto"].required = True
         self.fields["foto"].widget.attrs["accept"] = "image/*"
+        self.fields["sala"].queryset = Sala.objects.select_related("edificio")
+        self.fields["sala"].empty_label = "— No está en la lista —"
+        self.fields["categoria"].empty_label = "— Elige una categoría —"
+        self.fields["ubicacion"].required = False
+        self.fields["ubicacion"].help_text = "Opcional si elegiste una sala. Ej: al fondo, junto a la ventana."
+
+    def clean(self):
+        datos = super().clean()
+        sala, detalle = datos.get("sala"), (datos.get("ubicacion") or "").strip()
+        if not sala and not detalle:
+            self.add_error("ubicacion", "Elige una sala o escribe dónde está el problema.")
+        elif sala:
+            datos["ubicacion"] = (f"{sala} · {detalle}" if detalle else str(sala))[:150]
+        return datos
 
     def clean_foto(self):
         foto = self.cleaned_data.get("foto")

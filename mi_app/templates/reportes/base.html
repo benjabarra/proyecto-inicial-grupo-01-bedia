@@ -21,14 +21,10 @@
       <nav>
         {% if user.is_authenticated %}
           <a class="solo-ancho" href="{% url 'reportes:lista' %}">Reportes</a>
-          <a href="{% url 'reportes:mis_reportes' %}">Mis reportes</a>
+          <a class="solo-ancho" href="{% url 'reportes:mis_reportes' %}">Mis reportes</a>
           {% if rol == "admin" or rol == "encargado" %}<a class="solo-ancho" href="{% url 'admin:index' %}">Administrar</a>{% endif %}
-          <a class="btn btn-sm btn-amarillo" href="{% url 'reportes:crear' %}">Reportar</a>
-          <form method="post" action="{% url 'logout' %}" class="salir">
-            {% csrf_token %}
-            <button type="submit" class="link">Salir</button>
-          </form>
-          <span class="avatar" title="{{ user.email|default:user.username }}" aria-label="Tu cuenta: {{ user.email|default:user.username }}">{{ iniciales }}</span>
+          <a class="btn btn-sm btn-amarillo solo-ancho" href="{% url 'reportes:crear' %}">Reportar</a>
+          <a class="avatar" href="{% url 'reportes:perfil' %}" title="Mi perfil" aria-label="Mi perfil">{{ iniciales }}</a>
         {% else %}
           <a href="{% url 'login' %}">Iniciar sesión</a>
           <a class="btn btn-sm" href="{% url 'registro' %}">Crear cuenta</a>
@@ -46,5 +42,19 @@
     {% block contenido %}{% endblock %}
   </main>
   {% endblock %}
+  {% if user.is_authenticated %}
+  {% with actual=request.resolver_match.url_name %}
+  <nav class="barra-inferior" aria-label="Principal">
+    <a href="{% url 'reportes:lista' %}" {% if actual == 'lista' %}aria-current="page"{% endif %}>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Reportes</a>
+    <a href="{% url 'reportes:mis_reportes' %}" {% if actual == 'mis_reportes' %}aria-current="page"{% endif %}>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v18l-5-3-5 3z"/></svg>Míos</a>
+    <a class="mas" href="{% url 'reportes:crear' %}" aria-label="Reportar un problema">
+      <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>Reportar</a>
+    <a href="{% url 'reportes:perfil' %}" {% if actual == 'perfil' %}aria-current="page"{% endif %}>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>Perfil</a>
+  </nav>
+  {% endwith %}
+  {% endif %}
 </body>
 </html>

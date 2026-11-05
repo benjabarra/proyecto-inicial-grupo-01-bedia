@@ -17,6 +17,45 @@ class Categoria(models.Model):
         return self.nombre
 
 
+class Edificio(models.Model):
+    letra = models.CharField(max_length=5, unique=True)
+    nombre = models.CharField(max_length=80)
+    pisos = models.JSONField(default=list, help_text="pisos que tiene, ej: [-2, -1, 1, 2, 3]")
+
+    class Meta:
+        ordering = ["letra"]
+
+    def __str__(self):
+        return self.nombre
+
+
+class Sala(models.Model):
+    """una sala o espacio del campus. 'forma' son sus esquinas en el plano del mapa"""
+
+    class Tipo(models.TextChoices):
+        SALA = "sala", "Sala de clases"
+        OFICINA = "oficina", "Oficina o departamento"
+        AUDITORIO = "auditorio", "Auditorio"
+        SERVICIO = "servicio", "Baño o servicio"
+        COMIDA = "comida", "Casino o cafetería"
+        DEPORTE = "deporte", "Deportes"
+        ESPACIO = "espacio", "Patio o espacio común"
+        ACCESO = "acceso", "Acceso"
+
+    edificio = models.ForeignKey(Edificio, on_delete=models.CASCADE, related_name="salas")
+    piso = models.SmallIntegerField()
+    nombre = models.CharField(max_length=80)
+    tipo = models.CharField(max_length=20, choices=Tipo.choices, default=Tipo.SALA)
+    forma = models.JSONField(default=list, blank=True)
+
+    class Meta:
+        ordering = ["edificio__letra", "piso", "nombre"]
+        verbose_name_plural = "salas"
+
+    def __str__(self):
+        return f"{self.nombre} · {self.edificio} · Piso {self.piso}"
+
+
 class Reporte(models.Model):
     class Estado(models.TextChoices):
         PENDIENTE = "pendiente", "Pendiente"
@@ -27,6 +66,9 @@ class Reporte(models.Model):
     descripcion = models.TextField()
     categoria = models.ForeignKey(
         Categoria, on_delete=models.PROTECT, related_name="reportes"
+    )
+    sala = models.ForeignKey(
+        Sala, on_delete=models.SET_NULL, null=True, blank=True, related_name="reportes"
     )
     ubicacion = models.CharField(
         max_length=150, help_text="Edificio, sala o zona del campus"
@@ -60,6 +102,7 @@ class Universidad(models.Model):
     color_primario = models.CharField(max_length=7)
     color_acento = models.CharField(max_length=7)
     imagen = models.CharField(max_length=200, blank=True)
+    activa = models.BooleanField(default=True, help_text="si no, sale gris y dice Próximamente")
 
     class Meta:
         verbose_name_plural = "universidades"
@@ -68,12 +111,29 @@ class Universidad(models.Model):
         return f"{self.sigla} {self.campus}"
 
 
+class Campus(models.Model):
+    """cada sede de una universidad. solo los activos se pueden elegir"""
+
+    universidad = models.ForeignKey(Universidad, on_delete=models.CASCADE, related_name="campus_set")
+    nombre = models.CharField(max_length=80)
+    ciudad = models.CharField(max_length=80, blank=True)
+    activo = models.BooleanField(default=False, help_text="si no, sale gris y dice Próximamente")
+    orden = models.PositiveSmallIntegerField(default=0)
+
+    class Meta:
+        ordering = ["universidad", "orden", "nombre"]
+        verbose_name_plural = "campus"
+
+    def __str__(self):
+        return f"{self.universidad.sigla} · {self.nombre}"
+
+
 def universidad_para_correo(correo):
     """devuelve la universidad que corresponde al dominio del correo, o None"""
     if not correo or "@" not in correo:
         return None
     dominio = correo.rsplit("@", 1)[-1].strip().lower()
-    for uni in Universidad.objects.all():
+    for uni in Universidad.objects.filter(activa=True):
         if dominio == uni.dominio or dominio.endswith("." + uni.dominio):
             return uni
     return None
@@ -98,6 +158,7 @@ class Perfil(models.Model):
     universidad = models.ForeignKey(
         Universidad, on_delete=models.SET_NULL, null=True, blank=True
     )
+    campus = models.ForeignKey(Campus, on_delete=models.SET_NULL, null=True, blank=True)
     codigo = models.CharField(max_length=6, blank=True)
     codigo_creado = models.DateTimeField(null=True, blank=True)
     intentos = models.PositiveSmallIntegerField(default=0)

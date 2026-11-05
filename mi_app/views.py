@@ -8,7 +8,7 @@ from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
 
 from .forms import CodigoForm, EntrarForm, RegistroForm, ReporteForm
-from .models import Perfil, Reporte, Universidad, universidad_para_correo
+from .models import Campus, Perfil, Reporte, Universidad, universidad_para_correo
 
 BACKEND = "django.contrib.auth.backends.ModelBackend"
 
@@ -18,13 +18,29 @@ BACKEND = "django.contrib.auth.backends.ModelBackend"
 def bienvenida(request):
     if request.user.is_authenticated:
         return redirect("reportes:lista")
-    universidades = Universidad.objects.all()
     if request.method == "POST":
-        uni = universidades.filter(pk=request.POST.get("universidad")).first()
-        if uni:
-            request.session["universidad_id"] = uni.pk
+        campus = (
+            Campus.objects.select_related("universidad")
+            .filter(pk=request.POST.get("campus"), activo=True, universidad__activa=True)
+            .first()
+        )
+        if campus:
+            request.session["universidad_id"] = campus.universidad_id
+            request.session["campus_id"] = campus.pk
             return redirect("login")
+    universidades = Universidad.objects.prefetch_related("campus_set").order_by("-activa", "pk")
     return render(request, "bienvenida.html", {"universidades": universidades})
+
+
+def _guardar_campus(request, usuario):
+    """si eligio campus en la bienvenida y su perfil no tiene, se lo guardamos"""
+    perfil = getattr(usuario, "perfil", None)
+    campus_id = request.session.get("campus_id")
+    if perfil and campus_id and perfil.campus_id is None:
+        campus = Campus.objects.filter(pk=campus_id, activo=True).first()
+        if campus:
+            perfil.campus = campus
+            perfil.save(update_fields=["campus"])
 
 
 def enviar_codigo(usuario):
@@ -57,7 +73,10 @@ def registro(request):
             first_name=datos["nombre"],
             is_active=False,  # se activa al poner el codigo
         )
-        Perfil.objects.create(usuario=usuario, universidad=universidad_para_correo(datos["correo"]))
+        campus = Campus.objects.filter(pk=request.session.get("campus_id"), activo=True).first()
+        Perfil.objects.create(
+            usuario=usuario, universidad=universidad_para_correo(datos["correo"]), campus=campus
+        )
         enviar_codigo(usuario)
         request.session["verificar_id"] = usuario.pk
         return redirect("verificar")
@@ -88,6 +107,7 @@ def entrar(request):
             return redirect("verificar")
         else:
             login(request, usuario, backend=BACKEND)
+            _guardar_campus(request, usuario)
             siguiente = request.POST.get("next") or request.GET.get("next")
             if siguiente and url_has_allowed_host_and_scheme(siguiente, {request.get_host()}):
                 return redirect(siguiente)
@@ -128,6 +148,7 @@ def verificar(request):
             perfil.save(update_fields=["codigo"])
             request.session.pop("verificar_id", None)
             login(request, usuario, backend=BACKEND)
+            _guardar_campus(request, usuario)
             messages.success(request, "¡Listo! Tu cuenta quedó confirmada.")
             return redirect("reportes:lista")
     return render(
@@ -185,11 +206,49 @@ def crear_reporte(request):
             reporte.save()
             return redirect("reportes:detalle", pk=reporte.pk)
     else:
-        form = ReporteForm()
+        # "reportar aqui" desde el mapa llega con ?sala=<id>
+        form = ReporteForm(initial={"sala": request.GET.get("sala")})
     return render(request, "reportes/crear.html", {"form": form})
 
 
 @login_required
 def detalle_reporte(request, pk):
-    reporte = get_object_or_404(Reporte, pk=pk)
+    reporte = get_object_or_404(Reporte.objects.select_related("sala__edificio"), pk=pk)
     return render(request, "reportes/detalle.html", {"reporte": reporte})
+
+
+@login_required
+def perfil(request):
+    usuario = request.user
+    perfil_ = usuario.perfil
+    if request.method == "POST":
+        accion = request.POST.get("accion")
+        if accion == "nombre":
+            nombre = request.POST.get("nombre", "").strip()[:150]
+            if nombre:
+                usuario.first_name = nombre
+                usuario.save(update_fields=["first_name"])
+                messages.success(request, "Guardamos tu nombre.")
+            else:
+                messages.error(request, "El nombre no puede quedar vacío.")
+        elif accion == "campus":
+            campus = Campus.objects.filter(
+                pk=request.POST.get("campus"), activo=True, universidad__activa=True
+            ).first()
+            if campus:
+                perfil_.campus = campus
+                perfil_.universidad = campus.universidad
+                perfil_.save(update_fields=["campus", "universidad"])
+                messages.success(request, "Cambiamos tu campus.")
+        return redirect("reportes:perfil")
+    mis = Reporte.objects.filter(autor=usuario)
+    return render(
+        request,
+        "reportes/perfil.html",
+        {
+            "total": mis.count(),
+            "resueltos": mis.filter(estado=Reporte.Estado.RESUELTO).count(),
+            "recientes": mis.select_related("categoria")[:3],
+            "campus_activos": Campus.objects.filter(activo=True, universidad__activa=True).select_related("universidad"),
+        },
+    )
