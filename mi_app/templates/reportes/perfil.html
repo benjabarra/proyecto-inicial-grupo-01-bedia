@@ -10,7 +10,7 @@
       <h1>{{ user.first_name|default:user.username }}</h1>
       <p class="meta">{{ user.email }}</p>
       <p class="meta">{{ campus_actual.universidad.nombre|default:"Sin campus elegido" }}{% if campus_actual %} · {{ campus_actual.nombre }}{% endif %}</p>
-      <span class="rol">{{ user.perfil.get_rol_display }}</span>
+      <span class="rol">{{ rol_nombre }}</span>
     </div>
   </div>
 

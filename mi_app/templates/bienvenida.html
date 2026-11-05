@@ -24,7 +24,7 @@
               {% if c.activo %}
                 <label class="campus-op">
                   <span><b>{{ c.nombre }}</b><small>{{ c.ciudad }}</small></span>
-                  <input type="radio" name="campus" value="{{ c.pk }}" {% if forloop.first %}checked{% endif %}>
+                  <input type="radio" name="campus" value="{{ c.pk }}">
                 </label>
               {% else %}
                 <div class="campus-op apagado" aria-disabled="true">
@@ -46,9 +46,19 @@
       <p class="nota">Todavía no hay universidades cargadas.</p>
     {% endfor %}
     <p class="nota centro">La próxima vez entrarás directo. Puedes cambiarlo en tu perfil.</p>
+    {% if error %}<p class="error-campus" role="alert">{{ error }}</p>{% endif %}
     <div class="acciones">
-      <button type="submit" class="btn btn-block">Continuar</button>
+      <button type="submit" class="btn btn-block" id="continuar" disabled>Continuar</button>
     </div>
+    <script>
+      // el boton se activa cuando eliges un campus
+      (function () {
+        var boton = document.getElementById("continuar");
+        document.querySelectorAll('input[name="campus"]').forEach(function (r) {
+          r.addEventListener("change", function () { boton.disabled = false; });
+        });
+      })();
+    </script>
     <p class="aparte">¿No tienes cuenta? <a href="{% url 'registro' %}">Crear cuenta</a></p>
   </form>
 </main>

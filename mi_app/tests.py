@@ -375,3 +375,20 @@ class CampusYPerfilTests(TestCase):
         self.assertNotContains(self.client.get(reverse("login")), "barra-inferior")
         self.client.login(username="ana@usm.cl", password="clave-segura-123")
         self.assertContains(self.client.get(reverse("reportes:lista")), "barra-inferior")
+
+    def test_perfil_funciona_para_admin_sin_perfil(self):
+        admin = get_user_model().objects.create_superuser("jefe", password="clave-segura-123")
+        self.client.login(username="jefe", password="clave-segura-123")
+        resp = self.client.get(reverse("reportes:perfil"))
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "Administrador")
+        self.assertTrue(Perfil.objects.filter(usuario=admin).exists())
+
+    def test_bienvenida_no_trae_campus_preseleccionado(self):
+        resp = self.client.get(reverse("bienvenida"))
+        self.assertNotContains(resp, "checked")
+
+    def test_continuar_sin_elegir_campus_avisa(self):
+        resp = self.client.post(reverse("bienvenida"), {})
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "Elige tu campus")

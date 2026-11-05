@@ -8,7 +8,7 @@ from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
 
 from .forms import CodigoForm, EntrarForm, RegistroForm, ReporteForm
-from .models import Campus, Perfil, Reporte, Universidad, universidad_para_correo
+from .models import Campus, Perfil, Reporte, Universidad, rol_de, universidad_para_correo
 
 BACKEND = "django.contrib.auth.backends.ModelBackend"
 
@@ -28,8 +28,11 @@ def bienvenida(request):
             request.session["universidad_id"] = campus.universidad_id
             request.session["campus_id"] = campus.pk
             return redirect("login")
+        error = "Elige tu campus para continuar."
+    else:
+        error = None
     universidades = Universidad.objects.prefetch_related("campus_set").order_by("-activa", "pk")
-    return render(request, "bienvenida.html", {"universidades": universidades})
+    return render(request, "bienvenida.html", {"universidades": universidades, "error": error})
 
 
 def _guardar_campus(request, usuario):
@@ -220,7 +223,10 @@ def detalle_reporte(request, pk):
 @login_required
 def perfil(request):
     usuario = request.user
-    perfil_ = usuario.perfil
+    # los administradores creados con createsuperuser no tienen perfil: lo creamos aqui
+    perfil_, _ = Perfil.objects.get_or_create(
+        usuario=usuario, defaults={"universidad": universidad_para_correo(usuario.email)}
+    )
     if request.method == "POST":
         accion = request.POST.get("accion")
         if accion == "nombre":
@@ -246,6 +252,7 @@ def perfil(request):
         request,
         "reportes/perfil.html",
         {
+            "rol_nombre": Perfil.Rol(rol_de(usuario)).label,
             "total": mis.count(),
             "resueltos": mis.filter(estado=Reporte.Estado.RESUELTO).count(),
             "recientes": mis.select_related("categoria")[:3],
