@@ -261,3 +261,6 @@ button.link:hover { opacity: 1; }
 .en-linea { align-items: center; }
 .en-linea .btn { flex: none; }
 .opcion-uni.apagado .sigla { font-size: 0.62rem; letter-spacing: -0.02em; padding: 0; }
+
+.btn:disabled { opacity: 0.4; cursor: not-allowed; filter: none; transform: none; }
+.error-campus { color: #b3261e; font-weight: 600; text-align: center; margin: 12px 0 0; }
