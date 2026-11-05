@@ -264,3 +264,27 @@ button.link:hover { opacity: 1; }
 
 .btn:disabled { opacity: 0.4; cursor: not-allowed; filter: none; transform: none; }
 .error-campus { color: #b3261e; font-weight: 600; text-align: center; margin: 12px 0 0; }
+
+/* despliegue suave de la universidad */
+.uni-cab { width: 100%; background: none; border: 0; font: inherit; color: inherit; text-align: left; cursor: pointer; }
+.uni-cab .flecha { margin-left: auto; flex: none; transition: transform .4s cubic-bezier(.2,.8,.2,1); }
+.foto-uni { display: block; width: 100%; height: 150px; object-fit: cover; }
+.js .uni-caja .desplegable { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .5s cubic-bezier(.2,.8,.2,1); }
+.js .uni-caja.abierta .desplegable { grid-template-rows: 1fr; }
+.js .uni-caja .desplegable > div { overflow: hidden; min-height: 0; }
+.js .uni-caja:not(.abierta) .desplegable > div { visibility: hidden; transition: visibility 0s .5s; }
+.js .uni-caja.abierta .flecha { transform: rotate(180deg); }
+.js .foto-uni { opacity: 0; transform: scale(1.08); transition: opacity .7s ease .1s, transform 1s cubic-bezier(.2,.8,.2,1) .1s; }
+.js .uni-caja.abierta .foto-uni { opacity: 1; transform: none; }
+.js .campus-lista .campus-op { opacity: 0; transform: translateY(8px); transition: opacity .4s ease, transform .4s ease; }
+.js .uni-caja.abierta .campus-op { opacity: 1; transform: none; }
+.js .uni-caja.abierta .campus-op:nth-child(1) { transition-delay: .15s; }
+.js .uni-caja.abierta .campus-op:nth-child(2) { transition-delay: .2s; }
+.js .uni-caja.abierta .campus-op:nth-child(3) { transition-delay: .25s; }
+.js .uni-caja.abierta .campus-op:nth-child(4) { transition-delay: .3s; }
+.js .uni-caja.abierta .campus-op:nth-child(5) { transition-delay: .35s; }
+@media (prefers-reduced-motion: reduce) {
+  .js .uni-caja *, .uni-cab .flecha { transition: none !important; }
+}
+.js .uni-caja { transition: border-color .3s ease; }
+.js .uni-caja:not(.abierta) { border-color: var(--line); }
