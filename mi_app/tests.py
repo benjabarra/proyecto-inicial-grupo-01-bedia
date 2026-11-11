@@ -680,3 +680,18 @@ class ArreglosFelipeTests(TestCase):
         js = (Path(__file__).resolve().parent / "static" / "mi_app" / "mapa" / "mapa.js").read_text(encoding="utf-8")
         self.assertIn("permissions.query({name:'geolocation'})", js)
         self.assertNotIn("try{if('geolocation' in navigator&&window.isSecureContext)gpsBtn.click()}", js)
+
+
+class CorreoCodigoTests(TestCase):
+    """el correo del codigo va con formato (llega menos a spam) y el codigo va en el asunto"""
+
+    def test_correo_con_formato(self):
+        self.client.post(reverse("registro"), {
+            "nombre": "Ana", "apellido": "Pérez", "correo": "ana.perez@usm.cl",
+            "password1": "campus-2026-k", "password2": "campus-2026-k",
+        })
+        correo = mail.outbox[0]
+        codigo = Perfil.objects.get(usuario__username="ana.perez@usm.cl").codigo
+        self.assertIn(codigo, correo.subject)
+        self.assertEqual(correo.alternatives[0][1], "text/html")
+        self.assertIn(codigo, correo.alternatives[0][0])
