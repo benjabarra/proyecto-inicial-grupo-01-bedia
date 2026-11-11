@@ -1,5 +1,5 @@
 {% extends "reportes/base.html" %}
-{# mi perfil: datos, cifras, nombre, campus y cerrar sesion #}
+{# mi perfil: nombre y apellido, correo, cifras, campus y cerrar sesion #}
 
 {% block titulo %}Mi perfil{% endblock %}
 
@@ -8,7 +8,7 @@
   <div class="perfil-cab">
     <span class="avatar grande" aria-hidden="true">{{ iniciales }}</span>
     <div>
-      <h1>{{ user.first_name|default:user.username }}</h1>
+      <h1>{{ user.get_full_name|default:user.username }}</h1>
       <p class="meta">{{ user.email }}</p>
       <p class="meta">{{ campus_actual.universidad.nombre|default:"Sin campus elegido" }}{% if campus_actual %} · {{ campus_actual.nombre }}{% endif %}</p>
       <span class="rol">{{ rol_nombre }}</span>
@@ -28,16 +28,6 @@
       <p class="meta">Todavía no has reportado nada.</p>
     {% endfor %}
     {% if total %}<p class="aparte"><a href="{% url 'reportes:mis_reportes' %}">Ver todos</a></p>{% endif %}
-  </section>
-
-  <section class="panel">
-    <h2>Mi nombre</h2>
-    <form method="post" class="en-linea">
-      {% csrf_token %}
-      <input type="hidden" name="accion" value="nombre">
-      <input type="text" name="nombre" value="{{ user.first_name }}" maxlength="150" aria-label="Nombre">
-      <button type="submit" class="btn btn-sm">Guardar</button>
-    </form>
   </section>
 
   <section class="panel">

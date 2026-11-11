@@ -89,7 +89,8 @@ class CuentasTests(TestCase):
     """registro con correo institucional, codigo de verificacion y tema"""
 
     datos = {
-        "nombre": "Ana Pérez",
+        "nombre": "Ana",
+        "apellido": "Pérez",
         "correo": "ana.perez@usm.cl",
         "password1": "Clave-segura-9271",
         "password2": "Clave-segura-9271",
@@ -131,6 +132,12 @@ class CuentasTests(TestCase):
         self.assertEqual(usuario.perfil.universidad.dominio, "usm.cl")
         self.assertEqual(len(mail.outbox), 1)
         self.assertIn(usuario.perfil.codigo, mail.outbox[0].body)
+        # el nombre y el apellido quedan guardados por separado
+        self.assertEqual((usuario.first_name, usuario.last_name), ("Ana", "Pérez"))
+
+    def test_registro_pide_apellido(self):
+        resp = self.registrar(apellido="")
+        self.assertIn("apellido", resp.context["form"].errors)
         self.assertNotIn("_auth_user_id", self.client.session)
 
     def test_acepta_subdominio_de_la_universidad(self):
@@ -239,6 +246,8 @@ class CuentasTests(TestCase):
         self.assertEqual(iniciales(User(username="vicente.arredondo@usm.cl", email="vicente.arredondo@usm.cl")), "VA")
         self.assertEqual(iniciales(User(username="ana@usm.cl", email="ana@usm.cl")), "AN")
         self.assertEqual(iniciales(User(username="admin")), "AD")
+        # con nombre y apellido se usan esos
+        self.assertEqual(iniciales(User(username="x@usm.cl", email="x@usm.cl", first_name="Daniela", last_name="Bustos")), "DB")
 
     def test_tema_usm_y_avatar_despues_de_entrar(self):
         self.registrar()
@@ -365,14 +374,14 @@ class CampusYPerfilTests(TestCase):
         self.assertEqual(resp.context["total"], 2)
         self.assertEqual(resp.context["resueltos"], 1)
 
-    def test_cambiar_nombre(self):
+    def test_perfil_muestra_nombre_y_apellido(self):
+        self.usuario.first_name, self.usuario.last_name = "Ana", "Pérez"
+        self.usuario.save()
         self.client.login(username="ana@usm.cl", password="clave-segura-123")
-        self.client.post(reverse("reportes:perfil"), {"accion": "nombre", "nombre": "Ana María"})
-        self.usuario.refresh_from_db()
-        self.assertEqual(self.usuario.first_name, "Ana María")
-        self.client.post(reverse("reportes:perfil"), {"accion": "nombre", "nombre": "  "})
-        self.usuario.refresh_from_db()
-        self.assertEqual(self.usuario.first_name, "Ana María")
+        resp = self.client.get(reverse("reportes:perfil"))
+        self.assertContains(resp, "<h1>Ana Pérez</h1>", html=True)
+        # el nombre ya no se cambia desde el perfil
+        self.assertNotContains(resp, 'name="accion" value="nombre"')
 
     def test_registro_sin_mencion_a_sansano(self):
         self.assertNotContains(self.client.get(reverse("registro")), "sansano")
@@ -489,6 +498,10 @@ class MapaYApoyosTests(TestCase):
         carpeta = Path(__file__).resolve().parent / "static" / "mi_app" / "mapa"
         self.assertIn("function leerDato", (carpeta / "mapa.js").read_text(encoding="utf-8"))
         self.assertGreater((carpeta / "mapa.css").stat().st_size, 10000)
+        # el mapa no usa transicion de pagina: sacar la foto del mapa al salir demoraba casi un segundo
+        self.assertNotIn("@view-transition", (carpeta / "mapa.css").read_text(encoding="utf-8"))
+        # burbujita con los reportes de cada piso
+        self.assertIn("function burbujas", (carpeta / "mapa.js").read_text(encoding="utf-8"))
 
     def test_reporte_en_pasillo_va_a_su_piso(self):
         # un reporte en un punto sin sala (pasillo) tambien se dibuja en su piso

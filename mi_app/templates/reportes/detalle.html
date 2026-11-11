@@ -19,7 +19,7 @@
     <dt>Categoría</dt><dd>{{ reporte.categoria }}</dd>
     {% if reporte.sala %}<dt>Sala</dt><dd>{{ reporte.sala.nombre }} · {{ reporte.sala.edificio }} · Piso {{ reporte.sala.piso }}</dd>{% endif %}
     <dt>Ubicación</dt><dd>{{ reporte.ubicacion }}</dd>
-    <dt>Reportado por</dt><dd>{{ reporte.autor.first_name|default:reporte.autor.username }}</dd>
+    <dt>Reportado por</dt><dd>{{ reporte.autor.get_full_name|default:reporte.autor.username }}</dd>
     <dt>Fecha</dt><dd>{{ reporte.creado|date:"d/m/Y H:i" }}</dd>
     <dt>Actualizado</dt><dd>{{ reporte.actualizado|date:"d/m/Y H:i" }}</dd>
   </dl>

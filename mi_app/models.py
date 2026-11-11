@@ -273,7 +273,10 @@ class Perfil(models.Model):
 
 # letras del avatar (ej: vicente.arredondo -> va)
 def iniciales(usuario):
-    """'vicente.arredondo@usm.cl' -> 'VA', 'admin' -> 'AD'"""
+    """nombre 'ana' y apellido 'perez' -> 'AP'; sin nombre: 'vicente.arredondo@usm.cl' -> 'VA', 'admin' -> 'AD'"""
+    nombre = f"{usuario.first_name or ''} {usuario.last_name or ''}".split()
+    if len(nombre) >= 2:
+        return (nombre[0][0] + nombre[-1][0]).upper()
     base = (usuario.email or usuario.username or "?").split("@")[0]
     partes = [p for p in re.split(r"[._\-\s]+", base) if p]
     if len(partes) >= 2:
