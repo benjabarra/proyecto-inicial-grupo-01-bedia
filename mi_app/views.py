@@ -290,6 +290,7 @@ def mapa(request):
                 "urlPerfil": reverse("reportes:perfil"),
                 "suelo": static("mi_app/mapa/suelo.png"),
                 "sueloHd": static("mi_app/mapa/suelo_hd.png"),
+                "sueloMd": static("mi_app/mapa/suelo_md.png"),
             },
         },
     )
@@ -351,12 +352,20 @@ def crear_reporte(request):
     else:
         # "reportar aqui" desde el mapa llega con ?sala=<id>, o con un punto: ?piso=&x=&y=&lugar=
         g = request.GET
+
+        def numero(valor):
+            # solo numeros validos para el punto del mapa (si llega algo raro, se ignora)
+            try:
+                return round(float(valor), 1)
+            except (TypeError, ValueError):
+                return None
+
         form = ReporteForm(
             initial={
                 "sala": g.get("sala"),
                 "piso": g.get("piso", "")[:4],
-                "mapa_x": g.get("x"),
-                "mapa_y": g.get("y"),
+                "mapa_x": numero(g.get("x")),
+                "mapa_y": numero(g.get("y")),
                 "ubicacion": g.get("lugar", "")[:150],
             }
         )

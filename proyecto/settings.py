@@ -51,6 +51,7 @@ INSTALLED_APPS = [
 
 # capas que procesan cada visita (sesion, seguridad, mensajes)
 MIDDLEWARE = [
+    'django.middleware.gzip.GZipMiddleware',  # comprime las paginas (el mapa pesa ~5 veces menos al viajar)
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
