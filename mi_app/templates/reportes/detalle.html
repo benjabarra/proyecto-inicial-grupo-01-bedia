@@ -1,5 +1,5 @@
 {% extends "reportes/base.html" %}
-{# detalle de un reporte: datos, apoyos y enlace al mapa #}
+{# detalle de un reporte: datos, apoyos, enlace al mapa e historial. el encargado tambien puede cambiar el estado #}
 
 {% block titulo %}{{ reporte.titulo }}{% endblock %}
 
@@ -33,6 +33,48 @@
     <span class="n-apoyos">▲ {{ apoyos }} apoyo{{ apoyos|pluralize }}</span>
     {% if en_mapa %}<a class="btn btn-claro" href="{% url 'reportes:mapa' %}?reporte={{ reporte.pk }}">Ver en el mapa</a>{% endif %}
   </div>
+
+  {# historial: cuando se reporto y cada cambio del encargado con su comentario #}
+  <section class="historial" aria-label="Seguimiento del reporte">
+    <h2>Seguimiento</h2>
+    <ol>
+      <li>
+        <span class="punto"></span>
+        <p class="h-cab"><strong>Reportado</strong> por {{ reporte.autor.get_full_name|default:reporte.autor.username }}</p>
+        <p class="h-fecha">{{ reporte.creado|date:"d/m/Y H:i" }}</p>
+      </li>
+      {% for s in seguimientos %}
+      <li class="estado-{{ s.estado_nuevo }}">
+        <span class="punto"></span>
+        <p class="h-cab">
+          {% if s.cambio_estado %}<span class="estado estado-{{ s.estado_nuevo }}">{{ s.get_estado_nuevo_display }}</span>{% else %}<strong>Comentario</strong>{% endif %}
+          {% if s.autor %}· {{ s.autor.get_full_name|default:s.autor.username }}{% endif %}
+        </p>
+        {% if s.comentario %}<p class="h-texto">{{ s.comentario|linebreaksbr }}</p>{% endif %}
+        <p class="h-fecha">{{ s.creado|date:"d/m/Y H:i" }}</p>
+      </li>
+      {% endfor %}
+    </ol>
+    {% if not seguimientos %}<p class="muted h-vacio">Todavía nadie lo revisa. Cuando un encargado lo actualice, lo verás aquí y te llegará un correo.</p>{% endif %}
+  </section>
+
+  {# solo encargados y administradores: cambiar estado con un comentario #}
+  {% if form_estado %}
+  <form class="cambiar-estado" method="post" action="{% url 'reportes:cambiar_estado' reporte.pk %}">
+    {% csrf_token %}
+    <h2>Actualizar estado</h2>
+    <div class="opciones-estado" role="radiogroup" aria-label="Estado">
+      {% for radio in form_estado.estado %}
+      <label class="opcion-estado estado-{{ radio.data.value }}">{{ radio.tag }}<span>{{ radio.choice_label }}</span></label>
+      {% endfor %}
+    </div>
+    {{ form_estado.estado.errors }}
+    <label for="{{ form_estado.comentario.id_for_label }}">Comentario para quien lo reportó</label>
+    {{ form_estado.comentario }}
+    {{ form_estado.comentario.errors }}
+    <button type="submit" class="btn btn-amarillo btn-block">Guardar y avisar</button>
+  </form>
+  {% endif %}
   </div>
   </div>
   <p><a href="{% url 'reportes:lista' %}">← Volver a los reportes</a></p>

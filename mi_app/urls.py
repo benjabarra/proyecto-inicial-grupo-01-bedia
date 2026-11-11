@@ -11,6 +11,8 @@ urlpatterns = [
     path("mapa/", views.mapa, name="mapa"),
     # apoyar o quitar apoyo a un reporte
     path("<int:pk>/apoyar/", views.apoyar, name="apoyar"),
+    # el encargado cambia el estado y deja un comentario
+    path("<int:pk>/estado/", views.cambiar_estado, name="cambiar_estado"),
     # reportes propios
     path("mis-reportes/", views.mis_reportes, name="mis_reportes"),
     # mi perfil

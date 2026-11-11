@@ -494,3 +494,40 @@ html,body{margin:0}
 .tabbar button.yendo .ti{background:rgba(255,199,44,.38)}
 .tabbar button:active .ti{transform:scale(.94)}
 .tabbar .ti{transition:background-color .3s var(--e-out),transform .15s ease}
+/* tutorial de bienvenida: fondo difuminado con un hueco sobre el boton que se explica y una tarjeta al lado */
+.tuto{position:fixed;inset:0;z-index:1000;opacity:0;transition:opacity .3s var(--e-out)}
+.tuto.on{opacity:1}
+.tuto-bloq{position:absolute;inset:0}
+.tuto-s{position:absolute;background:rgba(27,26,23,.36);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:left .38s var(--e-out),top .38s var(--e-out),width .38s var(--e-out),height .38s var(--e-out)}
+.tuto-anillo{position:absolute;border-radius:22px;box-shadow:0 0 0 3px rgba(255,255,255,.95),0 0 0 10px rgba(255,255,255,.22);pointer-events:none;transition:left .38s var(--e-out),top .38s var(--e-out),width .38s var(--e-out),height .38s var(--e-out),opacity .25s}
+.tuto-card{position:absolute;box-sizing:border-box;width:min(340px,calc(100vw - 32px));background:#fff;color:var(--ink);border-radius:24px;padding:20px 20px 16px;box-shadow:0 24px 60px rgba(30,22,0,.28),0 2px 8px rgba(30,22,0,.08);font-family:Inter,var(--font);transition:left .38s var(--e-out),top .38s var(--e-out)}
+.tuto-card:focus{outline:none}
+.tuto-card.grande{width:min(420px,calc(100vw - 32px));padding:26px 24px 18px}
+.tuto-card.entra{animation:tutoEntra .35s var(--e-out) both}
+@keyframes tutoEntra{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+.tuto-card h2{margin:0 0 6px;font-size:19px;font-weight:800;letter-spacing:-.02em}
+.tuto-card.grande h2{font-size:24px}
+.tuto-card p{margin:0;font-size:14.5px;line-height:1.5;color:#4A4741}
+.tuto-card p b,.tuto-gestos b{color:var(--ink)}
+.tuto-logo{display:flex;justify-content:center;margin:-4px 0 8px}
+.tuto-logo svg{animation:tutoPin 1.6s var(--e-out) .2s both}
+@keyframes tutoPin{0%{transform:translateY(-14px);opacity:0}45%{transform:none;opacity:1}62%{transform:translateY(-5px)}80%{transform:none}}
+.tuto-card.grande h2,.tuto-card.grande > p{text-align:center}
+.tuto-nota{margin-top:12px!important;background:#FFF6DA;border-radius:14px;padding:10px 12px;font-size:13.5px!important}
+.tuto-gestos{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:10px}
+.tuto-gestos li{display:flex;align-items:center;gap:12px;font-size:14px;line-height:1.4;color:#4A4741}
+.tuto-ic{flex:none;width:38px;height:38px;border-radius:12px;background:#FFF2C6;display:grid;place-items:center}
+.tuto-ic svg{width:22px;height:22px;fill:none;stroke:#2B2100;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.tuto-pie{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:18px}
+.tuto-card.grande .tuto-pie{justify-content:center}
+.tuto-btns{display:flex;align-items:center;gap:6px}
+.tuto-pie button{font:700 14px Inter,var(--font);border:0;border-radius:999px;cursor:pointer;padding:10px 16px;-webkit-tap-highlight-color:transparent}
+.tuto-pri{background:#FFC72C;color:#2B2100;box-shadow:0 6px 16px rgba(220,160,0,.35)}
+.tuto-sec{background:#F1EFE9;color:var(--ink)}
+.tuto-saltar{background:none;color:#77746C;padding:10px 8px!important}
+.tuto-pie button:active{transform:scale(.96)}
+.tuto-puntos{display:flex;gap:5px}
+.tuto-puntos i{width:6px;height:6px;border-radius:50%;background:#DDD9CF;transition:width .25s,background-color .25s}
+.tuto-puntos i.on{width:16px;border-radius:3px;background:#FFC72C}
+@media (max-width:380px){.tuto-btns .tuto-saltar{display:none}}
+@media (prefers-reduced-motion:reduce){.tuto,.tuto-s,.tuto-anillo,.tuto-card{transition:none}.tuto-card.entra,.tuto-logo svg{animation:none}}

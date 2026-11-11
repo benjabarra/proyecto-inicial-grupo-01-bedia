@@ -2,7 +2,8 @@
 # cada clase prueba una parte de la app
 import shutil
 import tempfile
-from io import BytesIO
+from pathlib import Path
+from io import BytesIO, StringIO
 
 from datetime import timedelta
 
@@ -14,7 +15,7 @@ from django.urls import reverse
 from django.utils import timezone
 from PIL import Image
 
-from .models import Categoria, Edificio, Perfil, Reporte, Sala, iniciales
+from .models import Categoria, Edificio, Perfil, Reporte, Sala, Seguimiento, iniciales
 
 # carpeta temporal para las fotos de prueba (se borra al terminar)
 MEDIA_TMP = tempfile.mkdtemp()
@@ -548,3 +549,134 @@ class TokenDeSeguridadTests(TestCase):
     def test_base_actualiza_el_token_al_enviar(self):
         resp = self.cliente.get(reverse("reportes:perfil"))
         self.assertContains(resp, 'input[name="csrfmiddlewaretoken"]')
+
+
+class EncargadoTests(TestCase):
+    """paso 7: el encargado cambia el estado con un comentario, queda en el historial y se avisa por correo"""
+
+    def setUp(self):
+        User = get_user_model()
+        self.ana = User.objects.create_user("ana@usm.cl", "ana@usm.cl", "clave-segura-123", first_name="Ana")
+        self.enc = User.objects.create_user("enc@usm.cl", "enc@usm.cl", "clave-segura-123", first_name="Andrés")
+        Perfil.objects.create(usuario=self.enc, rol=Perfil.Rol.ENCARGADO)
+        self.reporte = Reporte.objects.create(
+            titulo="Luz", descripcion="d", categoria=Categoria.objects.get(nombre="Iluminación"),
+            sala=Sala.objects.get(nombre="A010"), ubicacion="A010", autor=self.ana,
+        )
+        self.url = reverse("reportes:cambiar_estado", args=[self.reporte.pk])
+
+    def test_estudiante_no_puede_cambiar_estado(self):
+        self.client.login(username="ana@usm.cl", password="clave-segura-123")
+        resp = self.client.post(self.url, {"estado": "resuelto", "comentario": "listo"})
+        self.assertEqual(resp.status_code, 403)
+        self.reporte.refresh_from_db()
+        self.assertEqual(self.reporte.estado, Reporte.Estado.PENDIENTE)
+        # y no ve el formulario
+        self.assertNotContains(self.client.get(reverse("reportes:detalle", args=[self.reporte.pk])), "Actualizar estado")
+
+    def test_encargado_cambia_estado_y_queda_historial(self):
+        self.client.login(username="enc@usm.cl", password="clave-segura-123")
+        self.assertContains(self.client.get(reverse("reportes:detalle", args=[self.reporte.pk])), "Actualizar estado")
+        resp = self.client.post(self.url, {"estado": "en_proceso", "comentario": "Pedimos la ampolleta"})
+        self.assertRedirects(resp, reverse("reportes:detalle", args=[self.reporte.pk]))
+        self.reporte.refresh_from_db()
+        self.assertEqual(self.reporte.estado, Reporte.Estado.EN_PROCESO)
+        s = self.reporte.seguimientos.get()
+        self.assertEqual((s.estado_anterior, s.estado_nuevo, s.autor), ("pendiente", "en_proceso", self.enc))
+        # quien lo reporto recibe un correo y ve el comentario en el reporte
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].to, ["ana@usm.cl"])
+        self.assertIn("Pedimos la ampolleta", mail.outbox[0].body)
+        self.client.login(username="ana@usm.cl", password="clave-segura-123")
+        self.assertContains(self.client.get(reverse("reportes:detalle", args=[self.reporte.pk])), "Pedimos la ampolleta")
+
+    def test_comentario_obligatorio(self):
+        self.client.login(username="enc@usm.cl", password="clave-segura-123")
+        resp = self.client.post(self.url, {"estado": "resuelto", "comentario": "   "})
+        self.assertEqual(resp.status_code, 400)
+        self.assertContains(resp, "Escribe qué se hizo", status_code=400)
+        self.assertFalse(self.reporte.seguimientos.exists())
+
+    def test_cambio_desde_el_admin_queda_en_historial(self):
+        admin_ = get_user_model().objects.create_superuser("jefe", "jefe@usm.cl", "clave-segura-123")
+        self.client.force_login(admin_)
+        url = reverse("admin:mi_app_reporte_change", args=[self.reporte.pk])
+        datos = {
+            "titulo": "Luz", "descripcion": "d", "categoria": self.reporte.categoria_id, "sala": self.reporte.sala_id,
+            "ubicacion": "A010", "estado": "resuelto", "autor": self.ana.pk, "piso": "", "mapa_x": "", "mapa_y": "",
+            "latitud": "", "longitud": "",
+            "seguimientos-TOTAL_FORMS": "0", "seguimientos-INITIAL_FORMS": "0",
+        }
+        self.client.post(url, datos)
+        self.assertEqual(self.reporte.seguimientos.get().estado_nuevo, "resuelto")
+
+
+class DatosDemoTests(TestCase):
+    """comando para llenar el mapa con reportes de ejemplo"""
+
+    def test_crea_y_borra_datos_de_ejemplo(self):
+        from django.core.management import call_command
+        call_command("datos_demo", stdout=StringIO())
+        self.assertEqual(Reporte.objects.filter(autor__username__endswith="@usm.cl").count(), 18)
+        self.assertTrue(Seguimiento.objects.exists())
+        # todos con lugar en el mapa
+        self.assertTrue(all(r.punto_mapa() for r in Reporte.objects.all()))
+        call_command("datos_demo", stdout=StringIO())  # la segunda vez no duplica
+        self.assertEqual(Reporte.objects.count(), 18)
+        call_command("datos_demo", "--borrar", stdout=StringIO())
+        self.assertEqual(Reporte.objects.count(), 0)
+
+
+class TutorialTests(TestCase):
+    """paso 8: tutorial del mapa la primera vez y se puede ver de nuevo desde mi perfil"""
+
+    def test_mapa_trae_el_tutorial(self):
+        carpeta = Path(__file__).resolve().parent / "static" / "mi_app" / "mapa"
+        js = (carpeta / "mapa.js").read_text(encoding="utf-8")
+        self.assertIn("upin_tutorial_v1", js)
+        self.assertIn("Gestos en tu", js)
+        self.assertIn(".tuto-card", (carpeta / "mapa.css").read_text(encoding="utf-8"))
+
+    def test_perfil_enlaza_al_tutorial(self):
+        get_user_model().objects.create_user("eva@usm.cl", "eva@usm.cl", "clave-segura-123")
+        self.client.login(username="eva@usm.cl", password="clave-segura-123")
+        self.assertContains(self.client.get(reverse("reportes:perfil")), "?tutorial=1")
+
+
+class ArreglosFelipeTests(TestCase):
+    """contraseñas con reglas claras, correo que no se cae y ubicacion sin preguntar siempre"""
+
+    datos = {"nombre": "Ana", "apellido": "Pérez", "correo": "ana.perez@usm.cl"}
+
+    def registrar(self, clave, repetir=None):
+        return self.client.post(reverse("registro"), {**self.datos, "password1": clave, "password2": repetir or clave})
+
+    def test_contraseña_sin_numeros(self):
+        resp = self.registrar("solamenteletras")
+        self.assertContains(resp, "al menos una letra y un número")
+
+    def test_contraseña_sin_letras(self):
+        resp = self.registrar("84736251")
+        self.assertContains(resp, "al menos una letra y un número")
+
+    def test_contraseña_corta(self):
+        resp = self.registrar("ab12")
+        self.assertContains(resp, "8 caracteres")
+
+    def test_contraseña_buena(self):
+        resp = self.registrar("campus-2026-k")
+        self.assertRedirects(resp, reverse("verificar"))
+
+    def test_se_muestran_las_reglas(self):
+        self.assertContains(self.client.get(reverse("registro")), "Mínimo 8 caracteres")
+
+    def test_si_falla_el_correo_no_se_cae(self):
+        from unittest import mock
+        with mock.patch("mi_app.views.send_mail", side_effect=OSError("sin internet")):
+            resp = self.registrar("campus-2026-k")
+        self.assertRedirects(resp, reverse("verificar"))
+
+    def test_ubicacion_solo_con_permiso_previo(self):
+        js = (Path(__file__).resolve().parent / "static" / "mi_app" / "mapa" / "mapa.js").read_text(encoding="utf-8")
+        self.assertIn("permissions.query({name:'geolocation'})", js)
+        self.assertNotIn("try{if('geolocation' in navigator&&window.isSecureContext)gpsBtn.click()}", js)
