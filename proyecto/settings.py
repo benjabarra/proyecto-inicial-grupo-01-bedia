@@ -30,6 +30,13 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 
+# dentro de github codespaces la pagina se abre por una direccion *.app.github.dev:
+# en modo desarrollo se aceptan solas, sin tener que escribir los export cada vez
+if DEBUG and os.environ.get("CODESPACES") == "true":
+    ALLOWED_HOSTS += ["*"]
+    CSRF_TRUSTED_ORIGINS += ["https://*.app.github.dev", "https://localhost:8000", "http://localhost:8000"]
+
+
 # apps instaladas: las de django y la nuestra (mi_app)
 
 INSTALLED_APPS = [

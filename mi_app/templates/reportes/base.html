@@ -13,6 +13,8 @@
   <link rel="apple-touch-icon" href="{% static 'mi_app/marca/apple-touch-icon.png' %}">
   <link rel="stylesheet" href="{% static 'mi_app/css/upin.css' %}">
   <style>:root { --accent: {{ tema.color_primario }}; }</style>
+  {# precarga la pagina siguiente al tocar un enlace, para que el cambio sea casi instantaneo #}
+  <script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/admin/*"}},{"not":{"href_matches":"/cuentas/salir/*"}}]},"eagerness":"moderate"}]}</script>
 </head>
 <body>
   {# cabecera: logo y menu. en celular el menu se reemplaza por la barra inferior #}

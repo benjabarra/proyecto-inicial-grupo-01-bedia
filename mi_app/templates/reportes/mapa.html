@@ -11,6 +11,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="{% static 'mi_app/mapa/mapa.css' %}">
+{# precarga la pagina siguiente al tocar un enlace (perfil, reportes) para que el cambio sea casi instantaneo #}
+<script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/admin/*"}},{"not":{"href_matches":"/cuentas/salir/*"}}]},"eagerness":"moderate"}]}</script>
 </head>
 <body>
 {# mapa u-pin: plano base de Isidora Morales (mapa USM) y OpenStreetMap, corregido por el equipo #}

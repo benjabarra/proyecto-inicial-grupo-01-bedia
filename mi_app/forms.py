@@ -66,6 +66,9 @@ class ReporteForm(forms.ModelForm):
     def clean(self):
         datos = super().clean()
         sala, detalle = datos.get("sala"), (datos.get("ubicacion") or "").strip()
+        # limpia separadores vacios (ej: "pasillo ·  · piso 3" -> "pasillo · piso 3")
+        detalle = " · ".join(p.strip() for p in detalle.split("·") if p.strip())
+        datos["ubicacion"] = detalle
         if not sala and not detalle:
             self.add_error("ubicacion", "Elige una sala o escribe dónde está el problema.")
         elif sala:
