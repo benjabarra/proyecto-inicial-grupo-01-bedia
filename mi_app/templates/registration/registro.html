@@ -17,4 +17,29 @@
   </form>
   <p class="aparte">¿Ya tienes cuenta? <a href="{% url 'login' %}">Inicia sesión</a></p>
 </div>
+  <script>
+    // lista que se va marcando mientras escribes la contraseña
+    (function () {
+      var p1 = document.querySelector('input[name="password1"]'), p2 = document.querySelector('input[name="password2"]');
+      if (!p1) return;
+      var ayuda = p1.parentNode.querySelector(".ayuda");
+      var lista = document.createElement("ul");
+      lista.className = "reglas-clave";
+      lista.setAttribute("aria-live", "polite");
+      var reglas = [
+        ["Mínimo 8 caracteres", function (v) { return v.length >= 8; }],
+        ["Al menos una letra", function (v) { return /[a-záéíóúñü]/i.test(v); }],
+        ["Al menos un número", function (v) { return /\d/.test(v); }],
+        ["Las dos contraseñas coinciden", function (v) { return v.length > 0 && p2 && v === p2.value; }]
+      ];
+      reglas.forEach(function (r) { var li = document.createElement("li"); li.textContent = r[0]; lista.appendChild(li); });
+      if (ayuda) ayuda.replaceWith(lista); else p1.after(lista);
+      function revisar() {
+        reglas.forEach(function (r, i) { lista.children[i].classList.toggle("ok", r[1](p1.value)); });
+      }
+      p1.addEventListener("input", revisar);
+      if (p2) p2.addEventListener("input", revisar);
+      revisar();
+    })();
+  </script>
 {% endblock %}

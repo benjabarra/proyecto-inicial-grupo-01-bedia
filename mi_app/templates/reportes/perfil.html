@@ -46,6 +46,9 @@
     </form>
   </section>
 
+  {# vuelve a mostrar el tutorial del mapa (explica cada boton y los gestos) #}
+  <a class="btn btn-borde btn-block" href="{% url 'reportes:mapa' %}?tutorial=1" style="margin-bottom: 10px;">Ver cómo usar el mapa</a>
+
   <form method="post" action="{% url 'logout' %}">
     {% csrf_token %}
     <button type="submit" class="btn btn-borde btn-block">Cerrar sesión</button>

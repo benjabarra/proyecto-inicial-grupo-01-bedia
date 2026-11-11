@@ -7,6 +7,16 @@ from pathlib import Path
 # carpeta principal del proyecto
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# si existe un archivo .env junto a manage.py, se leen sus lineas CLAVE=valor (ej: el correo de u-pin).
+# ese archivo no se sube a github (esta en .gitignore). hay un ejemplo en .env.ejemplo
+_env = BASE_DIR / ".env"
+if _env.exists():
+    for _linea in _env.read_text(encoding="utf-8").splitlines():
+        _linea = _linea.strip()
+        if _linea and not _linea.startswith("#") and "=" in _linea:
+            _clave, _valor = _linea.split("=", 1)
+            os.environ.setdefault(_clave.strip(), _valor.strip().strip('"').strip("'"))
+
 
 # ajustes de desarrollo (no usar asi en produccion)
 
@@ -102,7 +112,13 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
+        # minimo 8 caracteres
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {'min_length': 8},
+    },
+    {
+        # al menos una letra y un numero (regla propia de u-pin)
+        'NAME': 'mi_app.validadores.LetrasYNumerosValidator',
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
@@ -131,6 +147,7 @@ STATIC_URL = 'static/'
 
 # sin configurar, los correos (codigo de verificacion) salen en la terminal.
 # para mandarlos de verdad: DJANGO_EMAIL_HOST, DJANGO_EMAIL_USER y DJANGO_EMAIL_PASSWORD
+# (como secretos de codespaces o en el archivo .env, ver .env.ejemplo)
 EMAIL_HOST = os.environ.get("DJANGO_EMAIL_HOST", "")
 if EMAIL_HOST:
     EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"

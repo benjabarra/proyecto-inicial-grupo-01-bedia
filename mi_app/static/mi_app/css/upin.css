@@ -430,3 +430,42 @@ body:has(.barra-inferior) { padding-bottom: calc(80px + env(safe-area-inset-bott
 ::view-transition-group(pastilla) { animation-duration: .34s; animation-timing-function: cubic-bezier(.22,1,.36,1); }
 ::view-transition-old(barra), ::view-transition-new(barra) { animation-duration: .18s; }
 @media (prefers-reduced-motion: reduce) { ::view-transition-group(pastilla) { animation: none; } }
+
+/* paso 7: historial del reporte (linea de tiempo) y formulario del encargado */
+.historial { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line); }
+.historial h2, .cambiar-estado h2 { font-size: 1rem; margin: 0 0 14px; }
+.historial ol { list-style: none; margin: 0; padding: 0; }
+.historial li { position: relative; padding: 0 0 16px 24px; }
+.historial li::before { content: ""; position: absolute; left: 5px; top: 14px; bottom: -2px; width: 2px; background: var(--line); }
+.historial li:last-child { padding-bottom: 0; }
+.historial li:last-child::before { display: none; }
+.historial .punto { position: absolute; left: 0; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: var(--c, #b9b6ad); box-shadow: 0 0 0 3px #fff; }
+.historial p { margin: 0; }
+.historial .h-cab { font-size: 0.92rem; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.historial .h-texto { margin: 6px 0 2px; font-size: 0.92rem; background: #F4F2EC; border-radius: 12px; padding: 10px 12px; }
+.historial .h-fecha { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+.historial .h-vacio { font-size: 0.86rem; margin-top: 12px; }
+.cambiar-estado { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line); display: grid; gap: 10px; }
+.cambiar-estado > label { font-size: 0.86rem; font-weight: 600; }
+.opciones-estado { display: flex; flex-wrap: wrap; gap: 8px; }
+.opcion-estado { position: relative; cursor: pointer; }
+.opcion-estado input { position: absolute; opacity: 0; pointer-events: none; }
+.opcion-estado span {
+  display: inline-block; font-size: 0.86rem; font-weight: 600; padding: 0.45em 1em; border-radius: 980px;
+  border: 1.5px solid var(--line); color: var(--text); background: #fff; transition: background-color .2s, border-color .2s, color .2s;
+}
+.opcion-estado input:checked + span { color: var(--c); border-color: var(--c); background: color-mix(in srgb, var(--c) 14%, #fff); }
+.opcion-estado input:focus-visible + span { outline: 2px solid var(--ink, #1B1A17); outline-offset: 2px; }
+.cambiar-estado textarea {
+  width: 100%; box-sizing: border-box; font: inherit; font-size: 0.95rem; color: var(--text); background: #fff;
+  border: 1.5px solid var(--line); border-radius: 14px; padding: 10px 12px; resize: vertical; min-height: 84px;
+}
+.cambiar-estado textarea:focus { outline: none; border-color: var(--ink, #1B1A17); }
+.cambiar-estado .errorlist { margin: 0; }
+
+/* reglas de la contraseña al crear cuenta: se marcan con un check mientras escribes */
+.reglas-clave { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 4px; font-size: 0.84rem; color: var(--muted); }
+.reglas-clave li { display: flex; align-items: center; gap: 8px; transition: color .2s; }
+.reglas-clave li::before { content: ""; width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid #CFCCC3; box-sizing: border-box; flex: none; transition: background-color .2s, border-color .2s; }
+.reglas-clave li.ok { color: #1F7A3A; }
+.reglas-clave li.ok::before { background: #2F9E55 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.2l2.3 2.3 4.7-5' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% no-repeat; border-color: #2F9E55; }

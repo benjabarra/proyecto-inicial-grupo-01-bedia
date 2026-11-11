@@ -890,7 +890,7 @@ lb.onclick=()=>{
   if(gpsW===null)gpsBtn.click();fly=true;lp.classList.add('wait');say('Buscando tu ubicación…');
   setTimeout(()=>{if(fly&&!me){fly=false;lp.classList.remove('wait');const t=gpsInfo.textContent;say(t&&!/Buscando/.test(t)?t:'No se pudo obtener tu ubicación.')}},15000)};
 // pedir la ubicación al abrir (como google maps); si no hay permiso, no molesta
-try{if('geolocation' in navigator&&window.isSecureContext)gpsBtn.click()}catch(e){}
+try{if('geolocation' in navigator&&window.isSecureContext){const ok=()=>{if(gpsW===null)gpsBtn.click()};if(navigator.permissions&&navigator.permissions.query)navigator.permissions.query({name:'geolocation'}).then(p=>{if(p.state==='granted')ok()}).catch(()=>{});}}catch(e){}
 // al tocar una sala: mover la cámara para verla completa sobre la hoja de abajo
 
 // mueve la camara para ver la sala completa encima de la hoja
@@ -1117,3 +1117,113 @@ burbujas()})();
 (function(){if(!HTMLScriptElement.supports||!HTMLScriptElement.supports('speculationrules'))return;
 const s=document.createElement('script');s.type='speculationrules';
 s.textContent=JSON.stringify({prerender:[{urls:[UPIN.urlPerfil],eagerness:'immediate'}],prefetch:[{urls:[UPIN.urlPerfil,UPIN.urlCrear]}]});document.head.appendChild(s)})();
+// tutorial de bienvenida: la primera vez que se abre el mapa explica cada boton y los gestos del dispositivo.
+// se puede ver de nuevo desde mi perfil (?tutorial=1)
+(function(){
+const CLAVE='upin_tutorial_v1';
+const params=new URLSearchParams(location.search);
+function visto(){try{return localStorage.getItem(CLAVE)==='1'}catch(e){return false}}
+function marcar(){try{localStorage.setItem(CLAVE,'1')}catch(e){}}
+const forzar=params.get('tutorial')==='1';
+// si viene a ver un reporte o una sala por enlace, el tutorial espera a la proxima vez
+if(!forzar&&(visto()||params.get('reporte')||params.get('sala')))return;
+
+// que dispositivo es: tactil (celular o tablet) o computador con mouse/trackpad
+const tactil=matchMedia('(pointer: coarse)').matches&&!matchMedia('(pointer: fine)').matches;
+const celular=tactil&&Math.min(screen.width,screen.height)<600;
+const equipo=tactil?(celular?'celular':'tablet'):'computador';
+
+const ico={
+  mover:'<path d="M12 3v18M3 12h18M12 3l-3 3M12 3l3 3M12 21l-3-3M12 21l3-3M3 12l3-3M3 12l3 3M21 12l-3-3M21 12l-3 3"/>',
+  zoom:'<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21M10.5 7.5v6M7.5 10.5h6"/>',
+  girar:'<path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/>',
+  inclinar:'<path d="M4 17l8-4 8 4M4 11l8-4 8 4"/>',
+  doble:'<circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="7.5" stroke-dasharray="3 3"/>',
+  botones:'<rect x="4" y="4" width="16" height="16" rx="4"/><path d="M9 12h6M12 9v6"/>'
+};
+const gestos=tactil?[
+  ['mover','<b>Un dedo:</b> arrastra para moverte por el campus.'],
+  ['zoom','<b>Pellizca</b> con dos dedos para acercar o alejar.'],
+  ['girar','<b>Gira dos dedos</b> para rotar el mapa.'],
+  ['inclinar','<b>Desliza dos dedos</b> hacia arriba o abajo para inclinar la vista.'],
+  ['doble','<b>Doble toque</b> para acercarte a un punto.']
+]:[
+  ['mover','<b>Arrastra</b> con el clic izquierdo para moverte.'],
+  ['zoom','<b>Rueda del mouse</b> (o pellizco en el trackpad) para acercar o alejar.'],
+  ['girar','<b>Clic derecho + arrastrar</b> (o Shift + arrastrar) para girar e inclinar.'],
+  ['doble','<b>Doble clic</b> para acercarte a un punto.'],
+  ['botones','También tienes los botones <b>+ −</b> y <b>⟲ ⟳</b> de la esquina.']
+];
+const vis=el=>{if(!el)return false;const r=el.getBoundingClientRect();const s=getComputedStyle(el);return r.width>0&&r.height>0&&s.visibility!=='hidden'&&s.display!=='none'};
+const caja=sels=>{let r=null;sels.map(s=>document.querySelector(s)).filter(vis).forEach(el=>{const b=el.getBoundingClientRect();r=r?{left:Math.min(r.left,b.left),top:Math.min(r.top,b.top),right:Math.max(r.right,b.right),bottom:Math.max(r.bottom,b.bottom)}:{left:b.left,top:b.top,right:b.right,bottom:b.bottom}});return r};
+const logo='<svg viewBox="-4 -14 72 78" width="64" height="70" aria-hidden="true"><path fill="#FFC72C" d="M32 4C19.3 4 9 14.3 9 27c0 15.6 23 33 23 33s23-17.4 23-33C55 14.3 44.7 4 32 4z"/><circle cx="24.5" cy="26" r="3.2" fill="#2B2100"/><circle cx="39.5" cy="26" r="3.2" fill="#2B2100"/><path fill="none" stroke="#2B2100" stroke-width="4.6" stroke-linecap="round" d="M23.5 33.5v1a8 8 0 0 0 17 0v-1"/><g transform="translate(32 3) scale(.72) rotate(-16) translate(-32 -10)"><path fill="#1D1D1F" d="M20 11v8c0 4 24 4 24 0v-8z"/><path fill="#1D1D1F" stroke="#fff" stroke-width="1.6" d="M32 -1L59 9 32 19 5 9z"/></g></svg>';
+const toca=tactil?'Toca':'Haz clic en';
+const PASOS=[
+  {inicio:true,t:'Hola, esto es U-Pin',x:'Encuentra cualquier sala del campus, mira qué problemas hay y repórtalos en segundos. Te mostramos cómo usarlo en un minuto.',
+   nota:'Estás en un <b>'+equipo+'</b>: al final te mostramos los gestos para '+(tactil?'tu pantalla táctil':'el mouse y el trackpad')+'.'},
+  {t:'Edificios y salas',x:toca+' un edificio para ver sus salas y '+(tactil?'toca':'haz clic en')+' una sala para ver qué es y reportar algo ahí. Los pines amarillos dicen cuántos reportes hay en cada edificio.'},
+  {s:['#floors','#fltog'],t:'Pisos',x:(document.getElementById('floors').classList.contains('fcol')&&tactil?toca+' aquí para abrir los pisos. ':'Cambia de piso aquí. ')+'La <b>burbujita negra</b> en un piso dice cuántos reportes hay en ese piso. <b>Ext</b> es el exterior del campus.'},
+  {s:['.search'],t:'Buscar',x:'Escribe el nombre de una sala, oficina o lugar (por ejemplo <b>K303</b> o <b>Biblioteca</b>) y el mapa te lleva ahí.'},
+  {s:['.mode'],t:'Vista 2D o 2.5D',x:'Cambia entre el plano visto desde arriba (2D) y los edificios en relieve (2.5D).'},
+  {s:['#fab'],t:'Reportar',x:toca+' <b>Reportar</b> y después '+(tactil?'toca':'haz clic en')+' el lugar exacto del problema en el mapa. También puedes reportar desde cualquier sala.'},
+  {s:['#tabbar'],t:'Mapa, reportes y perfil',x:'En <b>Reportes</b> ves los problemas del campus y los filtras por tipo. En <b>Mi perfil</b> están tus reportes y tu cuenta.'},
+  {fin:true,t:'Gestos en tu '+equipo,x:'Así te mueves por el mapa:'}
+].filter(p=>!p.s||caja(p.s));
+
+let i=0,raiz,card,anillo,sombras;
+function armar(){
+  raiz=document.createElement('div');raiz.className='tuto';raiz.setAttribute('role','dialog');raiz.setAttribute('aria-modal','true');raiz.setAttribute('aria-labelledby','tutoT');
+  raiz.innerHTML='<div class="tuto-bloq"></div><div class="tuto-s"></div><div class="tuto-s"></div><div class="tuto-s"></div><div class="tuto-s"></div><div class="tuto-anillo"></div><div class="tuto-card" tabindex="-1"></div>';
+  document.body.appendChild(raiz);
+  sombras=[...raiz.querySelectorAll('.tuto-s')];anillo=raiz.querySelector('.tuto-anillo');card=raiz.querySelector('.tuto-card');
+  raiz.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a;if(a==='sig')ir(i+1);else if(a==='atras')ir(i-1);else cerrar()});
+  addEventListener('keydown',tecla,true);addEventListener('resize',ubicar);
+  requestAnimationFrame(()=>raiz.classList.add('on'));
+}
+function tecla(e){if(!raiz)return;const k={Escape:cerrar,ArrowRight:()=>ir(i+1),ArrowLeft:()=>ir(i-1)}[e.key];if(k){e.preventDefault();e.stopImmediatePropagation();k()}}
+function ir(n){if(n<0)return;if(n>=PASOS.length){cerrar();return}i=n;pintar()}
+function pintar(){
+  const p=PASOS[i],ult=i===PASOS.length-1;
+  let h='';
+  if(p.inicio)h+='<div class="tuto-logo">'+logo+'</div>';
+  h+='<h2 id="tutoT">'+p.t+'</h2><p>'+p.x+'</p>';
+  if(p.nota)h+='<p class="tuto-nota">'+p.nota+'</p>';
+  if(p.fin)h+='<ul class="tuto-gestos">'+gestos.map(([k,t])=>'<li><span class="tuto-ic"><svg viewBox="0 0 24 24" aria-hidden="true">'+ico[k]+'</svg></span><span>'+t+'</span></li>').join('')+'</ul>';
+  h+='<div class="tuto-pie">';
+  if(p.inicio)h+='<button type="button" class="tuto-saltar" data-a="saltar">Saltar</button><button type="button" class="tuto-pri" data-a="sig">Ver cómo funciona</button>';
+  else{
+    h+='<span class="tuto-puntos" aria-label="Paso '+i+' de '+(PASOS.length-1)+'">'+PASOS.slice(1).map((_,k)=>'<i'+(k+1===i?' class="on"':'')+'></i>').join('')+'</span>';
+    h+='<span class="tuto-btns">'+(ult?'':'<button type="button" class="tuto-saltar" data-a="saltar">Saltar</button>')+'<button type="button" class="tuto-sec" data-a="atras" aria-label="Paso anterior">Atrás</button><button type="button" class="tuto-pri" data-a="sig">'+(ult?'Ir al mapa':'Siguiente')+'</button></span>';
+  }
+  h+='</div>';
+  card.innerHTML=h;card.classList.toggle('grande',!!(p.inicio||p.fin));
+  card.classList.remove('entra');void card.offsetWidth;card.classList.add('entra');
+  ubicar();
+  card.focus({preventScroll:true});
+}
+function ubicar(){
+  if(!raiz)return;
+  const p=PASOS[i],W=innerWidth,H=innerHeight,m=8;
+  let r=p.s?caja(p.s):null;
+  if(r)r={left:r.left-m,top:r.top-m,right:r.right+m,bottom:r.bottom+m};
+  // cuatro sombras alrededor del hueco (sin hueco: una sola sombra cubre todo)
+  const hx=r?r.left:W/2,hy=r?r.top:H/2,hw=r?r.right-r.left:0,hh=r?r.bottom-r.top:0;
+  const pon=(el,x,y,w,h)=>{el.style.left=x+'px';el.style.top=y+'px';el.style.width=Math.max(0,w)+'px';el.style.height=Math.max(0,h)+'px'};
+  pon(sombras[0],0,0,W,hy);pon(sombras[1],0,hy+hh,W,H-hy-hh);pon(sombras[2],0,hy,hx,hh);pon(sombras[3],hx+hw,hy,W-hx-hw,hh);
+  if(!r){pon(sombras[0],0,0,W,H);[1,2,3].forEach(k=>pon(sombras[k],0,0,0,0))}
+  anillo.style.opacity=r?1:0;if(r)pon(anillo,hx,hy,hw,hh);
+  // la tarjeta va al lado del hueco donde quepa (abajo, arriba, izquierda, derecha) o al centro
+  const cw=card.offsetWidth,ch=card.offsetHeight,g=14,b=16;
+  const clamp=(v,a,z)=>Math.max(a,Math.min(z,v));
+  let x=(W-cw)/2,y=(H-ch)/2;
+  if(r){const cx=(r.left+r.right)/2,cy=(r.top+r.bottom)/2;
+    const op=[[cx-cw/2,r.bottom+g,r.bottom+g+ch<=H-b],[cx-cw/2,r.top-g-ch,r.top-g-ch>=b],[r.left-g-cw,cy-ch/2,r.left-g-cw>=b],[r.right+g,cy-ch/2,r.right+g+cw<=W-b]];
+    const o=op.find(o=>o[2]);if(o){x=o[0];y=o[1]}}
+  card.style.left=clamp(x,b,W-cw-b)+'px';card.style.top=clamp(y,b,H-ch-b)+'px';
+}
+function cerrar(){marcar();if(!raiz)return;removeEventListener('keydown',tecla,true);removeEventListener('resize',ubicar);
+  const r=raiz;raiz=null;r.classList.remove('on');setTimeout(()=>r.remove(),320);
+  if(forzar)history.replaceState(null,'',location.pathname)}
+function empezar(){setTimeout(()=>{armar();pintar()},forzar?250:700)}
+if(document.prerendering)document.addEventListener('prerenderingchange',empezar,{once:true});else empezar();
+})();

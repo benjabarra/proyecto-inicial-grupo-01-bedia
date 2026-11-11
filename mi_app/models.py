@@ -129,6 +129,28 @@ class Reporte(models.Model):
         return None
 
 
+# historial de un reporte: cada vez que un encargado cambia el estado o deja un comentario
+class Seguimiento(models.Model):
+    reporte = models.ForeignKey(Reporte, on_delete=models.CASCADE, related_name="seguimientos")
+    autor = models.ForeignKey(  # encargado que hizo el cambio (si se borra la cuenta queda vacio)
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True
+    )
+    estado_anterior = models.CharField(max_length=20, choices=Reporte.Estado.choices)
+    estado_nuevo = models.CharField(max_length=20, choices=Reporte.Estado.choices)
+    comentario = models.TextField(blank=True)  # lo que se hizo o se va a hacer
+    creado = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["creado"]
+
+    def __str__(self):
+        return f"{self.reporte.titulo}: {self.get_estado_anterior_display()} -> {self.get_estado_nuevo_display()}"
+
+    def cambio_estado(self):
+        """true si el estado cambio (si no, solo se dejo un comentario)"""
+        return self.estado_anterior != self.estado_nuevo
+
+
 # cada "a mi tambien me pasa". una persona puede apoyar un reporte una sola vez
 class Apoyo(models.Model):
     """'a mi tambien me pasa': una persona apoya un reporte una sola vez"""
@@ -282,6 +304,11 @@ def iniciales(usuario):
     if len(partes) >= 2:
         return (partes[0][0] + partes[1][0]).upper()
     return (partes[0][:2] if partes else "?").upper()
+
+
+# true si la persona puede cambiar el estado de los reportes (encargado o admin)
+def puede_gestionar(usuario):
+    return rol_de(usuario) in (Perfil.Rol.ENCARGADO, Perfil.Rol.ADMIN)
 
 
 # devuelve el rol del usuario; el superusuario siempre es admin

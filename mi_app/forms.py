@@ -94,7 +94,8 @@ class RegistroForm(forms.Form):
     correo = forms.EmailField(label="Correo institucional")
     password1 = forms.CharField(
         label="Contraseña",
-        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password", "minlength": 8}),
+        help_text="Mínimo 8 caracteres, con al menos una letra y un número.",
     )
     password2 = forms.CharField(
         label="Repetir contraseña",
@@ -118,14 +119,18 @@ class RegistroForm(forms.Form):
     def clean(self):
         datos = super().clean()
         p1, p2 = datos.get("password1"), datos.get("password2")
-        if p1 and p2:
-            if p1 != p2:
-                self.add_error("password2", "Las contraseñas no coinciden.")
-            else:
-                try:
-                    validate_password(p1)
-                except ValidationError as error:
-                    self.add_error("password1", error)
+        if p1:
+            # revisa largo, letras y numeros, que no sea comun y que no se parezca al correo o nombre
+            usuario = get_user_model()(
+                username=datos.get("correo") or "", email=datos.get("correo") or "",
+                first_name=datos.get("nombre") or "", last_name=datos.get("apellido") or "",
+            )
+            try:
+                validate_password(p1, usuario)
+            except ValidationError as error:
+                self.add_error("password1", error)
+        if p1 and p2 and p1 != p2:
+            self.add_error("password2", "Las contraseñas no coinciden.")
         return datos
 
 
@@ -152,3 +157,20 @@ class CodigoForm(forms.Form):
             attrs={"inputmode": "numeric", "autocomplete": "one-time-code", "maxlength": 6}
         ),
     )
+
+
+# el encargado cambia el estado de un reporte y explica que se hizo
+class EstadoForm(forms.Form):
+    estado = forms.ChoiceField(label="Estado", choices=Reporte.Estado.choices, widget=forms.RadioSelect)
+    comentario = forms.CharField(
+        label="Comentario",
+        max_length=500,
+        widget=forms.Textarea(attrs={"rows": 3, "placeholder": "Ej: se cambió la ampolleta del pasillo"}),
+        error_messages={"required": "Escribe qué se hizo o qué se va a hacer."},
+    )
+
+    def clean_comentario(self):
+        texto = self.cleaned_data["comentario"].strip()
+        if not texto:
+            raise ValidationError("Escribe qué se hizo o qué se va a hacer.")
+        return texto

@@ -1,4 +1,5 @@
 # vistas de u-pin: cada funcion responde a una direccion de la pagina
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model, login
 import json
@@ -8,14 +9,14 @@ from pathlib import Path
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.db.models import Count, Exists, OuterRef, Q
-from django.http import JsonResponse
+from django.http import HttpResponseForbidden, JsonResponse
 from django.middleware.csrf import get_token
 from django.urls import reverse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
 
-from .forms import CodigoForm, EntrarForm, RegistroForm, ReporteForm
+from .forms import CodigoForm, EntrarForm, EstadoForm, RegistroForm, ReporteForm
 from .models import (
     CLAVE_CATEGORIA,
     Apoyo,
@@ -23,7 +24,9 @@ from .models import (
     Perfil,
     Reporte,
     Sala,
+    Seguimiento,
     Universidad,
+    puede_gestionar,
     rol_de,
     universidad_para_correo,
 )
@@ -75,14 +78,19 @@ def enviar_codigo(usuario):
         defaults={"universidad": universidad_para_correo(usuario.email)},
     )
     codigo = perfil.nuevo_codigo()
-    send_mail(
-        "Tu código de U-Pin",
-        f"Hola {usuario.first_name or ''}.\n\n"
-        f"Tu código para entrar a U-Pin es: {codigo}\n\n"
-        f"Vence en {Perfil.MINUTOS_CODIGO} minutos. Si no fuiste tú, ignora este correo.",
-        None,
-        [usuario.email],
-    )
+    try:
+        send_mail(
+            "Tu código de U-Pin",
+            f"Hola {usuario.first_name or ''}.\n\n"
+            f"Tu código para entrar a U-Pin es: {codigo}\n\n"
+            f"Vence en {Perfil.MINUTOS_CODIGO} minutos. Si no fuiste tú, ignora este correo.",
+            None,
+            [usuario.email],
+        )
+    except Exception as error:  # correo mal configurado o sin internet: la pagina no se cae
+        if settings.DEBUG:
+            # en desarrollo el codigo queda en la terminal para poder seguir probando
+            print(f"\n[u-pin] no se pudo enviar el correo ({error}).\n[u-pin] codigo de {usuario.email}: {codigo}\n")
 
 
 # crear cuenta: solo con correo institucional.
@@ -373,10 +381,14 @@ def crear_reporte(request):
     return render(request, "reportes/crear.html", {"form": form})
 
 
-# pagina de un reporte con sus datos, apoyos y enlace al mapa
+# pagina de un reporte con sus datos, apoyos, historial y enlace al mapa.
+# el encargado ademas ve el formulario para cambiar el estado
 @login_required
-def detalle_reporte(request, pk):
-    reporte = get_object_or_404(Reporte.objects.select_related("sala__edificio"), pk=pk)
+def detalle_reporte(request, pk, form_estado=None):
+    reporte = get_object_or_404(Reporte.objects.select_related("sala__edificio", "autor"), pk=pk)
+    gestiona = puede_gestionar(request.user)
+    if gestiona and form_estado is None:
+        form_estado = EstadoForm(initial={"estado": reporte.estado})
     return render(
         request,
         "reportes/detalle.html",
@@ -385,8 +397,55 @@ def detalle_reporte(request, pk):
             "apoyos": reporte.apoyos.count(),
             "yo_apoyo": reporte.apoyos.filter(usuario=request.user).exists(),
             "en_mapa": reporte.punto_mapa() is not None,
+            "seguimientos": reporte.seguimientos.select_related("autor"),
+            "form_estado": form_estado if gestiona else None,
         },
+        status=400 if form_estado is not None and form_estado.errors else 200,
     )
+
+
+# el encargado cambia el estado de un reporte, deja un comentario y se le avisa por correo a quien lo reporto
+@login_required
+@require_POST
+def cambiar_estado(request, pk):
+    if not puede_gestionar(request.user):
+        return HttpResponseForbidden("Solo un encargado puede cambiar el estado.")
+    reporte = get_object_or_404(Reporte, pk=pk)
+    form = EstadoForm(request.POST)
+    if not form.is_valid():
+        return detalle_reporte(request, pk, form_estado=form)
+    anterior = reporte.estado
+    reporte.estado = form.cleaned_data["estado"]
+    reporte.save(update_fields=["estado", "actualizado"])
+    seguimiento = Seguimiento.objects.create(
+        reporte=reporte,
+        autor=request.user,
+        estado_anterior=anterior,
+        estado_nuevo=reporte.estado,
+        comentario=form.cleaned_data["comentario"],
+    )
+    _avisar_autor(request, seguimiento)
+    messages.success(request, "Guardamos el cambio y le avisamos a quien lo reportó.")
+    return redirect("reportes:detalle", pk=pk)
+
+
+# correo para quien hizo el reporte cuando un encargado lo actualiza (si falla el correo, no se cae la pagina)
+def _avisar_autor(request, seguimiento):
+    reporte = seguimiento.reporte
+    if not reporte.autor.email or reporte.autor == seguimiento.autor:
+        return
+    enlace = request.build_absolute_uri(reverse("reportes:detalle", args=[reporte.pk]))
+    if seguimiento.cambio_estado():
+        asunto = f"Tu reporte ahora está {reporte.get_estado_display().lower()}: {reporte.titulo}"
+    else:
+        asunto = f"Hay novedades en tu reporte: {reporte.titulo}"
+    cuerpo = (
+        f"Hola {reporte.autor.first_name or ''}".rstrip() + ",\n\n"
+        f"Tu reporte \"{reporte.titulo}\" ({reporte.ubicacion}) está {reporte.get_estado_display().lower()}.\n\n"
+        f"Comentario del encargado:\n{seguimiento.comentario}\n\n"
+        f"Míralo aquí: {enlace}\n\nU-Pin"
+    )
+    send_mail(asunto, cuerpo, None, [reporte.autor.email], fail_silently=True)
 
 
 # mi perfil: datos de la cuenta, cambiar campus y ver mis cifras
