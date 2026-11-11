@@ -421,3 +421,9 @@ def perfil(request):
             "campus_activos": Campus.objects.filter(activo=True, universidad__activa=True).select_related("universidad"),
         },
     )
+
+
+# pagina que sale si falla la revision de seguridad (csrf) de un formulario.
+# pasa cuando la pagina quedo vieja: en vez del error en ingles de django, se explica y se ofrece volver a intentar
+def csrf_fallo(request, reason=""):
+    return render(request, "reportes/csrf_fallo.html", status=403)

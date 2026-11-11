@@ -1067,7 +1067,8 @@ const _sb=selectBuilding;selectBuilding=function(n){_sb(n);if(!n||floor==='ext')
 
 /* ===== conexión con la app: reportar, apoyar, perfil y abrir un reporte por enlace ===== */
 (function(){
-const csrf=UPIN.csrf;
+// token de seguridad: se lee de la cookie al momento de apoyar (si la pagina quedo vieja, el de la pagina ya no sirve)
+function csrf(){const m=document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/);return m?decodeURIComponent(m[1]):UPIN.csrf}
 function irA(url,params){const u=new URL(url,location.origin);Object.entries(params||{}).forEach(([k,v])=>{if(v!==undefined&&v!==null&&v!=='')u.searchParams.set(k,v)});location.href=u.toString()}
 // "reportar aquí": sala real, lugar exterior o punto marcado con el pin
 document.getElementById('sReport').onclick=()=>{
@@ -1082,9 +1083,10 @@ function pintarApoyo(){if(!selRep)return;ap.textContent=selRep.yo?'Ya lo apoyast
   const a=document.querySelector('#rTags .apo');if(a)a.textContent='▲ '+selRep.ap+(selRep.ap===1?' apoyo':' apoyos')}
 const _or=openReport;openReport=function(r){_or(r);pintarApoyo()};
 ap.onclick=async()=>{if(!selRep)return;ap.disabled=true;
-  try{const res=await fetch(selRep.urlApoyo,{method:'POST',headers:{'X-CSRFToken':csrf,'X-Requested-With':'fetch'},credentials:'same-origin'});
-    if(res.ok){const d=await res.json();selRep.ap=d.apoyos;selRep.yo=d.yo;openReport(selRep);ap.classList.remove('pop');void ap.offsetWidth;ap.classList.add('pop');dirty=true}}
-  catch(e){}ap.disabled=false};
+  try{const res=await fetch(selRep.urlApoyo,{method:'POST',headers:{'X-CSRFToken':csrf(),'X-Requested-With':'fetch'},credentials:'same-origin'});
+    if(!res.ok||!(res.headers.get('content-type')||'').includes('json')){location.reload();return}
+    {const d=await res.json();selRep.ap=d.apoyos;selRep.yo=d.yo;openReport(selRep);ap.classList.remove('pop');void ap.offsetWidth;ap.classList.add('pop');dirty=true}}
+  catch(e){location.reload();return}ap.disabled=false};
 // mi perfil es la página de perfil de la app
 const tp=document.querySelector('#tabbar [data-tab="perf"]');
 if(tp)tp.addEventListener('click',e=>{e.stopImmediatePropagation();tp.classList.add('yendo');location.href=UPIN.urlPerfil},true);

@@ -16,6 +16,14 @@
   {# precarga la pagina siguiente al tocar un enlace, para que el cambio sea casi instantaneo #}
   <script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/admin/*"}},{"not":{"href_matches":"/cuentas/salir/*"}}]},"eagerness":"moderate"}]}</script>
   <script>
+    // antes de enviar un formulario se pone el token de seguridad (csrf) mas nuevo.
+    // si la pagina quedo vieja (boton atras, otra pestaña, iniciaste sesion de nuevo) el token del formulario
+    // ya no sirve y django respondia "prohibido (403)". la cookie siempre tiene el token vigente
+    document.addEventListener("submit", function (e) {
+      var m = document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/);
+      if (!m) return;
+      e.target.querySelectorAll('input[name="csrfmiddlewaretoken"]').forEach(function (i) { i.value = decodeURIComponent(m[1]); });
+    }, true);
     // al ir al mapa no se hace la transicion de pagina (el mapa no la usa y el navegador avisaria un error)
     addEventListener("pageswap", function (e) {
       if (e.viewTransition && e.activation && /\/mapa\//.test(new URL(e.activation.entry.url).pathname)) {
