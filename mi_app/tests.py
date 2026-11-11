@@ -1,3 +1,5 @@
+# pruebas automaticas: se corren con python manage.py test.
+# cada clase prueba una parte de la app
 import shutil
 import tempfile
 from io import BytesIO
@@ -14,9 +16,11 @@ from PIL import Image
 
 from .models import Categoria, Edificio, Perfil, Reporte, Sala, iniciales
 
+# carpeta temporal para las fotos de prueba (se borra al terminar)
 MEDIA_TMP = tempfile.mkdtemp()
 
 
+# crea una imagen falsa para probar la subida de fotos
 def foto_de_prueba(nombre="foto.png", tamano=(3000, 2000)):
     buffer = BytesIO()
     Image.new("RGB", tamano, "red").save(buffer, "PNG")
@@ -34,7 +38,7 @@ class CrearReporteTests(TestCase):
 
     def setUp(self):
         self.usuario = get_user_model().objects.create_user("ana", password="clave-segura-123")
-        self.categoria = Categoria.objects.get(nombre="Baño")
+        self.categoria = Categoria.objects.get(nombre="Baños")
         self.client.login(username="ana", password="clave-segura-123")
         self.datos = {
             "titulo": "Baño sin agua",
@@ -63,11 +67,11 @@ class CrearReporteTests(TestCase):
         self.assertEqual(Reporte.objects.count(), 0)
         self.assertIn("categoria", resp.context["form"].errors)
 
-    def test_sin_foto_no_se_guarda(self):
+    def test_sin_foto_tambien_se_guarda(self):
         resp = self.client.post(reverse("reportes:crear"), self.datos)
-        self.assertEqual(resp.status_code, 200)
-        self.assertEqual(Reporte.objects.count(), 0)
-        self.assertIn("foto", resp.context["form"].errors)
+        reporte = Reporte.objects.get()
+        self.assertRedirects(resp, reverse("reportes:detalle", kwargs={"pk": reporte.pk}))
+        self.assertFalse(reporte.foto)
 
     def test_archivo_que_no_es_imagen(self):
         falso = SimpleUploadedFile("nota.txt", b"hola", content_type="text/plain")
@@ -156,7 +160,7 @@ class CuentasTests(TestCase):
     def test_codigo_correcto_activa_y_entra(self):
         self.registrar()
         resp = self.client.post(reverse("verificar"), {"codigo": self.codigo_enviado()})
-        self.assertRedirects(resp, reverse("reportes:lista"))
+        self.assertRedirects(resp, reverse("reportes:mapa"))
         usuario = get_user_model().objects.get(username="ana.perez@usm.cl")
         self.assertTrue(usuario.is_active)
         self.assertEqual(int(self.client.session["_auth_user_id"]), usuario.pk)
@@ -206,7 +210,7 @@ class CuentasTests(TestCase):
     def test_login_verificado(self):
         get_user_model().objects.create_user("ana.perez@usm.cl", "ana.perez@usm.cl", "Clave-segura-9271")
         resp = self.client.post(reverse("login"), {"correo": "ANA.PEREZ@usm.cl", "password": "Clave-segura-9271"})
-        self.assertRedirects(resp, reverse("reportes:lista"))
+        self.assertRedirects(resp, reverse("reportes:mapa"))
 
     def test_login_contrasena_mala(self):
         get_user_model().objects.create_user("ana.perez@usm.cl", "ana.perez@usm.cl", "Clave-segura-9271")
@@ -217,7 +221,7 @@ class CuentasTests(TestCase):
     def test_admin_entra_con_usuario_sin_correo_usm(self):
         get_user_model().objects.create_superuser("admin", "", "Clave-admin-5531")
         resp = self.client.post(reverse("login"), {"correo": "admin", "password": "Clave-admin-5531"})
-        self.assertRedirects(resp, reverse("reportes:lista"))
+        self.assertRedirects(resp, reverse("reportes:mapa"))
         resp = self.client.get(reverse("reportes:lista"))
         self.assertContains(resp, "Administrar")
 
@@ -227,7 +231,7 @@ class CuentasTests(TestCase):
             reverse("login") + "?next=https://malo.com/",
             {"correo": "ana.perez@usm.cl", "password": "Clave-segura-9271"},
         )
-        self.assertRedirects(resp, reverse("reportes:lista"))
+        self.assertRedirects(resp, reverse("reportes:mapa"))
 
     # --- perfil y tema ---
     def test_iniciales(self):
@@ -245,6 +249,7 @@ class CuentasTests(TestCase):
         self.assertContains(resp, ">AP</a>")
 
 
+# pruebas de los tres estados y el filtro de activos
 class EstadosTests(TestCase):
     def setUp(self):
         self.usuario = get_user_model().objects.create_user("ana", password="clave-segura-123")
@@ -271,7 +276,7 @@ class SalasTests(TestCase):
         self.a010 = Sala.objects.get(nombre="A010")
         self.datos = {
             "titulo": "La luz parpadea",
-            "categoria": Categoria.objects.get(nombre="Baño").pk,
+            "categoria": Categoria.objects.get(nombre="Baños").pk,
             "descripcion": "El tubo del fondo parpadea",
         }
 
@@ -306,6 +311,7 @@ class SalasTests(TestCase):
         self.assertEqual(str(resp.context["form"]["sala"].value()), str(self.a010.pk))
 
 
+# pruebas de campus, bienvenida y perfil
 class CampusYPerfilTests(TestCase):
     def setUp(self):
         self.usuario = get_user_model().objects.create_user(
@@ -349,7 +355,7 @@ class CampusYPerfilTests(TestCase):
 
     def test_perfil_muestra_datos_y_cifras(self):
         self.client.login(username="ana@usm.cl", password="clave-segura-123")
-        cat = Categoria.objects.get(nombre="Baño")
+        cat = Categoria.objects.get(nombre="Baños")
         Reporte.objects.create(titulo="a", descripcion="d", categoria=cat, ubicacion="x", autor=self.usuario)
         Reporte.objects.create(titulo="b", descripcion="d", categoria=cat, ubicacion="x", autor=self.usuario,
                                estado=Reporte.Estado.RESUELTO)
@@ -397,3 +403,89 @@ class CampusYPerfilTests(TestCase):
         resp = self.client.get(reverse("bienvenida"))
         self.assertContains(resp, 'class="foto-uni"')
         self.assertContains(resp, "data-uni")
+
+
+@override_settings(MEDIA_ROOT=MEDIA_TMP)
+class MapaYApoyosTests(TestCase):
+    """paso 5: mapa con datos de la base de datos, reportar en un punto y apoyos"""
+
+    def setUp(self):
+        self.ana = get_user_model().objects.create_user("ana", password="clave-segura-123")
+        self.beto = get_user_model().objects.create_user("beto", password="clave-segura-123")
+        self.client.login(username="ana", password="clave-segura-123")
+        self.cat = Categoria.objects.get(nombre="Iluminación")
+        self.a010 = Sala.objects.get(nombre="A010")
+
+    def test_catorce_categorias_del_mapa(self):
+        from .models import CLAVE_CATEGORIA
+        for nombre in CLAVE_CATEGORIA:
+            self.assertTrue(Categoria.objects.filter(nombre=nombre).exists(), nombre)
+
+    def test_salas_del_mapa_oficial(self):
+        self.assertTrue(Sala.objects.filter(nombre="Sala LDS").exists())
+        self.assertFalse(Sala.objects.filter(nombre="Sala LSD").exists())
+        self.assertTrue(Sala.objects.filter(edificio__letra="K", piso=6, nombre="DINF").exists())
+        self.assertEqual(Edificio.objects.get(letra="B").pisos, [1, 2])
+        self.assertEqual(Sala.objects.get(nombre="B038 LPA").extra["full"], "Laboratorio de Programación Avanzada")
+
+    def test_mapa_requiere_sesion(self):
+        self.client.logout()
+        self.assertEqual(self.client.get(reverse("reportes:mapa")).status_code, 302)
+
+    def test_mapa_trae_salas_y_reportes(self):
+        Reporte.objects.create(titulo="Luz", descripcion="d", categoria=self.cat, sala=self.a010,
+                               ubicacion="A010", autor=self.ana)
+        resp = self.client.get(reverse("reportes:mapa"))
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, 'id="d-pisos"')
+        piso1 = resp.context["pisos"]["1"]
+        self.assertTrue(any(s["label"] == "A010" and s["pk"] == self.a010.pk for s in piso1))
+        rep = resp.context["reportes"][0]
+        self.assertEqual((rep["cat"], rep["f"], rep["salapk"]), ("luz", "1", self.a010.pk))
+
+    def test_reportar_en_un_punto_del_mapa(self):
+        resp = self.client.get(reverse("reportes:crear") + "?piso=ext&x=550&y=478&lugar=Canchas de fútbol")
+        self.assertEqual(resp.context["form"]["ubicacion"].value(), "Canchas de fútbol")
+        datos = {"titulo": "Arco roto", "categoria": self.cat.pk, "descripcion": "El arco norte está suelto",
+                 "ubicacion": "Canchas de fútbol", "piso": "ext", "mapa_x": "550", "mapa_y": "478"}
+        self.client.post(reverse("reportes:crear"), datos)
+        reporte = Reporte.objects.get()
+        self.assertEqual(reporte.punto_mapa(), ("ext", 550.0, 478.0))
+
+    def test_reporte_en_sala_va_al_centro_de_la_sala(self):
+        datos = {"titulo": "Luz", "categoria": self.cat.pk, "descripcion": "parpadea", "sala": self.a010.pk}
+        self.client.post(reverse("reportes:crear"), datos)
+        piso, x, y = Reporte.objects.get().punto_mapa()
+        self.assertEqual(piso, "1")
+        self.assertEqual((x, y), self.a010.centro())
+
+    def test_apoyar_y_quitar_apoyo(self):
+        r = Reporte.objects.create(titulo="Luz", descripcion="d", categoria=self.cat, ubicacion="x", autor=self.beto)
+        url = reverse("reportes:apoyar", args=[r.pk])
+        resp = self.client.post(url, HTTP_X_REQUESTED_WITH="fetch")
+        self.assertEqual(resp.json(), {"apoyos": 1, "yo": True})
+        resp = self.client.post(url, HTTP_X_REQUESTED_WITH="fetch")
+        self.assertEqual(resp.json(), {"apoyos": 0, "yo": False})
+
+    def test_apoyar_solo_con_post(self):
+        r = Reporte.objects.create(titulo="Luz", descripcion="d", categoria=self.cat, ubicacion="x", autor=self.beto)
+        self.assertEqual(self.client.get(reverse("reportes:apoyar", args=[r.pk])).status_code, 405)
+
+    def test_detalle_muestra_apoyos_y_enlace_al_mapa(self):
+        r = Reporte.objects.create(titulo="Luz", descripcion="d", categoria=self.cat, sala=self.a010,
+                                   ubicacion="A010", autor=self.beto)
+        self.client.post(reverse("reportes:apoyar", args=[r.pk]))
+        resp = self.client.get(reverse("reportes:detalle", args=[r.pk]))
+        self.assertContains(resp, "1 apoyo")
+        self.assertContains(resp, f"?reporte={r.pk}")
+
+    def test_entrar_lleva_al_mapa(self):
+        self.assertRedirects(self.client.get(reverse("bienvenida")), reverse("reportes:mapa"),
+                             fetch_redirect_response=False)
+
+    def test_archivos_del_mapa_completos(self):
+        # el mapa necesita su codigo y sus estilos; si alguno queda vacio, la pagina sale en blanco
+        from pathlib import Path
+        carpeta = Path(__file__).resolve().parent / "static" / "mi_app" / "mapa"
+        self.assertIn("function leerDato", (carpeta / "mapa.js").read_text(encoding="utf-8"))
+        self.assertGreater((carpeta / "mapa.css").stat().st_size, 10000)

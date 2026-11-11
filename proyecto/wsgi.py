@@ -1,11 +1,4 @@
-"""
-WSGI config for proyecto project.
-
-It exposes the WSGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/6.1/howto/deployment/wsgi/
-"""
+# archivo de arranque para servidores (wsgi). django lo crea solo; no hace falta tocarlo.
 
 import os
 

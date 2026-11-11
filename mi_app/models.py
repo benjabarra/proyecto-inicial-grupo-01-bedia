@@ -1,3 +1,7 @@
+# modelos de u-pin: las tablas de la base de datos.
+# categorias, edificios, salas, reportes, apoyos, universidades, campus y perfiles.
+
+# librerias que usan los modelos
 import re
 import secrets
 from datetime import timedelta
@@ -7,6 +11,7 @@ from django.db import models
 from django.utils import timezone
 
 
+# tipo de problema (baños, iluminación, etc.). cada reporte tiene una
 class Categoria(models.Model):
     nombre = models.CharField(max_length=60, unique=True)
 
@@ -17,6 +22,7 @@ class Categoria(models.Model):
         return self.nombre
 
 
+# edificio del campus (a, b, c, e, f, k, l) con la lista de pisos que tiene
 class Edificio(models.Model):
     letra = models.CharField(max_length=5, unique=True)
     nombre = models.CharField(max_length=80)
@@ -29,9 +35,11 @@ class Edificio(models.Model):
         return self.nombre
 
 
+# sala o espacio de un edificio. se carga desde datos/salas_san_joaquin.json
 class Sala(models.Model):
     """una sala o espacio del campus. 'forma' son sus esquinas en el plano del mapa"""
 
+    # tipos de sala que se pueden elegir
     class Tipo(models.TextChoices):
         SALA = "sala", "Sala de clases"
         OFICINA = "oficina", "Oficina o departamento"
@@ -42,11 +50,14 @@ class Sala(models.Model):
         ESPACIO = "espacio", "Patio o espacio común"
         ACCESO = "acceso", "Acceso"
 
-    edificio = models.ForeignKey(Edificio, on_delete=models.CASCADE, related_name="salas")
-    piso = models.SmallIntegerField()
+    edificio = models.ForeignKey(Edificio, on_delete=models.CASCADE, related_name="salas")  # edificio al que pertenece
+    piso = models.SmallIntegerField()  # piso: -2, -1, 1, 2 ...
     nombre = models.CharField(max_length=80)
     tipo = models.CharField(max_length=20, choices=Tipo.choices, default=Tipo.SALA)
-    forma = models.JSONField(default=list, blank=True)
+    forma = models.JSONField(default=list, blank=True)  # esquinas de la sala en el plano del mapa
+    extra = models.JSONField(
+        default=dict, blank=True, help_text="datos de dibujo del mapa (tipo de bloque, etiqueta, etc.)"
+    )
 
     class Meta:
         ordering = ["edificio__letra", "piso", "nombre"]
@@ -55,15 +66,26 @@ class Sala(models.Model):
     def __str__(self):
         return f"{self.nombre} · {self.edificio} · Piso {self.piso}"
 
+    # centro de la sala: ahi se dibuja el pin de sus reportes
+    def centro(self):
+        """punto medio de la forma, para poner el pin del reporte"""
+        if not self.forma:
+            return None
+        xs = [p[0] for p in self.forma]
+        ys = [p[1] for p in self.forma]
+        return (sum(xs) / len(xs), sum(ys) / len(ys))
 
+
+# un problema reportado por una persona: que pasa, donde y en que estado esta
 class Reporte(models.Model):
+    # los tres estados posibles de un reporte
     class Estado(models.TextChoices):
         PENDIENTE = "pendiente", "Pendiente"
         EN_PROCESO = "en_proceso", "En proceso"
         RESUELTO = "resuelto", "Resuelto"
 
-    titulo = models.CharField(max_length=120)
-    descripcion = models.TextField()
+    titulo = models.CharField(max_length=120)  # resumen corto del problema
+    descripcion = models.TextField()  # detalle del problema
     categoria = models.ForeignKey(
         Categoria, on_delete=models.PROTECT, related_name="reportes"
     )
@@ -73,17 +95,21 @@ class Reporte(models.Model):
     ubicacion = models.CharField(
         max_length=150, help_text="Edificio, sala o zona del campus"
     )
-    foto = models.ImageField(upload_to="reportes/%Y/%m/", blank=True)
+    foto = models.ImageField(upload_to="reportes/%Y/%m/", blank=True)  # foto opcional (se achica al guardar)
     latitud = models.FloatField(null=True, blank=True)
     longitud = models.FloatField(null=True, blank=True)
+    # punto exacto en el mapa (coordenadas del plano) y piso: "ext", "-1", "1", ...
+    piso = models.CharField(max_length=4, blank=True)  # piso del punto en el mapa
+    mapa_x = models.FloatField(null=True, blank=True)  # posicion x del pin en el plano
+    mapa_y = models.FloatField(null=True, blank=True)  # posicion y del pin en el plano
     estado = models.CharField(
         max_length=20, choices=Estado.choices, default=Estado.PENDIENTE
     )
-    autor = models.ForeignKey(
+    autor = models.ForeignKey(  # quien hizo el reporte
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="reportes"
     )
-    creado = models.DateTimeField(auto_now_add=True)
-    actualizado = models.DateTimeField(auto_now=True)
+    creado = models.DateTimeField(auto_now_add=True)  # fecha de creacion
+    actualizado = models.DateTimeField(auto_now=True)  # ultima modificacion
 
     class Meta:
         ordering = ["-creado"]
@@ -91,14 +117,64 @@ class Reporte(models.Model):
     def __str__(self):
         return f"{self.titulo} ({self.get_estado_display()})"
 
+    # lugar del pin en el mapa: el punto que marco la persona o el centro de la sala
+    def punto_mapa(self):
+        """(piso, x, y) donde va el pin, o None si no se sabe"""
+        if self.mapa_x is not None and self.mapa_y is not None:
+            piso = self.piso or (str(self.sala.piso) if self.sala else "ext")
+            return piso, self.mapa_x, self.mapa_y
+        if self.sala and self.sala.centro():
+            x, y = self.sala.centro()
+            return str(self.sala.piso), x, y
+        return None
 
+
+# cada "a mi tambien me pasa". una persona puede apoyar un reporte una sola vez
+class Apoyo(models.Model):
+    """'a mi tambien me pasa': una persona apoya un reporte una sola vez"""
+
+    reporte = models.ForeignKey(Reporte, on_delete=models.CASCADE, related_name="apoyos")
+    usuario = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="apoyos"
+    )
+    creado = models.DateTimeField(auto_now_add=True)  # fecha de creacion
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["reporte", "usuario"], name="un_apoyo_por_persona")
+        ]
+
+    def __str__(self):
+        return f"{self.usuario} apoya «{self.reporte.titulo}»"
+
+
+# clave corta de cada categoria para el mapa (icono y color del pin)
+CLAVE_CATEGORIA = {
+    "Baños": "bano",
+    "Agua y goteras": "agua",
+    "Climatización": "clima",
+    "Iluminación": "luz",
+    "Electricidad y enchufes": "elec",
+    "Internet y WiFi": "wifi",
+    "Proyector y equipos": "equipo",
+    "Mobiliario": "mueble",
+    "Puertas, ventanas y cerraduras": "puerta",
+    "Daños en muro, techo o piso": "danos",
+    "Aseo y basura": "aseo",
+    "Áreas verdes y exteriores": "verde",
+    "Ascensor, escaleras y rampas": "ascensor",
+    "Otro": "otro",
+}
+
+
+# universidad (usm, uch, puc, usach). da los colores y el dominio de correo aceptado
 class Universidad(models.Model):
     """datos de cada universidad: el tema de la pagina sale de aqui"""
 
     nombre = models.CharField(max_length=120)
     sigla = models.CharField(max_length=20)
     campus = models.CharField(max_length=80)
-    dominio = models.CharField(max_length=100, unique=True)
+    dominio = models.CharField(max_length=100, unique=True)  # final del correo aceptado, ej: usm.cl
     color_primario = models.CharField(max_length=7)
     color_acento = models.CharField(max_length=7)
     imagen = models.CharField(max_length=200, blank=True)
@@ -111,6 +187,7 @@ class Universidad(models.Model):
         return f"{self.sigla} {self.campus}"
 
 
+# sede de una universidad. por ahora solo san joaquin esta activo
 class Campus(models.Model):
     """cada sede de una universidad. solo los activos se pueden elegir"""
 
@@ -128,6 +205,7 @@ class Campus(models.Model):
         return f"{self.universidad.sigla} · {self.nombre}"
 
 
+# busca la universidad segun el final del correo (ej: @usm.cl)
 def universidad_para_correo(correo):
     """devuelve la universidad que corresponde al dominio del correo, o None"""
     if not correo or "@" not in correo:
@@ -139,9 +217,11 @@ def universidad_para_correo(correo):
     return None
 
 
+# datos extra de cada usuario: rol, universidad, campus y codigo de verificacion
 class Perfil(models.Model):
     """datos extra de cada cuenta: rol, universidad y codigo de verificacion"""
 
+    # roles: estudiante reporta, encargado cambia estados, admin administra todo
     class Rol(models.TextChoices):
         ESTUDIANTE = "estudiante", "Estudiante"
         ENCARGADO = "encargado", "Encargado"
@@ -169,6 +249,7 @@ class Perfil(models.Model):
     def __str__(self):
         return f"{self.usuario.username} ({self.get_rol_display()})"
 
+    # crea un codigo de 6 numeros para confirmar el correo
     def nuevo_codigo(self):
         """crea un codigo de 6 digitos y lo guarda"""
         self.codigo = f"{secrets.randbelow(1_000_000):06d}"
@@ -177,17 +258,20 @@ class Perfil(models.Model):
         self.save(update_fields=["codigo", "codigo_creado", "intentos"])
         return self.codigo
 
+    # true si el codigo ya paso los 15 minutos
     def codigo_vencido(self):
         if not self.codigo or not self.codigo_creado:
             return True
         return timezone.now() > self.codigo_creado + timedelta(minutes=self.MINUTOS_CODIGO)
 
+    # evita pedir codigos seguidos: hay que esperar un minuto
     def puede_reenviar(self):
         if not self.codigo_creado:
             return True
         return timezone.now() > self.codigo_creado + timedelta(seconds=self.SEGUNDOS_REENVIO)
 
 
+# letras del avatar (ej: vicente.arredondo -> va)
 def iniciales(usuario):
     """'vicente.arredondo@usm.cl' -> 'VA', 'admin' -> 'AD'"""
     base = (usuario.email or usuario.username or "?").split("@")[0]
@@ -197,6 +281,7 @@ def iniciales(usuario):
     return (partes[0][:2] if partes else "?").upper()
 
 
+# devuelve el rol del usuario; el superusuario siempre es admin
 def rol_de(usuario):
     if not usuario.is_authenticated:
         return None

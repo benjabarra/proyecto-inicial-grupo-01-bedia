@@ -1,3 +1,4 @@
+# datos que reciben todas las paginas: colores de la universidad, iniciales y rol
 from types import SimpleNamespace
 
 from .models import Campus, Universidad, iniciales, rol_de, universidad_para_correo

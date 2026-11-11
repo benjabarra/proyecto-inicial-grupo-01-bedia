@@ -1,9 +1,12 @@
 {% load static %}<!DOCTYPE html>
+{# plantilla base: cabecera, mensajes y barra inferior. las demas paginas la extienden #}
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light dark">
+  <meta name="color-scheme" content="light">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
   <meta name="theme-color" content="#FFC72C">
   <title>{% block titulo %}Reportes del campus{% endblock %} · U-Pin</title>
   <link rel="icon" type="image/png" sizes="32x32" href="{% static 'mi_app/marca/favicon-32.png' %}">
@@ -12,6 +15,7 @@
   <style>:root { --accent: {{ tema.color_primario }}; }</style>
 </head>
 <body>
+  {# cabecera: logo y menu. en celular el menu se reemplaza por la barra inferior #}
   <header class="nav">
     <div class="nav-in">
       <a class="marca" href="/">
@@ -20,6 +24,7 @@
       </a>
       <nav>
         {% if user.is_authenticated %}
+          <a class="solo-ancho" href="{% url 'reportes:mapa' %}">Mapa</a>
           <a class="solo-ancho" href="{% url 'reportes:lista' %}">Reportes</a>
           <a class="solo-ancho" href="{% url 'reportes:mis_reportes' %}">Mis reportes</a>
           {% if rol == "admin" or rol == "encargado" %}<a class="solo-ancho" href="{% url 'admin:index' %}">Administrar</a>{% endif %}
@@ -32,27 +37,28 @@
       </nav>
     </div>
   </header>
+  {# avisos cortos (ej: "guardamos tu nombre") #}
   {% if messages %}
     <div class="mensajes">
       {% for m in messages %}<p class="mensaje">{{ m }}</p>{% endfor %}
     </div>
   {% endif %}
+  {# contenido de cada pagina #}
   {% block principal %}
   <main class="contenedor">
     {% block contenido %}{% endblock %}
   </main>
   {% endblock %}
+  {# barra inferior del celular: mapa, reportes y mi perfil (igual que en el mapa) #}
   {% if user.is_authenticated %}
   {% with actual=request.resolver_match.url_name %}
-  <nav class="barra-inferior" aria-label="Principal">
-    <a href="{% url 'reportes:lista' %}" {% if actual == 'lista' %}aria-current="page"{% endif %}>
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Reportes</a>
-    <a href="{% url 'reportes:mis_reportes' %}" {% if actual == 'mis_reportes' %}aria-current="page"{% endif %}>
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v18l-5-3-5 3z"/></svg>Míos</a>
-    <a class="mas" href="{% url 'reportes:crear' %}" aria-label="Reportar un problema">
-      <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>Reportar</a>
+  <nav class="barra-inferior" aria-label="Secciones">
+    <a href="{% url 'reportes:mapa' %}" {% if actual == 'mapa' %}aria-current="page"{% endif %}>
+      <span class="ti"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4L3.5 6v14L9 18l6 2 5.5-2V4L15 6z"/><path d="M9 4v14M15 6v14"/></svg></span>Mapa</a>
+    <a href="{% url 'reportes:lista' %}" {% if actual == 'lista' or actual == 'mis_reportes' or actual == 'detalle' or actual == 'crear' %}aria-current="page"{% endif %}>
+      <span class="ti"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.3-7-11.5a7 7 0 0 1 14 0C19 14.7 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span>Reportes</a>
     <a href="{% url 'reportes:perfil' %}" {% if actual == 'perfil' %}aria-current="page"{% endif %}>
-      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>Perfil</a>
+      <span class="ti"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c1.2-3.6 4.2-5.5 7.5-5.5s6.3 1.9 7.5 5.5"/></svg></span>Mi perfil</a>
   </nav>
   {% endwith %}
   {% endif %}

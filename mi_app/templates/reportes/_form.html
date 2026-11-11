@@ -1,9 +1,11 @@
+{# campos de un formulario: primero los escondidos (punto del mapa) y luego los visibles con su error #}
 {% if form.non_field_errors %}
   <div class="errores">
     {% for e in form.non_field_errors %}<p>{{ e }}</p>{% endfor %}
   </div>
 {% endif %}
-{% for campo in form %}
+{% for campo in form.hidden_fields %}{{ campo }}{% endfor %}
+{% for campo in form.visible_fields %}
   <div class="campo">
     <label for="{{ campo.id_for_label }}">{{ campo.label }}</label>
     {{ campo }}

@@ -1,3 +1,4 @@
+# migracion 0007: agrega los campus de cada universidad
 from django.db import migrations, models
 import django.db.models.deletion
 

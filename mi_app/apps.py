@@ -1,3 +1,4 @@
+# configuracion de la app mi_app
 from django.apps import AppConfig
 
 
