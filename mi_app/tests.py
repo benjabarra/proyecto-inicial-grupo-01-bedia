@@ -9,7 +9,7 @@ from datetime import timedelta
 from django.contrib.auth import get_user_model
 from django.core import mail
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import TestCase, override_settings
+from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 from django.utils import timezone
 from PIL import Image
@@ -522,3 +522,29 @@ class MapaYApoyosTests(TestCase):
         # el mapa viaja comprimido (pesa mucho menos por internet)
         resp = self.client.get(reverse("reportes:mapa"), HTTP_ACCEPT_ENCODING="gzip")
         self.assertEqual(resp.get("Content-Encoding"), "gzip")
+
+
+class TokenDeSeguridadTests(TestCase):
+    """si una pagina queda vieja, el formulario ya no da el error 'prohibido (403)' en ingles"""
+
+    def setUp(self):
+        self.usuario = get_user_model().objects.create_user("eva@usm.cl", "eva@usm.cl", "clave-segura-123")
+        self.cliente = Client(enforce_csrf_checks=True)
+        self.cliente.login(username="eva@usm.cl", password="clave-segura-123")
+
+    def test_token_de_la_cookie_sirve(self):
+        # el script de la pagina copia el token de la cookie al formulario antes de enviarlo
+        self.cliente.get(reverse("reportes:perfil"))
+        token = self.cliente.cookies["csrftoken"].value
+        resp = self.cliente.post(reverse("logout"), {"csrfmiddlewaretoken": token})
+        self.assertEqual(resp.status_code, 302)
+
+    def test_token_viejo_muestra_pagina_en_espanol(self):
+        self.cliente.get(reverse("reportes:perfil"))
+        resp = self.cliente.post(reverse("logout"), {"csrfmiddlewaretoken": "x" * 64})
+        self.assertEqual(resp.status_code, 403)
+        self.assertContains(resp, "Intenta de nuevo", status_code=403)
+
+    def test_base_actualiza_el_token_al_enviar(self):
+        resp = self.cliente.get(reverse("reportes:perfil"))
+        self.assertContains(resp, 'input[name="csrfmiddlewaretoken"]')

@@ -1,0 +1,13 @@
+{% extends "reportes/base.html" %}
+{# sale cuando un formulario se envio desde una pagina vieja (ej: con el boton atras o desde otra pestaña) #}
+{% block titulo %}Intenta de nuevo{% endblock %}
+{% block contenido %}
+<section class="panel" style="text-align: center; margin-top: 32px; background: var(--surface); border-radius: var(--radius); padding: 28px 24px;">
+  <h1>Intenta de nuevo</h1>
+  <p class="muted">La página que tenías abierta quedó desactualizada, así que no se guardó el cambio. Vuelve y envíalo otra vez.</p>
+  <p style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
+    <a class="btn btn-amarillo" href="javascript:history.back()">Volver</a>
+    <a class="btn btn-borde" href="{% url 'reportes:mapa' %}">Ir al mapa</a>
+  </p>
+</section>
+{% endblock %}

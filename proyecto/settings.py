@@ -146,6 +146,9 @@ DEFAULT_FROM_EMAIL = os.environ.get("DJANGO_EMAIL_FROM", "U-Pin <no-responder@up
 # a donde ir para entrar, despues de entrar y despues de salir
 LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "reportes:mapa"
+
+# si un formulario llega con el token de seguridad vencido se muestra una pagina en español para reintentar
+CSRF_FAILURE_VIEW = "mi_app.views.csrf_fallo"
 LOGOUT_REDIRECT_URL = "login"
 
 # español y hora de chile
