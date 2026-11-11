@@ -35,7 +35,7 @@
           <span class="estado estado-{{ r.estado }}">{{ r.get_estado_display }}</span>
           <h3><a href="{% url 'reportes:detalle' r.pk %}">{{ r.titulo }}</a></h3>
           <p class="meta">{{ r.categoria }} · {{ r.ubicacion }}</p>
-          <p class="meta">Por {{ r.autor.first_name|default:r.autor.username }} · {{ r.creado|date:"d/m/Y H:i" }}</p>
+          <p class="meta">Por {{ r.autor.get_full_name|default:r.autor.username }} · {{ r.creado|date:"d/m/Y H:i" }}</p>
           <p class="meta apoyos">▲ {{ r.n_apoyos }} apoyo{{ r.n_apoyos|pluralize }}{% if r.yo_apoyo %} · tú también{% endif %}</p>
         </div>
       </article>

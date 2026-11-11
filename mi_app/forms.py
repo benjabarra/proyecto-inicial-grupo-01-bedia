@@ -87,9 +87,10 @@ class ReporteForm(forms.ModelForm):
         return foto
 
 
-# formulario de crear cuenta
+# formulario de crear cuenta: nombre, apellido, correo institucional y contraseña
 class RegistroForm(forms.Form):
-    nombre = forms.CharField(label="Nombre", max_length=150)
+    nombre = forms.CharField(label="Nombre", max_length=150, widget=forms.TextInput(attrs={"autocomplete": "given-name"}))
+    apellido = forms.CharField(label="Apellido", max_length=150, widget=forms.TextInput(attrs={"autocomplete": "family-name"}))
     correo = forms.EmailField(label="Correo institucional")
     password1 = forms.CharField(
         label="Contraseña",

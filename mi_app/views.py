@@ -97,7 +97,8 @@ def registro(request):
             username=datos["correo"],
             email=datos["correo"],
             password=datos["password1"],
-            first_name=datos["nombre"],
+            first_name=datos["nombre"].strip(),
+            last_name=datos["apellido"].strip(),
             is_active=False,  # se activa al poner el codigo
         )
         campus = Campus.objects.filter(pk=request.session.get("campus_id"), activo=True).first()
@@ -388,7 +389,7 @@ def detalle_reporte(request, pk):
     )
 
 
-# mi perfil: cambiar nombre y campus, y ver mis cifras
+# mi perfil: datos de la cuenta, cambiar campus y ver mis cifras
 @login_required
 def perfil(request):
     usuario = request.user
@@ -398,15 +399,7 @@ def perfil(request):
     )
     if request.method == "POST":
         accion = request.POST.get("accion")
-        if accion == "nombre":
-            nombre = request.POST.get("nombre", "").strip()[:150]
-            if nombre:
-                usuario.first_name = nombre
-                usuario.save(update_fields=["first_name"])
-                messages.success(request, "Guardamos tu nombre.")
-            else:
-                messages.error(request, "El nombre no puede quedar vacío.")
-        elif accion == "campus":
+        if accion == "campus":
             campus = Campus.objects.filter(
                 pk=request.POST.get("campus"), activo=True, universidad__activa=True
             ).first()

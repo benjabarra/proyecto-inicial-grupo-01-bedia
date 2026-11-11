@@ -1087,7 +1087,9 @@ ap.onclick=async()=>{if(!selRep)return;ap.disabled=true;
   catch(e){}ap.disabled=false};
 // mi perfil es la página de perfil de la app
 const tp=document.querySelector('#tabbar [data-tab="perf"]');
-if(tp)tp.addEventListener('click',e=>{e.stopImmediatePropagation();location.href=UPIN.urlPerfil},true);
+if(tp)tp.addEventListener('click',e=>{e.stopImmediatePropagation();tp.classList.add('yendo');location.href=UPIN.urlPerfil},true);
+// al volver con el boton atras el navegador puede mostrar la pagina guardada: se quita la marca de "yendo"
+addEventListener('pageshow',()=>{if(tp)tp.classList.remove('yendo')});
 // abrir un reporte que viene en el enlace (?reporte=12)
 const q=new URLSearchParams(location.search).get('reporte');
 if(q){const r=REPORTS.find(x=>String(x.pk)===q);if(r)setTimeout(()=>goReport(r),400)}
@@ -1098,6 +1100,17 @@ if(qs){for(const [f,rs] of Object.entries(FLOORS_DATA)){const r=rs.find(o=>Strin
 // "nuevo reporte" en un punto: sin las etiquetas de la última sala abierta
 (function(){const t=document.getElementById('sTitle');
 new MutationObserver(()=>{const m=document.querySelector('#sheet .meta');if(m)m.style.display=t.textContent==='Nuevo reporte'?'none':''}).observe(t,{childList:true,characterData:true,subtree:true})})();
+// burbujita en el selector de pisos: cuantos reportes hay en cada piso (del edificio elegido y con los filtros puestos)
+(function(){
+function nPiso(f){return REPORTS.filter(r=>r.f===f&&(r.r||r.x!=null)&&(!selB||r.b===selB)&&repVisible(r)).length}
+function burbujas(){FLOORS.forEach((f,i)=>{const b=nav.children[i];if(!b||f==='ext')return;
+  const n=nPiso(f);let i_=b.querySelector('.fb');
+  if(!n){if(i_)i_.remove();b.setAttribute('aria-label','Piso '+f);return}
+  if(!i_){i_=document.createElement('i');i_.className='fb';i_.setAttribute('aria-hidden','true');b.appendChild(i_)}
+  i_.textContent=n>9?'9+':n;b.setAttribute('aria-label','Piso '+f+', '+n+(n===1?' reporte':' reportes'))})}
+const _pf=paintFloors;paintFloors=function(){_pf();burbujas()};
+const _pc=paintCats;paintCats=function(){_pc();burbujas()};
+burbujas()})();
 // precarga mi perfil y la lista de reportes mientras se usa el mapa: al tocarlos se abren casi al instante
 (function(){if(!HTMLScriptElement.supports||!HTMLScriptElement.supports('speculationrules'))return;
 const s=document.createElement('script');s.type='speculationrules';

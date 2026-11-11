@@ -399,3 +399,34 @@ h2 { font-weight: 800; letter-spacing: -0.025em; font-size: 1.2rem; }
 @keyframes salir-pagina { to { opacity: 0; } }
 @keyframes entrar-pagina { from { opacity: 0; transform: translateY(8px); } }
 @media (prefers-reduced-motion: reduce) { ::view-transition-old(root), ::view-transition-new(root) { animation: none; } }
+
+/* paso 6: barra de abajo en todos los tamaños, igual a la del mapa.
+   no se funde al cambiar de pagina (queda quieta) y la pastilla amarilla se desliza a la seccion nueva */
+.barra-inferior {
+  display: grid; grid-template-columns: repeat(3, 1fr); position: fixed; z-index: 20; left: 0; right: 0; bottom: 0;
+  padding: 6px 8px calc(8px + env(safe-area-inset-bottom)); border-top: 0;
+  background: rgba(255,255,255,.9); -webkit-backdrop-filter: blur(18px) saturate(1.6); backdrop-filter: blur(18px) saturate(1.6);
+  box-shadow: 0 -1px 0 rgba(0,0,0,.06), 0 -8px 24px rgba(60,45,0,.08);
+  view-transition-name: barra;
+}
+.barra-inferior a {
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 3px; padding: 2px 0; min-height: 0;
+  color: #77746C; font: 700 12px var(--font); text-decoration: none; -webkit-tap-highlight-color: transparent;
+}
+.barra-inferior a[aria-current="page"] { color: #1B1A17; }
+.barra-inferior .ti { width: 60px; height: 32px; border-radius: 999px; display: grid; place-items: center; transition: background-color .3s cubic-bezier(.22,1,.36,1), transform .15s ease; }
+.barra-inferior a[aria-current="page"] .ti { background: #FFC72C; color: #2B2100; view-transition-name: pastilla; }
+.barra-inferior a.yendo .ti { background: rgba(255,199,44,.38); }
+.barra-inferior a:active .ti { transform: scale(.94); }
+.barra-inferior svg { width: 23px; height: 23px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+body:has(.barra-inferior) { padding-bottom: calc(80px + env(safe-area-inset-bottom)); }
+@media (min-width: 701px) {
+  .barra-inferior { left: 50%; right: auto; width: 380px; transform: translateX(-50%); bottom: 14px; border-radius: 999px; padding: 6px 10px;
+    box-shadow: 0 10px 30px rgba(60,45,0,.16), 0 2px 6px rgba(60,45,0,.06); }
+  body:has(.barra-inferior) { padding-bottom: 104px; }
+}
+/* la cabecera tambien queda quieta; solo cambia el contenido */
+.nav { view-transition-name: cabecera; }
+::view-transition-group(pastilla) { animation-duration: .34s; animation-timing-function: cubic-bezier(.22,1,.36,1); }
+::view-transition-old(barra), ::view-transition-new(barra) { animation-duration: .18s; }
+@media (prefers-reduced-motion: reduce) { ::view-transition-group(pastilla) { animation: none; } }
