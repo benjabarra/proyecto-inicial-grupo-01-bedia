@@ -1,4 +1,5 @@
 {% extends "reportes/base.html" %}
+{# detalle de un reporte: datos, apoyos y enlace al mapa #}
 
 {% block titulo %}{{ reporte.titulo }}{% endblock %}
 
@@ -6,10 +7,14 @@
 <div class="detalle">
   <span class="estado estado-{{ reporte.estado }}">{{ reporte.get_estado_display }}</span>
   <h1>{{ reporte.titulo }}</h1>
+  <div class="detalle-grid{% if not reporte.foto %} sin-foto{% endif %}">
+  <div>
   {% if reporte.foto %}
     <img class="detalle-foto" src="{{ reporte.foto.url }}" alt="Foto del reporte">
   {% endif %}
   <p>{{ reporte.descripcion|linebreaksbr }}</p>
+  </div>
+  <div class="datos-card">
   <dl class="datos">
     <dt>Categoría</dt><dd>{{ reporte.categoria }}</dd>
     {% if reporte.sala %}<dt>Sala</dt><dd>{{ reporte.sala.nombre }} · {{ reporte.sala.edificio }} · Piso {{ reporte.sala.piso }}</dd>{% endif %}
@@ -18,6 +23,18 @@
     <dt>Fecha</dt><dd>{{ reporte.creado|date:"d/m/Y H:i" }}</dd>
     <dt>Actualizado</dt><dd>{{ reporte.actualizado|date:"d/m/Y H:i" }}</dd>
   </dl>
+  <div class="acciones-reporte">
+    <form method="post" action="{% url 'reportes:apoyar' reporte.pk %}">
+      {% csrf_token %}
+      <button type="submit" class="btn {% if yo_apoyo %}btn-claro{% else %}btn-amarillo{% endif %}">
+        {% if yo_apoyo %}Ya lo apoyaste · quitar{% else %}A mí también me pasa{% endif %}
+      </button>
+    </form>
+    <span class="n-apoyos">▲ {{ apoyos }} apoyo{{ apoyos|pluralize }}</span>
+    {% if en_mapa %}<a class="btn btn-claro" href="{% url 'reportes:mapa' %}?reporte={{ reporte.pk }}">Ver en el mapa</a>{% endif %}
+  </div>
+  </div>
+  </div>
   <p><a href="{% url 'reportes:lista' %}">← Volver a los reportes</a></p>
 </div>
 {% endblock %}

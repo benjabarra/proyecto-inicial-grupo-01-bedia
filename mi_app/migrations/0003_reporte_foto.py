@@ -1,3 +1,4 @@
+# migracion 0003: agrega la foto al reporte
 from django.db import migrations, models
 
 

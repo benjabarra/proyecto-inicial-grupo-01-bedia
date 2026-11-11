@@ -1,11 +1,4 @@
-"""
-ASGI config for proyecto project.
-
-It exposes the ASGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/6.1/howto/deployment/asgi/
-"""
+# archivo de arranque para servidores (asgi). django lo crea solo; no hace falta tocarlo.
 
 import os
 

@@ -1,2872 +1,12013 @@
 {
- "nota": "salas del campus san joaquin. forma = esquinas en coordenadas del plano del mapa u-pin. fuente: plano de Isidora Morales (mapa USM), corregido por el equipo.",
- "edificios": [
-  {
-   "letra": "A",
-   "nombre": "Edificio A",
-   "pisos": [
-    1,
-    2,
-    3
-   ]
-  },
-  {
-   "letra": "B",
-   "nombre": "Edificio B",
-   "pisos": [
-    1,
-    2,
-    3
-   ]
-  },
-  {
-   "letra": "C",
-   "nombre": "Edificio C",
-   "pisos": [
-    1,
-    2
-   ]
-  },
-  {
-   "letra": "E",
-   "nombre": "Edificio E",
-   "pisos": [
-    1,
-    2
-   ]
-  },
-  {
-   "letra": "F",
-   "nombre": "Edificio F",
-   "pisos": [
-    1,
-    2,
-    3,
-    4
-   ]
-  },
-  {
-   "letra": "K",
-   "nombre": "Edificio K",
-   "pisos": [
-    -2,
-    -1,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6
-   ]
-  },
-  {
-   "letra": "L",
-   "nombre": "Edificio L",
-   "pisos": [
-    1
-   ]
-  }
- ],
- "salas": [
-  {
-   "edificio": "K",
-   "piso": 1,
-   "nombre": "K100",
-   "tipo": "sala",
-   "forma": [
-    [
-     146,
-     304
-    ],
-    [
-     256,
-     304
-    ],
-    [
-     256,
-     382
-    ],
-    [
-     134,
-     382
-    ]
-   ]
-  },
-  {
-   "edificio": "K",
-   "piso": 1,
-   "nombre": "K101",
-   "tipo": "sala",
-   "forma": [
-    [
-     134,
-     394
-    ],
-    [
-     256,
-     394
-    ],
-    [
-     256,
-     472
-    ],
-    [
-     122,
-     472
-    ]
-   ]
-  },
-  {
-   "edificio": "K",
-   "piso": 1,
-   "nombre": "K102",
-   "tipo": "sala",
-   "forma": [
-    [
-     122,
-     484
-    ],
-    [
-     256,
-     484
-    ],
-    [
-     256,
-     562
-    ],
-    [
-     110,
-     562
-    ]
-   ]
-  },
-  {
-   "edificio": "K",
-   "piso": 1,
-   "nombre": "DIDP",
-   "tipo": "oficina",
-   "forma": [
-    [
-     110,
-     574
-    ],
-    [
-     256,
-     574
-    ],
-    [
-     256,
-     662
-    ],
-    [
-     106,
-     662
-    ],
-    [
-     106,
-     606
-    ]
-   ]
-  },
-  {
-   "edificio": "K",
-   "piso": 1,
-   "nombre": "Baños y escaleras",
-   "tipo": "servicio",
-   "forma": [
-    [
-     106,
-     674
-    ],
-    [
-     256,
-     674
-    ],
-    [
-     256,
-     702
-    ],
-    [
-     106,
-     702
-    ]
-   ]
-  },
-  {
-   "edificio": "K",
-   "piso": 1,
-   "nombre": "Recepción",
-   "tipo": "oficina",
-   "forma": [
-    [
-     106,
-     724
-    ],
-    [
-     256,
-     724
-    ],
-    [
-     256,
-     794
-    ],
-    [
-     106,
-     794
-    ]
-   ]
-  },
-  {
-   "edificio": "A",
-   "piso": 1,
-   "nombre": "Departamento de Humanidades",
-   "tipo": "oficina",
-   "forma": [
-    [
-     226,
-     904
-    ],
-    [
-     248,
-     904
-    ],
-    [
-     248,
-     1106
-    ],
-    [
-     226,
-     1106
-    ]
-   ]
-  },
-  {
-   "edificio": "A",
-   "piso": 1,
-   "nombre": "Departamento de Matemática (DMAT)",
-   "tipo": "oficina",
-   "forma": [
-    [
-     259,
-     904
-    ],
-    [
-     506,
-     904
-    ],
-    [
-     506,
-     958
-    ],
-    [
-     259,
-     958
-    ]
-   ]
-  },
-  {
-   "edificio": "A",
-   "piso": 1,
-   "nombre": "A017",
-   "tipo": "sala",
-   "forma": [
-    [
-     532,
-     904
-    ],
-    [
-     568,
-     904
-    ],
-    [
-     568,
-     958
-    ],
-    [
-     532,
-     958
-    ]
-   ]
-  },
-  {
-   "edificio": "A",
-   "piso": 1,
-   "nombre": "A001",
-   "tipo": "sala",
-   "forma": [
-    [
-     616,
-     904
-    ],
-    [
-     658,
-     904
-    ],
-    [
-     658,
-     958
-    ],
-    [
-     616,
-     958
-    ]
-   ]
-  },
-  {
-   "edificio": "A",
-   "piso": 1,
-   "nombre": "A002",
-   "tipo": "sala",
-   "forma": [
-    [
-     666,
-     904
-    ],
-    [
-     708,
-     904
-    ],
-    [
-     708,
-     958
-    ],
-    [
-     666,
-     958
-    ]
-   ]
-  },
-  {
-   "edificio": "A",
-   "piso": 1,
-   "nombre": "A003",
-   "tipo": "sala",
-   "forma": [
-    [
-     716,
-     904
-    ],
-    [
-     758,
-     904
-    ],
-    [
-     758,
-     958
-    ],
-    [
-     716,
-     958
-    ]
-   ]
-  },
-  {
-   "edificio": "A",
-   "piso": 1,
-   "nombre": "A016",
-   "tipo": "sala",
-   "forma": [
-    [
-     299,
-     1016
-    ],
-    [
-     339,
-     1016
-    ],
-    [
-     339,
-     1093
-    ],
-    [
-     299,
-     1093
-    ]
-   ]
-  },
-  {
-   "edificio": "A",
-   "piso": 1,
-   "nombre": "A004",
-   "tipo": "sala",
-   "forma": [
-    [
-     347,
-     1016
-    ],
-    [
-     388,
-     1016
-    ],
-    [
-     388,
-     1093
-    ],
-    [
-     347,
-     1093
-    ]
-   ]
-  },
-  {
-   "edificio": "A",
-   "piso": 1,
-   "nombre": "A005",
-   "tipo": "sala",
-   "forma": [
-    [
-     396,
-     1016
-    ],
-    [
-     436,
-     1016
-    ],
-    [
-     436,
-     1093
-    ],
-    [
-     396,
-     1093
-    ]
-   ]
-  },
-  {
-   "edificio": "A",
-   "piso": 1,
-   "nombre": "A006",
-   "tipo": "sala",
-   "forma": [
-    [
-     444,
-     1016
-    ],
-    [
-     484,
-     1016
-    ],
-    [
-     484,
-     1093
-    ],
-    [
-     444,
-     1093
-    ]
-   ]
-  },
-  {
-   "edificio": "A",
-   "piso": 1,
-   "nombre": "A007",
-   "tipo": "sala",
-   "forma": [
-    [
-     492,
-     1016
-    ],
-    [
-     533,
-     1016
-    ],
-    [
-     533,
-     1093
-    ],
-    [
-     492,
-     1093
-    ]
-   ]
-  },
-  {
-   "edificio": "A",
-   "piso": 1,
-   "nombre": "Baños",
-   "tipo": "servicio",
-   "forma": [
-    [
-     541,
-     1016
-    ],
-    [
-     581,
-     1016
-    ],
-    [
-     581,
-     1093
-    ],
-    [
-     541,
-     1093
-    ]
-   ]
-  },
-  {
-   "edificio": "A",
-   "piso": 1,
-   "nombre": "A008",
-   "tipo": "sala",
-   "forma": [
-    [
-     589,
-     1016
-    ],
-    [
-     626,
-     1016
-    ],
-    [
-     626,
-     1093
-    ],
-    [
-     589,
-     1093
-    ]
-   ]
-  },
-  {
-   "edificio": "A",
-   "piso": 1,
-   "nombre": "A009",
-   "tipo": "sala",
-   "forma": [
-    [
-     634,
-     1016
-    ],
-    [
-     675,
-     1016
-    ],
-    [
-     675,
-     1093
-    ],
-    [
-     634,
-     1093
-    ]
-   ]
-  },
-  {
-   "edificio": "A",
-   "piso": 1,
-   "nombre": "A010",
-   "tipo": "sala",
-   "forma": [
-    [
-     683,
-     1016
-    ],
-    [
-     724,
-     1016
-    ],
-    [
-     724,
-     1093
-    ],
-    [
-     683,
-     1093
-    ]
-   ]
-  },
-  {
-   "edificio": "A",
-   "piso": 1,
-   "nombre": "A011",
-   "tipo": "sala",
-   "forma": [
-    [
-     732,
-     1016
-    ],
-    [
-     773,
-     1016
-    ],
-    [
-     773,
-     1093
-    ],
-    [
-     732,
-     1093
-    ]
-   ]
-  },
-  {
-   "edificio": "A",
-   "piso": 1,
-   "nombre": "DIQA",
-   "tipo": "oficina",
-   "forma": [
-    [
-     299,
-     1131
-    ],
-    [
-     396,
-     1131
-    ],
-    [
-     396,
-     1183
-    ],
-    [
-     299,
-     1183
-    ]
-   ]
-  },
-  {
-   "edificio": "A",
-   "piso": 1,
-   "nombre": "Of. Docentes",
-   "tipo": "oficina",
-   "forma": [
-    [
-     404,
-     1131
-    ],
-    [
-     511,
-     1131
-    ],
-    [
-     511,
-     1183
-    ],
-    [
-     404,
-     1183
-    ]
-   ]
-  },
-  {
-   "edificio": "A",
-   "piso": 1,
-   "nombre": "A012",
-   "tipo": "sala",
-   "forma": [
-    [
-     549,
-     1131
-    ],
-    [
-     583,
-     1131
-    ],
-    [
-     583,
-     1183
-    ],
-    [
-     549,
-     1183
-    ]
-   ]
-  },
-  {
-   "edificio": "A",
-   "piso": 1,
-   "nombre": "A013",
-   "tipo": "sala",
-   "forma": [
-    [
-     591,
-     1131
-    ],
-    [
-     625,
-     1131
-    ],
-    [
-     625,
-     1183
-    ],
-    [
-     591,
-     1183
-    ]
-   ]
-  },
-  {
-   "edificio": "A",
-   "piso": 1,
-   "nombre": "A014",
-   "tipo": "sala",
-   "forma": [
-    [
-     633,
-     1131
-    ],
-    [
-     667,
-     1131
-    ],
-    [
-     667,
-     1183
-    ],
-    [
-     633,
-     1183
-    ]
-   ]
-  },
-  {
-   "edificio": "A",
-   "piso": 1,
-   "nombre": "A015",
-   "tipo": "sala",
-   "forma": [
-    [
-     675,
-     1131
-    ],
-    [
-     709,
-     1131
-    ],
-    [
-     709,
-     1183
-    ],
-    [
-     675,
-     1183
-    ]
-   ]
-  },
-  {
-   "edificio": "C",
-   "piso": 1,
-   "nombre": "Acceso estacionamiento",
-   "tipo": "acceso",
-   "forma": [
-    [
-     372,
-     672
-    ],
-    [
-     674,
-     672
-    ],
-    [
-     674,
-     708
-    ],
-    [
-     372,
-     708
-    ]
-   ]
-  },
-  {
-   "edificio": "C",
-   "piso": 1,
-   "nombre": "Comedor",
-   "tipo": "comida",
-   "forma": [
-    [
-     504,
-     804
-    ],
-    [
-     568,
-     804
-    ],
-    [
-     568,
-     858
-    ],
-    [
-     504,
-     858
-    ]
-   ]
-  },
-  {
-   "edificio": "C",
-   "piso": 1,
-   "nombre": "FABLAB",
-   "tipo": "oficina",
-   "forma": [
-    [
-     576,
-     767
-    ],
-    [
-     626,
-     767
-    ],
-    [
-     626,
-     858
-    ],
-    [
-     576,
-     858
-    ]
-   ]
-  },
-  {
-   "edificio": "C",
-   "piso": 1,
-   "nombre": "Sala Pasta",
-   "tipo": "oficina",
-   "forma": [
-    [
-     634,
-     767
-    ],
-    [
-     689,
-     767
-    ],
-    [
-     689,
-     858
-    ],
-    [
-     634,
-     858
-    ]
-   ]
-  },
-  {
-   "edificio": "L",
-   "piso": 1,
-   "nombre": "Centro de Atención de Salud",
-   "tipo": "servicio",
-   "forma": [
-    [
-     424,
-     276
-    ],
-    [
-     524,
-     276
-    ],
-    [
-     524,
-     318
-    ],
-    [
-     424,
-     318
-    ]
-   ]
-  },
-  {
-   "edificio": "F",
-   "piso": 1,
-   "nombre": "Gimnasio",
-   "tipo": "deporte",
-   "forma": [
-    [
-     813,
-     376
-    ],
-    [
-     1027,
-     376
-    ],
-    [
-     1027,
-     546
-    ],
-    [
-     813,
-     546
-    ]
-   ]
-  },
-  {
-   "edificio": "F",
-   "piso": 1,
-   "nombre": "Casino",
-   "tipo": "comida",
-   "forma": [
-    [
-     842,
-     560
-    ],
-    [
-     1027,
-     560
-    ],
-    [
-     1027,
-     729
-    ],
-    [
-     842,
-     729
-    ]
-   ]
-  },
-  {
-   "edificio": "F",
-   "piso": 1,
-   "nombre": "Cafetería",
-   "tipo": "comida",
-   "forma": [
-    [
-     904,
-     737
-    ],
-    [
-     1027,
-     737
-    ],
-    [
-     1027,
-     774
-    ],
-    [
-     904,
-     774
-    ]
-   ]
-  },
-  {
-   "edificio": "F",
-   "piso": 1,
-   "nombre": "Patio de las Lámparas",
-   "tipo": "espacio",
-   "forma": [
-    [
-     805,
-     786
-    ],
-    [
-     1008,
-     786
-    ],
-    [
-     1008,
-     852
-    ],
-    [
-     805,
-     852
-    ]
-   ]
-  },
-  {
-   "edificio": "F",
-   "piso": 1,
-   "nombre": "Aula Magna",
-   "tipo": "auditorio",
-   "forma": [
-    [
-     805,
-     865
-    ],
-    [
-     975,
-     865
-    ],
-    [
-     975,
-     946
-    ],
-    [
-     805,
-     946
-    ]
-   ]
-  },
-  {
-   "edificio": "F",
-   "piso": 1,
-   "nombre": "Testamento",
-   "tipo": "espacio",
-   "forma": [
-    [
-     805,
-     959
-    ],
-    [
-     1008,
-     959
-    ],
-    [
-     1008,
-     991
-    ],
-    [
-     805,
-     991
-    ]
-   ]
-  },
-  {
-   "edificio": "F",
-   "piso": 1,
-   "nombre": "Relaciones Estudiantiles",
-   "tipo": "servicio",
-   "forma": [
-    [
-     888,
-     1051
-    ],
-    [
-     1008,
-     1051
-    ],
-    [
-     1008,
-     1163
-    ],
-    [
-     888,
-     1163
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "Taller Metalmecánico",
-   "tipo": "oficina",
-   "forma": [
-    [
-     1062,
-     253
-    ],
-    [
-     1226,
-     253
-    ],
-    [
-     1226,
-     343
-    ],
-    [
-     1062,
-     343
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "Lab Procesos",
-   "tipo": "oficina",
-   "forma": [
-    [
-     1234,
-     253
-    ],
-    [
-     1309,
-     253
-    ],
-    [
-     1309,
-     343
-    ],
-    [
-     1234,
-     343
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "Dpto Ing Civil Minas",
-   "tipo": "oficina",
-   "forma": [
-    [
-     1062,
-     353
-    ],
-    [
-     1193,
-     353
-    ],
-    [
-     1193,
-     443
-    ],
-    [
-     1062,
-     443
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "B065",
-   "tipo": "sala",
-   "forma": [
-    [
-     1253,
-     353
-    ],
-    [
-     1309,
-     353
-    ],
-    [
-     1309,
-     385
-    ],
-    [
-     1253,
-     385
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "B064",
-   "tipo": "sala",
-   "forma": [
-    [
-     1253,
-     412
-    ],
-    [
-     1309,
-     412
-    ],
-    [
-     1309,
-     443
-    ],
-    [
-     1253,
-     443
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "B031",
-   "tipo": "sala",
-   "forma": [
-    [
-     1062,
-     453
-    ],
-    [
-     1090,
-     453
-    ],
-    [
-     1090,
-     507
-    ],
-    [
-     1062,
-     507
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "B033",
-   "tipo": "sala",
-   "forma": [
-    [
-     1098,
-     453
-    ],
-    [
-     1126,
-     453
-    ],
-    [
-     1126,
-     507
-    ],
-    [
-     1098,
-     507
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "B035",
-   "tipo": "sala",
-   "forma": [
-    [
-     1134,
-     453
-    ],
-    [
-     1162,
-     453
-    ],
-    [
-     1162,
-     507
-    ],
-    [
-     1134,
-     507
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "B037",
-   "tipo": "sala",
-   "forma": [
-    [
-     1170,
-     453
-    ],
-    [
-     1198,
-     453
-    ],
-    [
-     1198,
-     507
-    ],
-    [
-     1170,
-     507
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "B039",
-   "tipo": "sala",
-   "forma": [
-    [
-     1206,
-     453
-    ],
-    [
-     1265,
-     453
-    ],
-    [
-     1265,
-     507
-    ],
-    [
-     1206,
-     507
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "Primos",
-   "tipo": "oficina",
-   "forma": [
-    [
-     1273,
-     453
-    ],
-    [
-     1293,
-     453
-    ],
-    [
-     1293,
-     507
-    ],
-    [
-     1273,
-     507
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "B041",
-   "tipo": "sala",
-   "forma": [
-    [
-     1301,
-     453
-    ],
-    [
-     1354,
-     453
-    ],
-    [
-     1354,
-     507
-    ],
-    [
-     1301,
-     507
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "Sala LSD",
-   "tipo": "sala",
-   "forma": [
-    [
-     1062,
-     540
-    ],
-    [
-     1148,
-     540
-    ],
-    [
-     1148,
-     596
-    ],
-    [
-     1062,
-     596
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "B038",
-   "tipo": "sala",
-   "forma": [
-    [
-     1156,
-     540
-    ],
-    [
-     1195,
-     540
-    ],
-    [
-     1195,
-     596
-    ],
-    [
-     1156,
-     596
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "B044",
-   "tipo": "sala",
-   "forma": [
-    [
-     1203,
-     540
-    ],
-    [
-     1232,
-     540
-    ],
-    [
-     1232,
-     596
-    ],
-    [
-     1203,
-     596
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "Postgrado",
-   "tipo": "oficina",
-   "forma": [
-    [
-     1240,
-     540
-    ],
-    [
-     1265,
-     540
-    ],
-    [
-     1265,
-     596
-    ],
-    [
-     1240,
-     596
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "Postgrado",
-   "tipo": "oficina",
-   "forma": [
-    [
-     1273,
-     540
-    ],
-    [
-     1298,
-     540
-    ],
-    [
-     1298,
-     596
-    ],
-    [
-     1273,
-     596
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "Baños",
-   "tipo": "servicio",
-   "forma": [
-    [
-     1306,
-     540
-    ],
-    [
-     1354,
-     540
-    ],
-    [
-     1354,
-     596
-    ],
-    [
-     1306,
-     596
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "B021",
-   "tipo": "sala",
-   "forma": [
-    [
-     1062,
-     606
-    ],
-    [
-     1154,
-     606
-    ],
-    [
-     1154,
-     754
-    ],
-    [
-     1062,
-     754
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "B022",
-   "tipo": "sala",
-   "forma": [
-    [
-     1162,
-     606
-    ],
-    [
-     1254,
-     606
-    ],
-    [
-     1254,
-     754
-    ],
-    [
-     1162,
-     754
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "B023",
-   "tipo": "sala",
-   "forma": [
-    [
-     1262,
-     606
-    ],
-    [
-     1354,
-     606
-    ],
-    [
-     1354,
-     754
-    ],
-    [
-     1262,
-     754
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "B010",
-   "tipo": "sala",
-   "forma": [
-    [
-     1395,
-     351
-    ],
-    [
-     1454,
-     351
-    ],
-    [
-     1454,
-     387
-    ],
-    [
-     1395,
-     387
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "B009",
-   "tipo": "sala",
-   "forma": [
-    [
-     1395,
-     397
-    ],
-    [
-     1454,
-     397
-    ],
-    [
-     1454,
-     437
-    ],
-    [
-     1395,
-     437
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "B008",
-   "tipo": "sala",
-   "forma": [
-    [
-     1395,
-     471
-    ],
-    [
-     1454,
-     471
-    ],
-    [
-     1454,
-     507
-    ],
-    [
-     1395,
-     507
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "B007",
-   "tipo": "sala",
-   "forma": [
-    [
-     1395,
-     517
-    ],
-    [
-     1454,
-     517
-    ],
-    [
-     1454,
-     554
-    ],
-    [
-     1395,
-     554
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "B006",
-   "tipo": "sala",
-   "forma": [
-    [
-     1395,
-     564
-    ],
-    [
-     1454,
-     564
-    ],
-    [
-     1454,
-     600
-    ],
-    [
-     1395,
-     600
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "B005",
-   "tipo": "sala",
-   "forma": [
-    [
-     1395,
-     612
-    ],
-    [
-     1454,
-     612
-    ],
-    [
-     1454,
-     648
-    ],
-    [
-     1395,
-     648
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "B004",
-   "tipo": "sala",
-   "forma": [
-    [
-     1395,
-     660
-    ],
-    [
-     1454,
-     660
-    ],
-    [
-     1454,
-     696
-    ],
-    [
-     1395,
-     696
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "B003",
-   "tipo": "sala",
-   "forma": [
-    [
-     1395,
-     706
-    ],
-    [
-     1454,
-     706
-    ],
-    [
-     1454,
-     743
-    ],
-    [
-     1395,
-     743
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "B002",
-   "tipo": "sala",
-   "forma": [
-    [
-     1395,
-     753
-    ],
-    [
-     1454,
-     753
-    ],
-    [
-     1454,
-     786
-    ],
-    [
-     1395,
-     786
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "B001",
-   "tipo": "sala",
-   "forma": [
-    [
-     1395,
-     796
-    ],
-    [
-     1454,
-     796
-    ],
-    [
-     1454,
-     826
-    ],
-    [
-     1395,
-     826
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "Baños",
-   "tipo": "servicio",
-   "forma": [
-    [
-     1395,
-     836
-    ],
-    [
-     1454,
-     836
-    ],
-    [
-     1454,
-     854
-    ],
-    [
-     1395,
-     854
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "B014",
-   "tipo": "sala",
-   "forma": [
-    [
-     1395,
-     886
-    ],
-    [
-     1426,
-     886
-    ],
-    [
-     1426,
-     921
-    ],
-    [
-     1395,
-     921
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "B013",
-   "tipo": "sala",
-   "forma": [
-    [
-     1395,
-     931
-    ],
-    [
-     1426,
-     931
-    ],
-    [
-     1426,
-     966
-    ],
-    [
-     1395,
-     966
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "Cafetería NOAC",
-   "tipo": "comida",
-   "forma": [
-    [
-     1436,
-     889
-    ],
-    [
-     1461,
-     889
-    ],
-    [
-     1461,
-     971
-    ],
-    [
-     1436,
-     971
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 1,
-   "nombre": "NOAC",
-   "tipo": "servicio",
-   "forma": [
-    [
-     1395,
-     1004
-    ],
-    [
-     1467,
-     1004
-    ],
-    [
-     1467,
-     1191
-    ],
-    [
-     1395,
-     1191
-    ]
-   ]
-  },
-  {
-   "edificio": "E",
-   "piso": 1,
-   "nombre": "Ingeniería Mecánica",
-   "tipo": "oficina",
-   "forma": [
-    [
-     1003,
-     242
-    ],
-    [
-     1035,
-     242
-    ],
-    [
-     1035,
-     342
-    ],
-    [
-     1003,
-     342
-    ]
-   ]
-  },
-  {
-   "edificio": "E",
-   "piso": 1,
-   "nombre": "Lab Alta Tensión",
-   "tipo": "oficina",
-   "forma": [
-    [
-     1024,
-     55
-    ],
-    [
-     1098,
-     55
-    ],
-    [
-     1098,
-     154
-    ],
-    [
-     1024,
-     154
-    ]
-   ]
-  },
-  {
-   "edificio": "E",
-   "piso": 1,
-   "nombre": "Lab Electrotecnia",
-   "tipo": "oficina",
-   "forma": [
-    [
-     1142,
-     86
-    ],
-    [
-     1208,
-     86
-    ],
-    [
-     1208,
-     144
-    ],
-    [
-     1142,
-     144
-    ]
-   ]
-  },
-  {
-   "edificio": "E",
-   "piso": 1,
-   "nombre": "Labs Ingeniería Eléctrica",
-   "tipo": "oficina",
-   "forma": [
-    [
-     1219,
-     92
-    ],
-    [
-     1356,
-     92
-    ],
-    [
-     1356,
-     144
-    ],
-    [
-     1219,
-     144
-    ]
-   ]
-  },
-  {
-   "edificio": "K",
-   "piso": 2,
-   "nombre": "K200",
-   "tipo": "sala",
-   "forma": [
-    [
-     146,
-     304
-    ],
-    [
-     256,
-     304
-    ],
-    [
-     256,
-     427
-    ],
-    [
-     128,
-     427
-    ]
-   ]
-  },
-  {
-   "edificio": "K",
-   "piso": 2,
-   "nombre": "K201",
-   "tipo": "sala",
-   "forma": [
-    [
-     128,
-     439
-    ],
-    [
-     256,
-     439
-    ],
-    [
-     256,
-     562
-    ],
-    [
-     110,
-     562
-    ]
-   ]
-  },
-  {
-   "edificio": "K",
-   "piso": 2,
-   "nombre": "Baños y escaleras",
-   "tipo": "servicio",
-   "forma": [
-    [
-     110,
-     574
-    ],
-    [
-     256,
-     574
-    ],
-    [
-     256,
-     600
-    ],
-    [
-     106,
-     600
-    ],
-    [
-     106,
-     594
-    ]
-   ]
-  },
-  {
-   "edificio": "K",
-   "piso": 2,
-   "nombre": "K202",
-   "tipo": "sala",
-   "forma": [
-    [
-     106,
-     612
-    ],
-    [
-     256,
-     612
-    ],
-    [
-     256,
-     738
-    ],
-    [
-     106,
-     738
-    ]
-   ]
-  },
-  {
-   "edificio": "K",
-   "piso": 2,
-   "nombre": "K203",
-   "tipo": "sala",
-   "forma": [
-    [
-     106,
-     750
-    ],
-    [
-     256,
-     750
-    ],
-    [
-     256,
-     877
-    ],
-    [
-     106,
-     877
-    ]
-   ]
-  },
-  {
-   "edificio": "E",
-   "piso": 2,
-   "nombre": "E201",
-   "tipo": "sala",
-   "forma": [
-    [
-     1255,
-     76
-    ],
-    [
-     1296,
-     76
-    ],
-    [
-     1296,
-     128
-    ],
-    [
-     1255,
-     128
-    ]
-   ]
-  },
-  {
-   "edificio": "E",
-   "piso": 2,
-   "nombre": "E203",
-   "tipo": "sala",
-   "forma": [
-    [
-     1145,
-     76
-    ],
-    [
-     1187,
-     76
-    ],
-    [
-     1187,
-     128
-    ],
-    [
-     1145,
-     128
-    ]
-   ]
-  },
-  {
-   "edificio": "E",
-   "piso": 2,
-   "nombre": "E202",
-   "tipo": "sala",
-   "forma": [
-    [
-     1200,
-     75
-    ],
-    [
-     1241,
-     75
-    ],
-    [
-     1241,
-     128
-    ],
-    [
-     1200,
-     128
-    ]
-   ]
-  },
-  {
-   "edificio": "A",
-   "piso": 2,
-   "nombre": "Departamentos",
-   "tipo": "oficina",
-   "forma": [
-    [
-     224,
-     1145
-    ],
-    [
-     795,
-     1145
-    ],
-    [
-     795,
-     1187
-    ],
-    [
-     224,
-     1187
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 2,
-   "nombre": "Dpto Ing Civil Minas",
-   "tipo": "oficina",
-   "forma": [
-    [
-     1066,
-     340
-    ],
-    [
-     1198,
-     340
-    ],
-    [
-     1198,
-     429
-    ],
-    [
-     1066,
-     429
-    ]
-   ]
-  },
-  {
-   "edificio": "E",
-   "piso": 2,
-   "nombre": "Lab Alta Tensión",
-   "tipo": "oficina",
-   "forma": [
-    [
-     1026,
-     39
-    ],
-    [
-     1100,
-     39
-    ],
-    [
-     1100,
-     138
-    ],
-    [
-     1026,
-     138
-    ]
-   ]
-  },
-  {
-   "edificio": "F",
-   "piso": 2,
-   "nombre": "Biblioteca",
-   "tipo": "servicio",
-   "forma": [
-    [
-     891,
-     1046
-    ],
-    [
-     1013,
-     1046
-    ],
-    [
-     1013,
-     1182
-    ],
-    [
-     891,
-     1182
-    ]
-   ]
-  },
-  {
-   "edificio": "B",
-   "piso": 2,
-   "nombre": "CIAC",
-   "tipo": "servicio",
-   "forma": [
-    [
-     1395,
-     1004
-    ],
-    [
-     1467,
-     1004
-    ],
-    [
-     1467,
-     1191
-    ],
-    [
-     1395,
-     1191
-    ]
-   ]
-  },
-  {
-   "edificio": "K",
-   "piso": 3,
-   "nombre": "K300",
-   "tipo": "sala",
-   "forma": [
-    [
-     146,
-     304
-    ],
-    [
-     256,
-     304
-    ],
-    [
-     256,
-     360
-    ],
-    [
-     137,
-     360
-    ]
-   ]
-  },
-  {
-   "edificio": "K",
-   "piso": 3,
-   "nombre": "K301",
-   "tipo": "sala",
-   "forma": [
-    [
-     137,
-     372
-    ],
-    [
-     256,
-     372
-    ],
-    [
-     256,
-     427
-    ],
-    [
-     128,
-     427
-    ]
-   ]
-  },
-  {
-   "edificio": "K",
-   "piso": 3,
-   "nombre": "K302",
-   "tipo": "sala",
-   "forma": [
-    [
-     128,
-     439
-    ],
-    [
-     256,
-     439
-    ],
-    [
-     256,
-     494
-    ],
-    [
-     119,
-     494
-    ]
-   ]
-  },
-  {
-   "edificio": "K",
-   "piso": 3,
-   "nombre": "K303",
-   "tipo": "sala",
-   "forma": [
-    [
-     119,
-     506
-    ],
-    [
-     256,
-     506
-    ],
-    [
-     256,
-     562
-    ],
-    [
-     110,
-     562
-    ]
-   ]
-  },
-  {
-   "edificio": "K",
-   "piso": 3,
-   "nombre": "Baños y escaleras",
-   "tipo": "servicio",
-   "forma": [
-    [
-     110,
-     574
-    ],
-    [
-     256,
-     574
-    ],
-    [
-     256,
-     600
-    ],
-    [
-     106,
-     600
-    ],
-    [
-     106,
-     594
-    ]
-   ]
-  },
-  {
-   "edificio": "K",
-   "piso": 3,
-   "nombre": "K304",
-   "tipo": "sala",
-   "forma": [
-    [
-     106,
-     612
-    ],
-    [
-     256,
-     612
-    ],
-    [
-     256,
-     669
-    ],
-    [
-     106,
-     669
-    ]
-   ]
-  },
-  {
-   "edificio": "K",
-   "piso": 3,
-   "nombre": "K305",
-   "tipo": "sala",
-   "forma": [
-    [
-     106,
-     681
-    ],
-    [
-     256,
-     681
-    ],
-    [
-     256,
-     738
-    ],
-    [
-     106,
-     738
-    ]
-   ]
-  },
-  {
-   "edificio": "K",
-   "piso": 3,
-   "nombre": "K306",
-   "tipo": "sala",
-   "forma": [
-    [
-     106,
-     750
-    ],
-    [
-     256,
-     750
-    ],
-    [
-     256,
-     808
-    ],
-    [
-     106,
-     808
-    ]
-   ]
-  },
-  {
-   "edificio": "K",
-   "piso": 3,
-   "nombre": "K307",
-   "tipo": "sala",
-   "forma": [
-    [
-     106,
-     820
-    ],
-    [
-     256,
-     820
-    ],
-    [
-     256,
-     877
-    ],
-    [
-     106,
-     877
-    ]
-   ]
-  },
-  {
-   "edificio": "F",
-   "piso": 3,
-   "nombre": "F310",
-   "tipo": "sala",
-   "forma": [
-    [
-     955,
-     713
-    ],
-    [
-     1015,
-     713
-    ],
-    [
-     1015,
-     759
-    ],
-    [
-     955,
-     759
-    ]
-   ]
-  },
-  {
-   "edificio": "F",
-   "piso": 3,
-   "nombre": "Biblioteca",
-   "tipo": "servicio",
-   "forma": [
-    [
-     890,
-     1051
-    ],
-    [
-     1013,
-     1051
-    ],
-    [
-     1013,
-     1187
-    ],
-    [
-     890,
-     1187
-    ]
-   ]
-  },
-  {
-   "edificio": "K",
-   "piso": 4,
-   "nombre": "K400",
-   "tipo": "sala",
-   "forma": [
-    [
-     146,
-     304
-    ],
-    [
-     256,
-     304
-    ],
-    [
-     256,
-     360
-    ],
-    [
-     137,
-     360
-    ]
-   ]
-  },
-  {
-   "edificio": "K",
-   "piso": 4,
-   "nombre": "K401",
-   "tipo": "sala",
-   "forma": [
-    [
-     137,
-     372
-    ],
-    [
-     256,
-     372
-    ],
-    [
-     256,
-     427
-    ],
-    [
-     128,
-     427
-    ]
-   ]
-  },
-  {
-   "edificio": "K",
-   "piso": 4,
-   "nombre": "K402",
-   "tipo": "sala",
-   "forma": [
-    [
-     128,
-     439
-    ],
-    [
-     256,
-     439
-    ],
-    [
-     256,
-     494
-    ],
-    [
-     119,
-     494
-    ]
-   ]
-  },
-  {
-   "edificio": "K",
-   "piso": 4,
-   "nombre": "K403",
-   "tipo": "sala",
-   "forma": [
-    [
-     119,
-     506
-    ],
-    [
-     256,
-     506
-    ],
-    [
-     256,
-     562
-    ],
-    [
-     110,
-     562
-    ]
-   ]
-  },
-  {
-   "edificio": "K",
-   "piso": 4,
-   "nombre": "Baños y escaleras",
-   "tipo": "servicio",
-   "forma": [
-    [
-     110,
-     574
-    ],
-    [
-     256,
-     574
-    ],
-    [
-     256,
-     600
-    ],
-    [
-     106,
-     600
-    ],
-    [
-     106,
-     594
-    ]
-   ]
-  },
-  {
-   "edificio": "K",
-   "piso": 4,
-   "nombre": "K404",
-   "tipo": "sala",
-   "forma": [
-    [
-     106,
-     612
-    ],
-    [
-     256,
-     612
-    ],
-    [
-     256,
-     692
-    ],
-    [
-     106,
-     692
-    ]
-   ]
-  },
-  {
-   "edificio": "K",
-   "piso": 4,
-   "nombre": "K405",
-   "tipo": "sala",
-   "forma": [
-    [
-     106,
-     704
-    ],
-    [
-     256,
-     704
-    ],
-    [
-     256,
-     785
-    ],
-    [
-     106,
-     785
-    ]
-   ]
-  },
-  {
-   "edificio": "K",
-   "piso": 4,
-   "nombre": "K406",
-   "tipo": "sala",
-   "forma": [
-    [
-     106,
-     797
-    ],
-    [
-     256,
-     797
-    ],
-    [
-     256,
-     877
-    ],
-    [
-     106,
-     877
-    ]
-   ]
-  },
-  {
-   "edificio": "F",
-   "piso": 4,
-   "nombre": "F400",
-   "tipo": "sala",
-   "forma": [
-    [
-     967,
-     662
-    ],
-    [
-     1014,
-     662
-    ],
-    [
-     1014,
-     693
-    ],
-    [
-     967,
-     693
-    ]
-   ]
-  },
-  {
-   "edificio": "F",
-   "piso": 4,
-   "nombre": "F401",
-   "tipo": "sala",
-   "forma": [
-    [
-     966,
-     619
-    ],
-    [
-     1014,
-     619
-    ],
-    [
-     1014,
-     650
-    ],
-    [
-     966,
-     650
-    ]
-   ]
-  },
-  {
-   "edificio": "F",
-   "piso": 4,
-   "nombre": "F402",
-   "tipo": "sala",
-   "forma": [
-    [
-     967,
-     576
-    ],
-    [
-     1014,
-     576
-    ],
-    [
-     1014,
-     606
-    ],
-    [
-     967,
-     606
-    ]
-   ]
-  },
-  {
-   "edificio": "F",
-   "piso": 4,
-   "nombre": "Cafetería",
-   "tipo": "comida",
-   "forma": [
-    [
-     938,
-     1042
-    ],
-    [
-     1010,
-     1042
-    ],
-    [
-     1010,
-     1094
-    ],
-    [
-     938,
-     1094
-    ]
-   ]
-  }
- ]
+"nota": "salas del campus san joaquin. forma = esquinas en coordenadas del plano del mapa u-pin; extra = datos de dibujo del mapa. fuente: plano de Isidora Morales (mapa USM) y OpenStreetMap, corregido por el equipo.",
+"edificios": [
+{
+"letra": "A",
+"nombre": "Edificio A",
+"pisos": [
+1,
+2,
+3
+]
+},
+{
+"letra": "B",
+"nombre": "Edificio B",
+"pisos": [
+1,
+2
+]
+},
+{
+"letra": "C",
+"nombre": "Edificio C",
+"pisos": [
+1,
+2
+]
+},
+{
+"letra": "E",
+"nombre": "Edificio E",
+"pisos": [
+1,
+2
+]
+},
+{
+"letra": "F",
+"nombre": "Edificio F",
+"pisos": [
+-1,
+1,
+2,
+3,
+4
+]
+},
+{
+"letra": "K",
+"nombre": "Edificio K",
+"pisos": [
+-2,
+-1,
+1,
+2,
+3,
+4,
+5,
+6
+]
+},
+{
+"letra": "L",
+"nombre": "Edificio L",
+"pisos": [
+1
+]
+}
+],
+"salas": [
+{
+"edificio": "K",
+"piso": -2,
+"nombre": "Bodega y basura",
+"tipo": "servicio",
+"forma": [
+[
+142,
+302
+],
+[
+214,
+302
+],
+[
+214,
+360
+],
+[
+188,
+360
+],
+[
+188,
+346
+],
+[
+150,
+346
+],
+[
+150,
+360
+],
+[
+142,
+360
+]
+],
+"extra": {
+"kind": "servicio",
+"at": [
+178,
+323
+]
+}
+},
+{
+"edificio": "K",
+"piso": -2,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+150,
+346
+],
+[
+188,
+346
+],
+[
+188,
+360
+],
+[
+150,
+360
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": -2,
+"nombre": "Camerines",
+"tipo": "servicio",
+"forma": [
+[
+240,
+302
+],
+[
+298,
+302
+],
+[
+298,
+376
+],
+[
+240,
+376
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": -2,
+"nombre": "KS200",
+"tipo": "sala",
+"forma": [
+[
+146,
+392
+],
+[
+192,
+392
+],
+[
+192,
+462
+],
+[
+146,
+462
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -2,
+"nombre": "KS202",
+"tipo": "sala",
+"forma": [
+[
+146,
+463
+],
+[
+192,
+463
+],
+[
+192,
+534
+],
+[
+146,
+534
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -2,
+"nombre": "KS217",
+"tipo": "sala",
+"forma": [
+[
+204,
+392
+],
+[
+250,
+392
+],
+[
+250,
+462
+],
+[
+204,
+462
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -2,
+"nombre": "KS215",
+"tipo": "sala",
+"forma": [
+[
+204,
+463
+],
+[
+250,
+463
+],
+[
+250,
+534
+],
+[
+204,
+534
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -2,
+"nombre": "KS220",
+"tipo": "sala",
+"forma": [
+[
+276,
+382
+],
+[
+298,
+382
+],
+[
+298,
+516
+],
+[
+276,
+516
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -2,
+"nombre": "KS222",
+"tipo": "sala",
+"forma": [
+[
+276,
+518
+],
+[
+298,
+518
+],
+[
+298,
+583
+],
+[
+276,
+583
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -2,
+"nombre": "KS223",
+"tipo": "sala",
+"forma": [
+[
+276,
+585
+],
+[
+298,
+585
+],
+[
+298,
+657
+],
+[
+276,
+657
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -2,
+"nombre": "Sala sin identificar",
+"tipo": "sala",
+"forma": [
+[
+204,
+659
+],
+[
+298,
+659
+],
+[
+298,
+742
+],
+[
+204,
+742
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -2,
+"nombre": "KS225",
+"tipo": "sala",
+"forma": [
+[
+280,
+744
+],
+[
+298,
+744
+],
+[
+298,
+785
+],
+[
+280,
+785
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -2,
+"nombre": "KS226",
+"tipo": "sala",
+"forma": [
+[
+280,
+787
+],
+[
+298,
+787
+],
+[
+298,
+834
+],
+[
+280,
+834
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -2,
+"nombre": "KS227",
+"tipo": "sala",
+"forma": [
+[
+280,
+836
+],
+[
+298,
+836
+],
+[
+298,
+882
+],
+[
+280,
+882
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -2,
+"nombre": "KS214",
+"tipo": "sala",
+"forma": [
+[
+204,
+566
+],
+[
+250,
+566
+],
+[
+250,
+656
+],
+[
+204,
+656
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -2,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+152,
+572
+],
+[
+190,
+572
+],
+[
+190,
+588
+],
+[
+152,
+588
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": -2,
+"nombre": "Bodega",
+"tipo": "servicio",
+"forma": [
+[
+134,
+588
+],
+[
+192,
+588
+],
+[
+192,
+607.5
+],
+[
+134,
+607.5
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": -2,
+"nombre": "Baños",
+"tipo": "servicio",
+"forma": [
+[
+134,
+607.5
+],
+[
+192,
+607.5
+],
+[
+192,
+628.7
+],
+[
+134,
+628.7
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": -2,
+"nombre": "Salida de emergencia",
+"tipo": "servicio",
+"forma": [
+[
+134,
+628.7
+],
+[
+192,
+628.7
+],
+[
+192,
+651.2
+],
+[
+134,
+651.2
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": -2,
+"nombre": "KS204",
+"tipo": "sala",
+"forma": [
+[
+134,
+653.2
+],
+[
+158.5,
+653.2
+],
+[
+158.5,
+683.2
+],
+[
+134,
+683.2
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -2,
+"nombre": "KS203",
+"tipo": "sala",
+"forma": [
+[
+158.5,
+653.2
+],
+[
+192,
+653.2
+],
+[
+192,
+741
+],
+[
+149.5,
+741
+],
+[
+149.5,
+780
+],
+[
+134,
+780
+],
+[
+134,
+685.2
+],
+[
+158.5,
+685.2
+]
+],
+"extra": {
+"kind": "sala",
+"at": [
+163,
+720
+]
+}
+},
+{
+"edificio": "K",
+"piso": -2,
+"nombre": "Baño",
+"tipo": "servicio",
+"forma": [
+[
+149.5,
+742
+],
+[
+190.5,
+742
+],
+[
+190.5,
+762
+],
+[
+149.5,
+762
+]
+],
+"extra": {
+"kind": "servicio",
+"ls": 0.75
+}
+},
+{
+"edificio": "K",
+"piso": -2,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+152,
+764
+],
+[
+190,
+764
+],
+[
+190,
+780
+],
+[
+152,
+780
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": -2,
+"nombre": "KS206",
+"tipo": "sala",
+"forma": [
+[
+102,
+816
+],
+[
+140,
+816
+],
+[
+140,
+882
+],
+[
+102,
+882
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -2,
+"nombre": "KS207",
+"tipo": "sala",
+"forma": [
+[
+142,
+816
+],
+[
+188,
+816
+],
+[
+188,
+882
+],
+[
+142,
+882
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -2,
+"nombre": "KS208",
+"tipo": "sala",
+"forma": [
+[
+206,
+816
+],
+[
+256,
+816
+],
+[
+256,
+882
+],
+[
+206,
+882
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -2,
+"nombre": "Escalera",
+"tipo": "servicio",
+"forma": [
+[
+264,
+848
+],
+[
+279,
+848
+],
+[
+279,
+882
+],
+[
+264,
+882
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": -2,
+"nombre": "Ascensor",
+"tipo": "servicio",
+"forma": [
+[
+214,
+322
+],
+[
+221,
+322
+],
+[
+221,
+344
+],
+[
+214,
+344
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "Rampa",
+"tipo": "acceso",
+"forma": [
+[
+298.7,
+298.7
+],
+[
+298.7,
+412.2
+],
+[
+222.7,
+412.2
+],
+[
+222.7,
+298.7
+]
+],
+"extra": {
+"kind": "rampa"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "Bodega",
+"tipo": "servicio",
+"forma": [
+[
+142,
+302
+],
+[
+214,
+302
+],
+[
+214,
+360
+],
+[
+188,
+360
+],
+[
+188,
+346
+],
+[
+150,
+346
+],
+[
+150,
+360
+],
+[
+142,
+360
+]
+],
+"extra": {
+"kind": "servicio",
+"at": [
+178,
+323
+]
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+150,
+346
+],
+[
+188,
+346
+],
+[
+188,
+360
+],
+[
+150,
+360
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "KS120",
+"tipo": "sala",
+"forma": [
+[
+299.3,
+417.3
+],
+[
+299.3,
+459.3
+],
+[
+285.9,
+459.3
+],
+[
+285.9,
+417.3
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "",
+"tipo": "sala",
+"forma": [
+[
+299.3,
+459.3
+],
+[
+299.3,
+568.5
+],
+[
+285.9,
+568.5
+],
+[
+285.9,
+459.3
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "KS122",
+"tipo": "sala",
+"forma": [
+[
+299.3,
+568.5
+],
+[
+299.3,
+620.6
+],
+[
+285.9,
+620.6
+],
+[
+285.9,
+568.5
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "KS123",
+"tipo": "sala",
+"forma": [
+[
+299.3,
+620.6
+],
+[
+299.3,
+661.9
+],
+[
+285.9,
+661.9
+],
+[
+285.9,
+620.6
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "KS124",
+"tipo": "sala",
+"forma": [
+[
+299.3,
+661.9
+],
+[
+299.3,
+690.1
+],
+[
+285.9,
+690.1
+],
+[
+285.9,
+661.9
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "KS125",
+"tipo": "sala",
+"forma": [
+[
+299.3,
+690.1
+],
+[
+299.3,
+717.3
+],
+[
+285.9,
+717.3
+],
+[
+285.9,
+690.1
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "KS126",
+"tipo": "sala",
+"forma": [
+[
+299.3,
+717.3
+],
+[
+299.3,
+766.0
+],
+[
+285.9,
+766.0
+],
+[
+285.9,
+717.3
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "KS127",
+"tipo": "sala",
+"forma": [
+[
+299.3,
+766.0
+],
+[
+299.3,
+804.7
+],
+[
+285.9,
+804.7
+],
+[
+285.9,
+766.0
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "KS128",
+"tipo": "sala",
+"forma": [
+[
+299.3,
+804.7
+],
+[
+299.3,
+843.3
+],
+[
+285.9,
+843.3
+],
+[
+285.9,
+804.7
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "KS129",
+"tipo": "sala",
+"forma": [
+[
+299.3,
+843.3
+],
+[
+299.3,
+882.0
+],
+[
+285.9,
+882.0
+],
+[
+285.9,
+843.3
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "Escalera",
+"tipo": "servicio",
+"forma": [
+[
+264,
+848
+],
+[
+279,
+848
+],
+[
+279,
+882
+],
+[
+264,
+882
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "KS116",
+"tipo": "sala",
+"forma": [
+[
+272.1,
+392
+],
+[
+272.1,
+448.8
+],
+[
+222.7,
+448.8
+],
+[
+222.7,
+493.104
+],
+[
+272.1,
+493.104
+],
+[
+272.1,
+534
+],
+[
+198.2,
+534
+],
+[
+198.2,
+392
+]
+],
+"extra": {
+"kind": "sala",
+"at": [
+235,
+489
+]
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "KS114",
+"tipo": "sala",
+"forma": [
+[
+247.5,
+448.8
+],
+[
+272.1,
+448.8
+],
+[
+272.1,
+493.104
+],
+[
+247.5,
+493.104
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "KS115",
+"tipo": "sala",
+"forma": [
+[
+222.7,
+448.8
+],
+[
+247.5,
+448.8
+],
+[
+247.5,
+493.104
+],
+[
+222.7,
+493.104
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "KS113",
+"tipo": "sala",
+"forma": [
+[
+212,
+536
+],
+[
+272.1,
+536
+],
+[
+272.1,
+662
+],
+[
+212,
+662
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "KS112",
+"tipo": "sala",
+"forma": [
+[
+243.5,
+664
+],
+[
+272.1,
+664
+],
+[
+272.1,
+709.2
+],
+[
+243.5,
+709.2
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "KS111",
+"tipo": "sala",
+"forma": [
+[
+212,
+664
+],
+[
+243.5,
+664
+],
+[
+243.5,
+709.2
+],
+[
+212,
+709.2
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "",
+"tipo": "sala",
+"forma": [
+[
+192,
+711.2
+],
+[
+272.1,
+711.2
+],
+[
+272.1,
+732
+],
+[
+192,
+732
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "KS110",
+"tipo": "sala",
+"forma": [
+[
+212,
+734
+],
+[
+272.1,
+734
+],
+[
+272.1,
+787.8
+],
+[
+212,
+787.8
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "KS109",
+"tipo": "sala",
+"forma": [
+[
+212,
+787.8
+],
+[
+272.1,
+787.8
+],
+[
+272.1,
+835.4
+],
+[
+212,
+835.4
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "KS108",
+"tipo": "sala",
+"forma": [
+[
+212,
+835.4
+],
+[
+262,
+835.4
+],
+[
+262,
+881.6
+],
+[
+212,
+881.6
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "KS100",
+"tipo": "sala",
+"forma": [
+[
+128,
+392
+],
+[
+184,
+392
+],
+[
+184,
+439.3333333333333
+],
+[
+128,
+439.3333333333333
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "KS101",
+"tipo": "sala",
+"forma": [
+[
+128,
+439.3333333333333
+],
+[
+184,
+439.3333333333333
+],
+[
+184,
+486.6666666666667
+],
+[
+128,
+486.6666666666667
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "KS102",
+"tipo": "sala",
+"forma": [
+[
+128,
+486.6666666666667
+],
+[
+184,
+486.6666666666667
+],
+[
+184,
+534
+],
+[
+128,
+534
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+152,
+572
+],
+[
+190,
+572
+],
+[
+190,
+588
+],
+[
+152,
+588
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "",
+"tipo": "sala",
+"forma": [
+[
+128,
+588
+],
+[
+184,
+588
+],
+[
+184,
+607.5
+],
+[
+128,
+607.5
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "Baño",
+"tipo": "servicio",
+"forma": [
+[
+128,
+607.5
+],
+[
+184,
+607.5
+],
+[
+184,
+628.7
+],
+[
+128,
+628.7
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "Salida de emergencia",
+"tipo": "servicio",
+"forma": [
+[
+128,
+628.7
+],
+[
+184,
+628.7
+],
+[
+184,
+651.2
+],
+[
+128,
+651.2
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "KS103-A",
+"tipo": "sala",
+"forma": [
+[
+128,
+653.2
+],
+[
+184,
+653.2
+],
+[
+184,
+682.2
+],
+[
+128,
+682.2
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "KS103-B",
+"tipo": "sala",
+"forma": [
+[
+128,
+682.2
+],
+[
+184,
+682.2
+],
+[
+184,
+711.2
+],
+[
+128,
+711.2
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "KS104",
+"tipo": "sala",
+"forma": [
+[
+128,
+711.2
+],
+[
+184,
+711.2
+],
+[
+184,
+732
+],
+[
+128,
+732
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "Baño",
+"tipo": "servicio",
+"forma": [
+[
+149.5,
+734
+],
+[
+184,
+734
+],
+[
+184,
+762
+],
+[
+149.5,
+762
+]
+],
+"extra": {
+"kind": "servicio",
+"ls": 0.75
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+152,
+764
+],
+[
+190,
+764
+],
+[
+190,
+780
+],
+[
+152,
+780
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "KS105",
+"tipo": "sala",
+"forma": [
+[
+128,
+734
+],
+[
+147.5,
+734
+],
+[
+147.5,
+780
+],
+[
+128,
+780
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "KS107",
+"tipo": "sala",
+"forma": [
+[
+184.0,
+821.5
+],
+[
+184.0,
+882.6
+],
+[
+145.4,
+882.6
+],
+[
+145.4,
+821.5
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "KS106-A",
+"tipo": "sala",
+"forma": [
+[
+145.4,
+821.5
+],
+[
+145.4,
+853.4
+],
+[
+116.9,
+853.4
+],
+[
+116.9,
+821.5
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "KS106-B",
+"tipo": "sala",
+"forma": [
+[
+145.4,
+853.4
+],
+[
+145.4,
+882.6
+],
+[
+116.9,
+882.6
+],
+[
+116.9,
+853.4
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": -1,
+"nombre": "Ascensor",
+"tipo": "servicio",
+"forma": [
+[
+214,
+322
+],
+[
+221,
+322
+],
+[
+221,
+344
+],
+[
+214,
+344
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "F",
+"piso": -1,
+"nombre": "Estacionamiento subterráneo",
+"tipo": "acceso",
+"forma": [
+[
+782,
+365
+],
+[
+893.0,
+365.0
+],
+[
+893.0,
+1190.0
+],
+[
+782,
+1190
+]
+],
+"extra": {
+"kind": "estacionamiento",
+"at": [
+919.0,
+787.5
+],
+"joined": true,
+"lbw": 250,
+"lbh": 825
+}
+},
+{
+"edificio": "F",
+"piso": -1,
+"nombre": "Estacionamiento subterráneo",
+"tipo": "acceso",
+"forma": [
+[
+946.0,
+602.0
+],
+[
+1032,
+602
+],
+[
+1032,
+1190
+],
+[
+946.0,
+1190.0
+]
+],
+"extra": {
+"kind": "estacionamiento",
+"nolab": true,
+"joined": true,
+"lbw": 250,
+"lbh": 825
+}
+},
+{
+"edificio": "F",
+"piso": -1,
+"nombre": "Estacionamiento subterráneo",
+"tipo": "acceso",
+"forma": [
+[
+893.0,
+1048.0
+],
+[
+893.0,
+365.0
+],
+[
+931,
+365
+],
+[
+931,
+602
+],
+[
+946.0,
+602.0
+],
+[
+946.0,
+1048.0
+]
+],
+"extra": {
+"kind": "estacionamiento",
+"nolab": true,
+"joined": true,
+"lbw": 250,
+"lbh": 825
+}
+},
+{
+"edificio": "F",
+"piso": -1,
+"nombre": "Estacionamiento subterráneo",
+"tipo": "acceso",
+"forma": [
+[
+893.0,
+1102.0
+],
+[
+946.0,
+1102.0
+],
+[
+946.0,
+1190.0
+],
+[
+893.0,
+1190.0
+]
+],
+"extra": {
+"kind": "estacionamiento",
+"nolab": true,
+"joined": true,
+"lbw": 250,
+"lbh": 825
+}
+},
+{
+"edificio": "F",
+"piso": -1,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+893,
+1048
+],
+[
+946,
+1048
+],
+[
+946,
+1102
+],
+[
+893,
+1102
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "F",
+"piso": -1,
+"nombre": "B",
+"tipo": "oficina",
+"forma": [
+[
+933,
+400
+],
+[
+959,
+400
+],
+[
+959,
+423
+],
+[
+933,
+423
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DFIS"
+}
+},
+{
+"edificio": "F",
+"piso": -1,
+"nombre": "D",
+"tipo": "oficina",
+"forma": [
+[
+933,
+424.5
+],
+[
+959,
+424.5
+],
+[
+959,
+446
+],
+[
+933,
+446
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DFIS"
+}
+},
+{
+"edificio": "F",
+"piso": -1,
+"nombre": "F",
+"tipo": "oficina",
+"forma": [
+[
+933,
+447.5
+],
+[
+959,
+447.5
+],
+[
+959,
+470
+],
+[
+933,
+470
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DFIS"
+}
+},
+{
+"edificio": "F",
+"piso": -1,
+"nombre": "Camerín",
+"tipo": "servicio",
+"forma": [
+[
+933,
+471.5
+],
+[
+959,
+471.5
+],
+[
+959,
+598
+],
+[
+933,
+598
+]
+],
+"extra": {
+"kind": "servicio",
+"group": "DFIS"
+}
+},
+{
+"edificio": "F",
+"piso": -1,
+"nombre": "A",
+"tipo": "oficina",
+"forma": [
+[
+988,
+400
+],
+[
+1032,
+400
+],
+[
+1032,
+418.5
+],
+[
+988,
+418.5
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DFIS"
+}
+},
+{
+"edificio": "F",
+"piso": -1,
+"nombre": "C",
+"tipo": "oficina",
+"forma": [
+[
+988,
+420
+],
+[
+1032,
+420
+],
+[
+1032,
+442
+],
+[
+988,
+442
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DFIS"
+}
+},
+{
+"edificio": "F",
+"piso": -1,
+"nombre": "E",
+"tipo": "oficina",
+"forma": [
+[
+988,
+443.5
+],
+[
+1032,
+443.5
+],
+[
+1032,
+464.5
+],
+[
+988,
+464.5
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DFIS"
+}
+},
+{
+"edificio": "F",
+"piso": -1,
+"nombre": "G",
+"tipo": "oficina",
+"forma": [
+[
+988,
+466
+],
+[
+1032,
+466
+],
+[
+1032,
+487
+],
+[
+988,
+487
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DFIS"
+}
+},
+{
+"edificio": "F",
+"piso": -1,
+"nombre": "Baños",
+"tipo": "servicio",
+"forma": [
+[
+988,
+488.5
+],
+[
+1032,
+488.5
+],
+[
+1032,
+522
+],
+[
+988,
+522
+]
+],
+"extra": {
+"kind": "servicio",
+"group": "DFIS"
+}
+},
+{
+"edificio": "F",
+"piso": -1,
+"nombre": "Escalera",
+"tipo": "servicio",
+"forma": [
+[
+986,
+548
+],
+[
+1027,
+548
+],
+[
+1027,
+584
+],
+[
+986,
+584
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A017",
+"tipo": "sala",
+"forma": [
+[
+532,
+904
+],
+[
+568,
+904
+],
+[
+568,
+958
+],
+[
+532,
+958
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A001",
+"tipo": "sala",
+"forma": [
+[
+616,
+904
+],
+[
+658,
+904
+],
+[
+658,
+958
+],
+[
+616,
+958
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A002",
+"tipo": "sala",
+"forma": [
+[
+666,
+904
+],
+[
+708,
+904
+],
+[
+708,
+958
+],
+[
+666,
+958
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A003",
+"tipo": "sala",
+"forma": [
+[
+716,
+904
+],
+[
+758,
+904
+],
+[
+758,
+958
+],
+[
+716,
+958
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A016",
+"tipo": "sala",
+"forma": [
+[
+299,
+1016
+],
+[
+339,
+1016
+],
+[
+339,
+1093
+],
+[
+299,
+1093
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A004",
+"tipo": "sala",
+"forma": [
+[
+347,
+1016
+],
+[
+388,
+1016
+],
+[
+388,
+1093
+],
+[
+347,
+1093
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A005",
+"tipo": "sala",
+"forma": [
+[
+396,
+1016
+],
+[
+436,
+1016
+],
+[
+436,
+1093
+],
+[
+396,
+1093
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A006",
+"tipo": "sala",
+"forma": [
+[
+444,
+1016
+],
+[
+484,
+1016
+],
+[
+484,
+1093
+],
+[
+444,
+1093
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A007",
+"tipo": "sala",
+"forma": [
+[
+492,
+1016
+],
+[
+533,
+1016
+],
+[
+533,
+1093
+],
+[
+492,
+1093
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "Baños",
+"tipo": "servicio",
+"forma": [
+[
+541,
+1016
+],
+[
+581,
+1016
+],
+[
+581,
+1093
+],
+[
+541,
+1093
+]
+],
+"extra": {
+"kind": "servicio",
+"split": [
+"x",
+"bl"
+]
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A008",
+"tipo": "sala",
+"forma": [
+[
+589,
+1016
+],
+[
+626,
+1016
+],
+[
+626,
+1093
+],
+[
+589,
+1093
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A009",
+"tipo": "sala",
+"forma": [
+[
+634,
+1016
+],
+[
+675,
+1016
+],
+[
+675,
+1093
+],
+[
+634,
+1093
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A010",
+"tipo": "sala",
+"forma": [
+[
+683,
+1016
+],
+[
+724,
+1016
+],
+[
+724,
+1093
+],
+[
+683,
+1093
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A011",
+"tipo": "sala",
+"forma": [
+[
+727,
+1016
+],
+[
+766,
+1016
+],
+[
+766,
+1093
+],
+[
+727,
+1093
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "DIQA",
+"tipo": "oficina",
+"forma": [
+[
+299,
+1131
+],
+[
+396,
+1131
+],
+[
+396,
+1183
+],
+[
+299,
+1183
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "Of. Docentes",
+"tipo": "oficina",
+"forma": [
+[
+404,
+1131
+],
+[
+511,
+1131
+],
+[
+511,
+1183
+],
+[
+404,
+1183
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A012",
+"tipo": "sala",
+"forma": [
+[
+549,
+1131
+],
+[
+583,
+1131
+],
+[
+583,
+1183
+],
+[
+549,
+1183
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A013",
+"tipo": "sala",
+"forma": [
+[
+591,
+1131
+],
+[
+625,
+1131
+],
+[
+625,
+1183
+],
+[
+591,
+1183
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A014",
+"tipo": "sala",
+"forma": [
+[
+633,
+1131
+],
+[
+667,
+1131
+],
+[
+667,
+1183
+],
+[
+633,
+1183
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A015",
+"tipo": "sala",
+"forma": [
+[
+675,
+1131
+],
+[
+709,
+1131
+],
+[
+709,
+1183
+],
+[
+675,
+1183
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "C",
+"piso": 1,
+"nombre": "Acceso estacionamiento",
+"tipo": "acceso",
+"forma": [
+[
+372,
+672
+],
+[
+674,
+672
+],
+[
+674,
+708
+],
+[
+372,
+708
+]
+],
+"extra": {
+"kind": "rampa"
+}
+},
+{
+"edificio": "C",
+"piso": 1,
+"nombre": "Comedor",
+"tipo": "comida",
+"forma": [
+[
+504,
+804
+],
+[
+568,
+804
+],
+[
+568,
+858
+],
+[
+504,
+858
+]
+],
+"extra": {
+"kind": "cafe"
+}
+},
+{
+"edificio": "C",
+"piso": 1,
+"nombre": "FABLAB",
+"tipo": "oficina",
+"forma": [
+[
+576,
+767
+],
+[
+626,
+767
+],
+[
+626,
+858
+],
+[
+576,
+858
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "C",
+"piso": 1,
+"nombre": "Sala Pasta",
+"tipo": "oficina",
+"forma": [
+[
+634,
+767
+],
+[
+689,
+767
+],
+[
+689,
+858
+],
+[
+634,
+858
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "L",
+"piso": 1,
+"nombre": "Centro de Salud (Sansanito)",
+"tipo": "servicio",
+"forma": [
+[
+424,
+276
+],
+[
+524,
+276
+],
+[
+524,
+318
+],
+[
+424,
+318
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "F",
+"piso": 1,
+"nombre": "Gimnasio",
+"tipo": "deporte",
+"forma": [
+[
+813,
+376
+],
+[
+1027,
+376
+],
+[
+1027,
+546
+],
+[
+813,
+546
+]
+],
+"extra": {
+"kind": "gimnasio"
+}
+},
+{
+"edificio": "F",
+"piso": 1,
+"nombre": "Cafetería",
+"tipo": "comida",
+"forma": [
+[
+904,
+737
+],
+[
+1027,
+737
+],
+[
+1027,
+774
+],
+[
+904,
+774
+]
+],
+"extra": {
+"kind": "cafe"
+}
+},
+{
+"edificio": "F",
+"piso": 1,
+"nombre": "Patio de las Lámparas",
+"tipo": "espacio",
+"forma": [
+[
+805,
+786
+],
+[
+1008,
+786
+],
+[
+1008,
+852
+],
+[
+805,
+852
+]
+],
+"extra": {
+"kind": "patio"
+}
+},
+{
+"edificio": "F",
+"piso": 1,
+"nombre": "Aula Magna",
+"tipo": "sala",
+"forma": [
+[
+805,
+865
+],
+[
+975,
+865
+],
+[
+975,
+946
+],
+[
+805,
+946
+]
+],
+"extra": {
+"kind": "aula"
+}
+},
+{
+"edificio": "F",
+"piso": 1,
+"nombre": "Testamento",
+"tipo": "espacio",
+"forma": [
+[
+805,
+959
+],
+[
+1008,
+959
+],
+[
+1008,
+991
+],
+[
+805,
+991
+]
+],
+"extra": {
+"kind": "patio"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "Taller Metalmecánico",
+"tipo": "oficina",
+"forma": [
+[
+1062,
+253
+],
+[
+1226,
+253
+],
+[
+1226,
+343
+],
+[
+1062,
+343
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "Lab Procesos",
+"tipo": "oficina",
+"forma": [
+[
+1234,
+253
+],
+[
+1309,
+253
+],
+[
+1309,
+343
+],
+[
+1234,
+343
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "Dpto Ing Civil Minas",
+"tipo": "oficina",
+"forma": [
+[
+1062,
+353
+],
+[
+1193,
+353
+],
+[
+1193,
+443
+],
+[
+1062,
+443
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "B065",
+"tipo": "sala",
+"forma": [
+[
+1253,
+353
+],
+[
+1309,
+353
+],
+[
+1309,
+385
+],
+[
+1253,
+385
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "B064",
+"tipo": "sala",
+"forma": [
+[
+1253,
+412
+],
+[
+1309,
+412
+],
+[
+1309,
+443
+],
+[
+1253,
+443
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "B031",
+"tipo": "sala",
+"forma": [
+[
+1062,
+453
+],
+[
+1090,
+453
+],
+[
+1090,
+507
+],
+[
+1062,
+507
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "B033",
+"tipo": "sala",
+"forma": [
+[
+1098,
+453
+],
+[
+1126,
+453
+],
+[
+1126,
+507
+],
+[
+1098,
+507
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "B035",
+"tipo": "sala",
+"forma": [
+[
+1134,
+453
+],
+[
+1162,
+453
+],
+[
+1162,
+507
+],
+[
+1134,
+507
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "B037",
+"tipo": "sala",
+"forma": [
+[
+1170,
+453
+],
+[
+1198,
+453
+],
+[
+1198,
+507
+],
+[
+1170,
+507
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "B039",
+"tipo": "sala",
+"forma": [
+[
+1206,
+453
+],
+[
+1265,
+453
+],
+[
+1265,
+507
+],
+[
+1206,
+507
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "Primos",
+"tipo": "oficina",
+"forma": [
+[
+1273,
+453
+],
+[
+1293,
+453
+],
+[
+1293,
+507
+],
+[
+1273,
+507
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "B041 Ciberseguridad",
+"tipo": "sala",
+"forma": [
+[
+1301,
+453
+],
+[
+1354,
+453
+],
+[
+1354,
+507
+],
+[
+1301,
+507
+]
+],
+"extra": {
+"kind": "sala",
+"full": "Laboratorio de Ciberseguridad"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "Sala LDS",
+"tipo": "sala",
+"forma": [
+[
+1062,
+540
+],
+[
+1184,
+540
+],
+[
+1184,
+596
+],
+[
+1062,
+596
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "B038 LPA",
+"tipo": "sala",
+"forma": [
+[
+1192,
+540
+],
+[
+1222,
+540
+],
+[
+1222,
+596
+],
+[
+1192,
+596
+]
+],
+"extra": {
+"kind": "sala",
+"full": "Laboratorio de Programación Avanzada"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "B044",
+"tipo": "sala",
+"forma": [
+[
+1230,
+540
+],
+[
+1260,
+540
+],
+[
+1260,
+596
+],
+[
+1230,
+596
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "B046 Postgrado",
+"tipo": "sala",
+"forma": [
+[
+1268,
+540
+],
+[
+1298,
+540
+],
+[
+1298,
+596
+],
+[
+1268,
+596
+]
+],
+"extra": {
+"kind": "sala",
+"full": "Laboratorio de Investigación y Postgrado"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "Baños",
+"tipo": "servicio",
+"forma": [
+[
+1306,
+540
+],
+[
+1354,
+540
+],
+[
+1354,
+596
+],
+[
+1306,
+596
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "B021",
+"tipo": "sala",
+"forma": [
+[
+1062,
+606
+],
+[
+1154,
+606
+],
+[
+1154,
+754
+],
+[
+1062,
+754
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "B022",
+"tipo": "sala",
+"forma": [
+[
+1162,
+606
+],
+[
+1254,
+606
+],
+[
+1254,
+754
+],
+[
+1162,
+754
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "B023",
+"tipo": "sala",
+"forma": [
+[
+1262,
+606
+],
+[
+1354,
+606
+],
+[
+1354,
+754
+],
+[
+1262,
+754
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "B010",
+"tipo": "sala",
+"forma": [
+[
+1395,
+351
+],
+[
+1454,
+351
+],
+[
+1454,
+387
+],
+[
+1395,
+387
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "B009",
+"tipo": "sala",
+"forma": [
+[
+1395,
+397
+],
+[
+1454,
+397
+],
+[
+1454,
+437
+],
+[
+1395,
+437
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "B008",
+"tipo": "sala",
+"forma": [
+[
+1395,
+471
+],
+[
+1454,
+471
+],
+[
+1454,
+507
+],
+[
+1395,
+507
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "B007",
+"tipo": "sala",
+"forma": [
+[
+1395,
+517
+],
+[
+1454,
+517
+],
+[
+1454,
+554
+],
+[
+1395,
+554
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "B006",
+"tipo": "sala",
+"forma": [
+[
+1395,
+564
+],
+[
+1454,
+564
+],
+[
+1454,
+600
+],
+[
+1395,
+600
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "B005",
+"tipo": "sala",
+"forma": [
+[
+1395,
+612
+],
+[
+1454,
+612
+],
+[
+1454,
+648
+],
+[
+1395,
+648
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "B004",
+"tipo": "sala",
+"forma": [
+[
+1395,
+660
+],
+[
+1454,
+660
+],
+[
+1454,
+696
+],
+[
+1395,
+696
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "B003",
+"tipo": "sala",
+"forma": [
+[
+1395,
+704
+],
+[
+1454,
+704
+],
+[
+1454,
+736
+],
+[
+1395,
+736
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "B002",
+"tipo": "sala",
+"forma": [
+[
+1395,
+769
+],
+[
+1454,
+769
+],
+[
+1454,
+803
+],
+[
+1395,
+803
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "B001",
+"tipo": "sala",
+"forma": [
+[
+1395,
+807
+],
+[
+1454,
+807
+],
+[
+1454,
+841
+],
+[
+1395,
+841
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "Baños",
+"tipo": "servicio",
+"forma": [
+[
+1400,
+845
+],
+[
+1454,
+845
+],
+[
+1454,
+862
+],
+[
+1400,
+862
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "B013",
+"tipo": "sala",
+"forma": [
+[
+1400,
+886
+],
+[
+1430,
+886
+],
+[
+1430,
+921
+],
+[
+1400,
+921
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "B014",
+"tipo": "sala",
+"forma": [
+[
+1400,
+927
+],
+[
+1430,
+927
+],
+[
+1430,
+958
+],
+[
+1400,
+958
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "Cafetería NOAC",
+"tipo": "comida",
+"forma": [
+[
+1436,
+889
+],
+[
+1461,
+889
+],
+[
+1461,
+971
+],
+[
+1436,
+971
+]
+],
+"extra": {
+"kind": "cafe"
+}
+},
+{
+"edificio": "B",
+"piso": 1,
+"nombre": "NOAC",
+"tipo": "servicio",
+"forma": [
+[
+1398,
+974
+],
+[
+1436,
+974
+],
+[
+1436,
+971
+],
+[
+1466,
+971
+],
+[
+1494,
+973
+],
+[
+1493,
+1202
+],
+[
+1424,
+1202
+],
+[
+1418.5,
+1189
+],
+[
+1398,
+1184
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "E",
+"piso": 1,
+"nombre": "Ingeniería Mecánica",
+"tipo": "oficina",
+"forma": [
+[
+1003,
+242
+],
+[
+1035,
+242
+],
+[
+1035,
+342
+],
+[
+1003,
+342
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "E",
+"piso": 1,
+"nombre": "Lab Alta Tensión",
+"tipo": "oficina",
+"forma": [
+[
+1024,
+55
+],
+[
+1098,
+55
+],
+[
+1098,
+154
+],
+[
+1024,
+154
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "E",
+"piso": 1,
+"nombre": "Lab Electrotecnia",
+"tipo": "oficina",
+"forma": [
+[
+1142,
+86
+],
+[
+1208,
+86
+],
+[
+1208,
+144
+],
+[
+1142,
+144
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "E",
+"piso": 1,
+"nombre": "Labs Ingeniería Eléctrica",
+"tipo": "oficina",
+"forma": [
+[
+1219,
+92
+],
+[
+1356,
+92
+],
+[
+1356,
+144
+],
+[
+1219,
+144
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "Baños",
+"tipo": "servicio",
+"forma": [
+[
+768,
+1016
+],
+[
+780,
+1016
+],
+[
+780,
+1093
+],
+[
+768,
+1093
+]
+],
+"extra": {
+"kind": "servicio",
+"split": [
+"y",
+"bl"
+]
+}
+},
+{
+"edificio": "F",
+"piso": 1,
+"nombre": "Baños",
+"tipo": "servicio",
+"forma": [
+[
+780,
+1012
+],
+[
+836,
+1012
+],
+[
+836,
+1060
+],
+[
+780,
+1060
+]
+],
+"extra": {
+"kind": "servicio",
+"split": [
+"y",
+"bl"
+]
+}
+},
+{
+"edificio": "F",
+"piso": 1,
+"nombre": "Recepción",
+"tipo": "oficina",
+"forma": [
+[
+780,
+1062
+],
+[
+836,
+1062
+],
+[
+836,
+1093
+],
+[
+780,
+1093
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "PACE",
+"tipo": "oficina",
+"forma": [
+[
+717,
+1131
+],
+[
+788,
+1131
+],
+[
+788,
+1183
+],
+[
+717,
+1183
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "F",
+"piso": 1,
+"nombre": "Caja",
+"tipo": "servicio",
+"forma": [
+[
+790,
+1131
+],
+[
+822,
+1131
+],
+[
+822,
+1157
+],
+[
+790,
+1157
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "F",
+"piso": 1,
+"nombre": "Escalera",
+"tipo": "servicio",
+"forma": [
+[
+790,
+1160
+],
+[
+830,
+1160
+],
+[
+830,
+1183
+],
+[
+790,
+1183
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "F",
+"piso": 1,
+"nombre": "Relaciones Estudiantiles",
+"tipo": "servicio",
+"forma": [
+[
+948,
+1051
+],
+[
+1008,
+1051
+],
+[
+1008,
+1163
+],
+[
+888,
+1163
+],
+[
+888,
+1104
+],
+[
+948,
+1104
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "F",
+"piso": 1,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+893,
+1048
+],
+[
+946,
+1048
+],
+[
+946,
+1102
+],
+[
+893,
+1102
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A147",
+"tipo": "oficina",
+"forma": [
+[
+262.4,
+904
+],
+[
+284.0,
+904
+],
+[
+284.0,
+929
+],
+[
+262.4,
+929
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DMAT"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A149",
+"tipo": "oficina",
+"forma": [
+[
+284.79999999999995,
+904
+],
+[
+302.1,
+904
+],
+[
+302.1,
+929
+],
+[
+284.79999999999995,
+929
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DMAT"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A151",
+"tipo": "oficina",
+"forma": [
+[
+302.9,
+904
+],
+[
+321.70000000000005,
+904
+],
+[
+321.70000000000005,
+929
+],
+[
+302.9,
+929
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DMAT"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A153",
+"tipo": "oficina",
+"forma": [
+[
+322.5,
+904
+],
+[
+346.8,
+904
+],
+[
+346.8,
+929
+],
+[
+322.5,
+929
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DMAT"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A155",
+"tipo": "oficina",
+"forma": [
+[
+347.59999999999997,
+904
+],
+[
+363.5,
+904
+],
+[
+363.5,
+929
+],
+[
+347.59999999999997,
+929
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DMAT"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A157",
+"tipo": "oficina",
+"forma": [
+[
+364.29999999999995,
+904
+],
+[
+385.8,
+904
+],
+[
+385.8,
+929
+],
+[
+364.29999999999995,
+929
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DMAT"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A160",
+"tipo": "oficina",
+"forma": [
+[
+386.59999999999997,
+904
+],
+[
+408.20000000000005,
+904
+],
+[
+408.20000000000005,
+929
+],
+[
+386.59999999999997,
+929
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DMAT"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A162",
+"tipo": "oficina",
+"forma": [
+[
+409.0,
+904
+],
+[
+428.1,
+904
+],
+[
+428.1,
+929
+],
+[
+409.0,
+929
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DMAT"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A164",
+"tipo": "oficina",
+"forma": [
+[
+428.9,
+904
+],
+[
+448.70000000000005,
+904
+],
+[
+448.70000000000005,
+929
+],
+[
+428.9,
+929
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DMAT"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A166",
+"tipo": "oficina",
+"forma": [
+[
+449.5,
+904
+],
+[
+465.40000000000003,
+904
+],
+[
+465.40000000000003,
+929
+],
+[
+449.5,
+929
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DMAT"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A169",
+"tipo": "oficina",
+"forma": [
+[
+466.2,
+904
+],
+[
+484.0,
+904
+],
+[
+484.0,
+929
+],
+[
+466.2,
+929
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DMAT"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A170",
+"tipo": "oficina",
+"forma": [
+[
+484.79999999999995,
+904
+],
+[
+507.6,
+904
+],
+[
+507.6,
+929
+],
+[
+484.79999999999995,
+929
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DMAT"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A146",
+"tipo": "oficina",
+"forma": [
+[
+262.4,
+933
+],
+[
+286.40000000000003,
+933
+],
+[
+286.40000000000003,
+958
+],
+[
+262.4,
+958
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DMAT"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A148",
+"tipo": "oficina",
+"forma": [
+[
+287.2,
+933
+],
+[
+302.1,
+933
+],
+[
+302.1,
+958
+],
+[
+287.2,
+958
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DMAT"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A150",
+"tipo": "oficina",
+"forma": [
+[
+302.9,
+933
+],
+[
+318.3,
+933
+],
+[
+318.3,
+958
+],
+[
+302.9,
+958
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DMAT"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A152",
+"tipo": "oficina",
+"forma": [
+[
+319.09999999999997,
+933
+],
+[
+334.20000000000005,
+933
+],
+[
+334.20000000000005,
+958
+],
+[
+319.09999999999997,
+958
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DMAT"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A154",
+"tipo": "oficina",
+"forma": [
+[
+335.0,
+933
+],
+[
+353.0,
+933
+],
+[
+353.0,
+958
+],
+[
+335.0,
+958
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DMAT"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A156",
+"tipo": "oficina",
+"forma": [
+[
+353.79999999999995,
+933
+],
+[
+372.20000000000005,
+933
+],
+[
+372.20000000000005,
+958
+],
+[
+353.79999999999995,
+958
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DMAT"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A159",
+"tipo": "oficina",
+"forma": [
+[
+392.9,
+933
+],
+[
+419.40000000000003,
+933
+],
+[
+419.40000000000003,
+958
+],
+[
+392.9,
+958
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DMAT"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A161",
+"tipo": "oficina",
+"forma": [
+[
+420.2,
+933
+],
+[
+437.5,
+933
+],
+[
+437.5,
+958
+],
+[
+420.2,
+958
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DMAT"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A163",
+"tipo": "oficina",
+"forma": [
+[
+438.29999999999995,
+933
+],
+[
+455.40000000000003,
+933
+],
+[
+455.40000000000003,
+958
+],
+[
+438.29999999999995,
+958
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DMAT"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A165",
+"tipo": "oficina",
+"forma": [
+[
+456.2,
+933
+],
+[
+474.6,
+933
+],
+[
+474.6,
+958
+],
+[
+456.2,
+958
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DMAT"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A167",
+"tipo": "oficina",
+"forma": [
+[
+475.4,
+933
+],
+[
+507.6,
+933
+],
+[
+507.6,
+958
+],
+[
+475.4,
+958
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DMAT"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "Baños",
+"tipo": "servicio",
+"forma": [
+[
+511,
+904
+],
+[
+524,
+904
+],
+[
+524,
+958
+],
+[
+511,
+958
+]
+],
+"extra": {
+"kind": "servicio",
+"group": "DMAT"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A142",
+"tipo": "oficina",
+"forma": [
+[
+226,
+904.6
+],
+[
+248,
+904.6
+],
+[
+248,
+923.8
+],
+[
+226,
+923.8
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DMAT"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A141",
+"tipo": "oficina",
+"forma": [
+[
+226,
+925.0
+],
+[
+248,
+925.0
+],
+[
+248,
+944.2
+],
+[
+226,
+944.2
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DMAT"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A140",
+"tipo": "oficina",
+"forma": [
+[
+226,
+945.4
+],
+[
+248,
+945.4
+],
+[
+248,
+964.6
+],
+[
+226,
+964.6
+]
+],
+"extra": {
+"kind": "depto",
+"group": "HUM"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A139",
+"tipo": "oficina",
+"forma": [
+[
+226,
+965.9
+],
+[
+248,
+965.9
+],
+[
+248,
+985.1
+],
+[
+226,
+985.1
+]
+],
+"extra": {
+"kind": "depto",
+"group": "HUM"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A138",
+"tipo": "oficina",
+"forma": [
+[
+226,
+986.3
+],
+[
+248,
+986.3
+],
+[
+248,
+1005.5
+],
+[
+226,
+1005.5
+]
+],
+"extra": {
+"kind": "depto",
+"group": "HUM"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A137",
+"tipo": "oficina",
+"forma": [
+[
+226,
+1006.7
+],
+[
+248,
+1006.7
+],
+[
+248,
+1025.9
+],
+[
+226,
+1025.9
+]
+],
+"extra": {
+"kind": "depto",
+"group": "HUM"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A136",
+"tipo": "oficina",
+"forma": [
+[
+226,
+1027.1
+],
+[
+248,
+1027.1
+],
+[
+248,
+1046.3
+],
+[
+226,
+1046.3
+]
+],
+"extra": {
+"kind": "depto",
+"group": "HUM"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A135",
+"tipo": "oficina",
+"forma": [
+[
+226,
+1047.5
+],
+[
+248,
+1047.5
+],
+[
+248,
+1066.7
+],
+[
+226,
+1066.7
+]
+],
+"extra": {
+"kind": "depto",
+"group": "HUM"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A134",
+"tipo": "oficina",
+"forma": [
+[
+226,
+1067.9
+],
+[
+248,
+1067.9
+],
+[
+248,
+1087.2
+],
+[
+226,
+1087.2
+]
+],
+"extra": {
+"kind": "depto",
+"group": "HUM"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A133",
+"tipo": "oficina",
+"forma": [
+[
+226,
+1088.3
+],
+[
+248,
+1088.3
+],
+[
+248,
+1107.6
+],
+[
+226,
+1107.6
+]
+],
+"extra": {
+"kind": "depto",
+"group": "HUM"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A131",
+"tipo": "oficina",
+"forma": [
+[
+226,
+1108.8
+],
+[
+248,
+1108.8
+],
+[
+248,
+1128.0
+],
+[
+226,
+1128.0
+]
+],
+"extra": {
+"kind": "depto",
+"group": "HUM"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "A130",
+"tipo": "oficina",
+"forma": [
+[
+226,
+1129.2
+],
+[
+248,
+1129.2
+],
+[
+248,
+1148.4
+],
+[
+226,
+1148.4
+]
+],
+"extra": {
+"kind": "depto",
+"group": "HUM"
+}
+},
+{
+"edificio": "A",
+"piso": 1,
+"nombre": "Escalera",
+"tipo": "servicio",
+"forma": [
+[
+226,
+1151
+],
+[
+248,
+1151
+],
+[
+248,
+1186
+],
+[
+226,
+1186
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "E",
+"piso": 1,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+1104,
+88
+],
+[
+1139,
+88
+],
+[
+1139,
+128
+],
+[
+1104,
+128
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "F",
+"piso": 1,
+"nombre": "Casino",
+"tipo": "comida",
+"forma": [
+[
+842,
+560
+],
+[
+984,
+560
+],
+[
+984,
+586
+],
+[
+1027,
+586
+],
+[
+1027,
+729
+],
+[
+938,
+729
+],
+[
+938,
+619
+],
+[
+893,
+619
+],
+[
+893,
+685
+],
+[
+842,
+685
+]
+],
+"extra": {
+"kind": "casino",
+"at": [
+960,
+590
+]
+}
+},
+{
+"edificio": "F",
+"piso": 1,
+"nombre": "Escalera",
+"tipo": "servicio",
+"forma": [
+[
+894,
+620
+],
+[
+937,
+620
+],
+[
+937,
+653
+],
+[
+894,
+653
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "F",
+"piso": 1,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+880,
+686
+],
+[
+937,
+686
+],
+[
+937,
+729
+],
+[
+880,
+729
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 1,
+"nombre": "K101",
+"tipo": "sala",
+"forma": [
+[
+131,
+410
+],
+[
+256,
+410
+],
+[
+256,
+476
+],
+[
+122,
+476
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": 1,
+"nombre": "K102",
+"tipo": "sala",
+"forma": [
+[
+122,
+482
+],
+[
+256,
+482
+],
+[
+256,
+568
+],
+[
+113,
+568
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": 1,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+152,
+572
+],
+[
+190,
+572
+],
+[
+190,
+588
+],
+[
+152,
+588
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 1,
+"nombre": "K103 · DIDP",
+"tipo": "oficina",
+"forma": [
+[
+182,
+606
+],
+[
+256,
+606
+],
+[
+256,
+660
+],
+[
+182,
+660
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "K",
+"piso": 1,
+"nombre": "Escalera al 2.º piso",
+"tipo": "servicio",
+"forma": [
+[
+152,
+666
+],
+[
+256,
+666
+],
+[
+256,
+684
+],
+[
+152,
+684
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 1,
+"nombre": "Entrada · acceso estacionamiento",
+"tipo": "acceso",
+"forma": [
+[
+152,
+690
+],
+[
+256,
+690
+],
+[
+256,
+712
+],
+[
+152,
+712
+]
+],
+"extra": {
+"kind": "rampa"
+}
+},
+{
+"edificio": "K",
+"piso": 1,
+"nombre": "Baños",
+"tipo": "servicio",
+"forma": [
+[
+152,
+718
+],
+[
+256,
+718
+],
+[
+256,
+762
+],
+[
+152,
+762
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 1,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+150,
+346
+],
+[
+188,
+346
+],
+[
+188,
+360
+],
+[
+150,
+360
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 1,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+152,
+764
+],
+[
+190,
+764
+],
+[
+190,
+780
+],
+[
+152,
+780
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 1,
+"nombre": "Ascensor",
+"tipo": "servicio",
+"forma": [
+[
+214,
+322
+],
+[
+221,
+322
+],
+[
+221,
+344
+],
+[
+214,
+344
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 1,
+"nombre": "Baño",
+"tipo": "servicio",
+"forma": [
+[
+190,
+346
+],
+[
+212,
+346
+],
+[
+212,
+360
+],
+[
+190,
+360
+]
+],
+"extra": {
+"kind": "servicio",
+"ls": 0.7
+}
+},
+{
+"edificio": "K",
+"piso": 1,
+"nombre": "Admisión USM",
+"tipo": "oficina",
+"forma": [
+[
+152,
+796
+],
+[
+256,
+796
+],
+[
+256,
+877
+],
+[
+152,
+877
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "K",
+"piso": 1,
+"nombre": "Bodega",
+"tipo": "servicio",
+"forma": [
+[
+142,
+322
+],
+[
+214,
+322
+],
+[
+214,
+360
+],
+[
+212,
+360
+],
+[
+212,
+346
+],
+[
+150,
+346
+],
+[
+150,
+360
+],
+[
+142,
+360
+]
+],
+"extra": {
+"kind": "servicio",
+"at": [
+178,
+334
+]
+}
+},
+{
+"edificio": "K",
+"piso": 1,
+"nombre": "K100",
+"tipo": "sala",
+"forma": [
+[
+135,
+377
+],
+[
+256,
+377
+],
+[
+256,
+408
+],
+[
+131,
+408
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": 1,
+"nombre": "Objetos perdidos",
+"tipo": "oficina",
+"forma": [
+[
+106,
+606
+],
+[
+180,
+606
+],
+[
+180,
+660
+],
+[
+106,
+660
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "K",
+"piso": 1,
+"nombre": "Escalera al 2.º piso",
+"tipo": "servicio",
+"forma": [
+[
+142,
+300
+],
+[
+256,
+300
+],
+[
+256,
+320
+],
+[
+142,
+320
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "F",
+"piso": 1,
+"nombre": "Escalera",
+"tipo": "servicio",
+"forma": [
+[
+986,
+548
+],
+[
+1027,
+548
+],
+[
+1027,
+584
+],
+[
+986,
+584
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "F",
+"piso": 1,
+"nombre": "Escalera",
+"tipo": "servicio",
+"forma": [
+[
+1029,
+538
+],
+[
+1058,
+538
+],
+[
+1058,
+598
+],
+[
+1029,
+598
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 2,
+"nombre": "",
+"tipo": "espacio",
+"forma": [
+[
+140,
+300
+],
+[
+300,
+300
+],
+[
+300,
+883
+],
+[
+100,
+883
+],
+[
+100,
+599.2
+]
+],
+"extra": {
+"kind": "patio",
+"nolab": true
+}
+},
+{
+"edificio": "E",
+"piso": 2,
+"nombre": "E203",
+"tipo": "sala",
+"forma": [
+[
+1255,
+76
+],
+[
+1296,
+76
+],
+[
+1296,
+128
+],
+[
+1255,
+128
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "E",
+"piso": 2,
+"nombre": "E201",
+"tipo": "sala",
+"forma": [
+[
+1145,
+76
+],
+[
+1187,
+76
+],
+[
+1187,
+128
+],
+[
+1145,
+128
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "E",
+"piso": 2,
+"nombre": "E202",
+"tipo": "sala",
+"forma": [
+[
+1200,
+75
+],
+[
+1241,
+75
+],
+[
+1241,
+128
+],
+[
+1200,
+128
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "B",
+"piso": 2,
+"nombre": "",
+"tipo": "oficina",
+"forma": [
+[
+1400,
+402
+],
+[
+1458,
+402
+],
+[
+1458,
+428
+],
+[
+1400,
+428
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "B",
+"piso": 2,
+"nombre": "",
+"tipo": "oficina",
+"forma": [
+[
+1400,
+340
+],
+[
+1459,
+340
+],
+[
+1459,
+381
+],
+[
+1400,
+381
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "B",
+"piso": 2,
+"nombre": "Dpto Ing Civil Minas",
+"tipo": "oficina",
+"forma": [
+[
+1066,
+340
+],
+[
+1198,
+340
+],
+[
+1198,
+429
+],
+[
+1066,
+429
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "B",
+"piso": 2,
+"nombre": "Lab Transferencia de Calor",
+"tipo": "oficina",
+"forma": [
+[
+1400,
+283
+],
+[
+1459,
+283
+],
+[
+1459,
+328
+],
+[
+1400,
+328
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "B",
+"piso": 2,
+"nombre": "Lab Transferencia de Materia",
+"tipo": "oficina",
+"forma": [
+[
+1401,
+229
+],
+[
+1459,
+229
+],
+[
+1459,
+272
+],
+[
+1401,
+272
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "B",
+"piso": 2,
+"nombre": "Lab Mecánica de Fluidos",
+"tipo": "oficina",
+"forma": [
+[
+1244,
+228
+],
+[
+1314,
+228
+],
+[
+1314,
+329
+],
+[
+1244,
+329
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "F",
+"piso": 2,
+"nombre": "",
+"tipo": "oficina",
+"forma": [
+[
+1004,
+228
+],
+[
+1037,
+228
+],
+[
+1037,
+329
+],
+[
+1004,
+329
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "E",
+"piso": 2,
+"nombre": "Lab Materiales Funcionales",
+"tipo": "oficina",
+"forma": [
+[
+1309,
+73
+],
+[
+1360,
+73
+],
+[
+1360,
+129
+],
+[
+1309,
+129
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "E",
+"piso": 2,
+"nombre": "Lab Alta Tensión",
+"tipo": "oficina",
+"forma": [
+[
+1026,
+39
+],
+[
+1100,
+39
+],
+[
+1100,
+138
+],
+[
+1026,
+138
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "F",
+"piso": 2,
+"nombre": "Biblioteca",
+"tipo": "servicio",
+"forma": [
+[
+949,
+1046
+],
+[
+1013,
+1046
+],
+[
+1013,
+1182
+],
+[
+891,
+1182
+],
+[
+891,
+1105
+],
+[
+949,
+1105
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "B",
+"piso": 2,
+"nombre": "CIAC",
+"tipo": "servicio",
+"forma": [
+[
+1398,
+974
+],
+[
+1436,
+974
+],
+[
+1436,
+971
+],
+[
+1466,
+971
+],
+[
+1494,
+973
+],
+[
+1493,
+1202
+],
+[
+1424,
+1202
+],
+[
+1418.5,
+1189
+],
+[
+1398,
+1184
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "E",
+"piso": 2,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+1104,
+88
+],
+[
+1139,
+88
+],
+[
+1139,
+128
+],
+[
+1104,
+128
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "B",
+"piso": 2,
+"nombre": "Escalera",
+"tipo": "servicio",
+"forma": [
+[
+1318,
+230
+],
+[
+1352,
+230
+],
+[
+1352,
+250
+],
+[
+1318,
+250
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "B",
+"piso": 2,
+"nombre": "Escalera",
+"tipo": "servicio",
+"forma": [
+[
+1393,
+208
+],
+[
+1428,
+208
+],
+[
+1428,
+226
+],
+[
+1393,
+226
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "B",
+"piso": 2,
+"nombre": "Escalera",
+"tipo": "servicio",
+"forma": [
+[
+1462,
+336
+],
+[
+1488,
+336
+],
+[
+1488,
+360
+],
+[
+1462,
+360
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "F",
+"piso": 2,
+"nombre": "Baños",
+"tipo": "servicio",
+"forma": [
+[
+780,
+1000
+],
+[
+805,
+1000
+],
+[
+805,
+1028.5
+],
+[
+780,
+1028.5
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "F",
+"piso": 2,
+"nombre": "F226",
+"tipo": "sala",
+"forma": [
+[
+780,
+1028.5
+],
+[
+805,
+1028.5
+],
+[
+805,
+1047.5
+],
+[
+780,
+1047.5
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "F",
+"piso": 2,
+"nombre": "F225",
+"tipo": "sala",
+"forma": [
+[
+780,
+1047.5
+],
+[
+805,
+1047.5
+],
+[
+805,
+1066.5
+],
+[
+780,
+1066.5
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "F",
+"piso": 2,
+"nombre": "Prof. Química",
+"tipo": "oficina",
+"forma": [
+[
+780,
+1066.5
+],
+[
+805,
+1066.5
+],
+[
+805,
+1092
+],
+[
+780,
+1092
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "F",
+"piso": 2,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+893,
+1048
+],
+[
+946,
+1048
+],
+[
+946,
+1102
+],
+[
+893,
+1102
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "F",
+"piso": 2,
+"nombre": "Aula Magna",
+"tipo": "sala",
+"forma": [
+[
+805,
+865
+],
+[
+975,
+865
+],
+[
+975,
+946
+],
+[
+805,
+946
+]
+],
+"extra": {
+"kind": "aula"
+}
+},
+{
+"edificio": "F",
+"piso": 2,
+"nombre": "Casino",
+"tipo": "comida",
+"forma": [
+[
+842,
+560
+],
+[
+984,
+560
+],
+[
+984,
+586
+],
+[
+1027,
+586
+],
+[
+1027,
+729
+],
+[
+938,
+729
+],
+[
+938,
+619
+],
+[
+893,
+619
+],
+[
+893,
+685
+],
+[
+842,
+685
+]
+],
+"extra": {
+"kind": "casino",
+"at": [
+960,
+590
+]
+}
+},
+{
+"edificio": "F",
+"piso": 2,
+"nombre": "Escalera",
+"tipo": "servicio",
+"forma": [
+[
+894,
+620
+],
+[
+937,
+620
+],
+[
+937,
+653
+],
+[
+894,
+653
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "F",
+"piso": 2,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+880,
+686
+],
+[
+937,
+686
+],
+[
+937,
+729
+],
+[
+880,
+729
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "Escalera",
+"tipo": "servicio",
+"forma": [
+[
+224,
+1126
+],
+[
+247,
+1126
+],
+[
+247,
+1147
+],
+[
+224,
+1147
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A200",
+"tipo": "oficina",
+"forma": [
+[
+224,
+1149
+],
+[
+247,
+1149
+],
+[
+247,
+1187
+],
+[
+224,
+1187
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "Baños",
+"tipo": "servicio",
+"forma": [
+[
+250.0,
+1126
+],
+[
+270.8,
+1126
+],
+[
+270.8,
+1144
+],
+[
+250.0,
+1144
+]
+],
+"extra": {
+"kind": "servicio",
+"group": "DEP2",
+"split": [
+"x",
+"bl"
+]
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A210",
+"tipo": "oficina",
+"forma": [
+[
+271.8,
+1126
+],
+[
+292.7,
+1126
+],
+[
+292.7,
+1144
+],
+[
+271.8,
+1144
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A212",
+"tipo": "oficina",
+"forma": [
+[
+293.7,
+1126
+],
+[
+314.5,
+1126
+],
+[
+314.5,
+1144
+],
+[
+293.7,
+1144
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A214",
+"tipo": "oficina",
+"forma": [
+[
+315.5,
+1126
+],
+[
+336.4,
+1126
+],
+[
+336.4,
+1144
+],
+[
+315.5,
+1144
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A216",
+"tipo": "oficina",
+"forma": [
+[
+337.4,
+1126
+],
+[
+358.2,
+1126
+],
+[
+358.2,
+1144
+],
+[
+337.4,
+1144
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A220",
+"tipo": "oficina",
+"forma": [
+[
+359.2,
+1126
+],
+[
+380.0,
+1126
+],
+[
+380.0,
+1144
+],
+[
+359.2,
+1144
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A223",
+"tipo": "oficina",
+"forma": [
+[
+381.0,
+1126
+],
+[
+401.9,
+1126
+],
+[
+401.9,
+1144
+],
+[
+381.0,
+1144
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A225",
+"tipo": "oficina",
+"forma": [
+[
+402.9,
+1126
+],
+[
+423.7,
+1126
+],
+[
+423.7,
+1144
+],
+[
+402.9,
+1144
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A227",
+"tipo": "oficina",
+"forma": [
+[
+424.7,
+1126
+],
+[
+445.6,
+1126
+],
+[
+445.6,
+1144
+],
+[
+424.7,
+1144
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A229",
+"tipo": "oficina",
+"forma": [
+[
+446.6,
+1126
+],
+[
+467.4,
+1126
+],
+[
+467.4,
+1144
+],
+[
+446.6,
+1144
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A235",
+"tipo": "oficina",
+"forma": [
+[
+468.4,
+1126
+],
+[
+489.2,
+1126
+],
+[
+489.2,
+1144
+],
+[
+468.4,
+1144
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A237",
+"tipo": "oficina",
+"forma": [
+[
+490.2,
+1126
+],
+[
+511.1,
+1126
+],
+[
+511.1,
+1144
+],
+[
+490.2,
+1144
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "Baños",
+"tipo": "servicio",
+"forma": [
+[
+512.1,
+1126
+],
+[
+532.9,
+1126
+],
+[
+532.9,
+1144
+],
+[
+512.1,
+1144
+]
+],
+"extra": {
+"kind": "servicio",
+"group": "DEP2",
+"split": [
+"x",
+"bl"
+]
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A255",
+"tipo": "oficina",
+"forma": [
+[
+533.9,
+1126
+],
+[
+554.8,
+1126
+],
+[
+554.8,
+1144
+],
+[
+533.9,
+1144
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A257",
+"tipo": "oficina",
+"forma": [
+[
+555.8,
+1126
+],
+[
+576.6,
+1126
+],
+[
+576.6,
+1144
+],
+[
+555.8,
+1144
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A259",
+"tipo": "oficina",
+"forma": [
+[
+577.6,
+1126
+],
+[
+598.4,
+1126
+],
+[
+598.4,
+1144
+],
+[
+577.6,
+1144
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A261",
+"tipo": "oficina",
+"forma": [
+[
+599.4,
+1126
+],
+[
+620.3,
+1126
+],
+[
+620.3,
+1144
+],
+[
+599.4,
+1144
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A129",
+"tipo": "oficina",
+"forma": [
+[
+621.3,
+1126
+],
+[
+642.1,
+1126
+],
+[
+642.1,
+1144
+],
+[
+621.3,
+1144
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A265",
+"tipo": "oficina",
+"forma": [
+[
+643.1,
+1126
+],
+[
+664.0,
+1126
+],
+[
+664.0,
+1144
+],
+[
+643.1,
+1144
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A267",
+"tipo": "oficina",
+"forma": [
+[
+665.0,
+1126
+],
+[
+685.8,
+1126
+],
+[
+685.8,
+1144
+],
+[
+665.0,
+1144
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A269",
+"tipo": "oficina",
+"forma": [
+[
+686.8,
+1126
+],
+[
+707.6,
+1126
+],
+[
+707.6,
+1144
+],
+[
+686.8,
+1144
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A271",
+"tipo": "oficina",
+"forma": [
+[
+708.6,
+1126
+],
+[
+729.5,
+1126
+],
+[
+729.5,
+1144
+],
+[
+708.6,
+1144
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A273",
+"tipo": "oficina",
+"forma": [
+[
+730.5,
+1126
+],
+[
+751.3,
+1126
+],
+[
+751.3,
+1144
+],
+[
+730.5,
+1144
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A275",
+"tipo": "oficina",
+"forma": [
+[
+752.3,
+1126
+],
+[
+773.2,
+1126
+],
+[
+773.2,
+1144
+],
+[
+752.3,
+1144
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A280",
+"tipo": "oficina",
+"forma": [
+[
+774.2,
+1126
+],
+[
+795.0,
+1126
+],
+[
+795.0,
+1144
+],
+[
+774.2,
+1144
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A204",
+"tipo": "oficina",
+"forma": [
+[
+250.0,
+1148
+],
+[
+271.8,
+1148
+],
+[
+271.8,
+1187
+],
+[
+250.0,
+1187
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A211",
+"tipo": "oficina",
+"forma": [
+[
+272.8,
+1148
+],
+[
+294.5,
+1148
+],
+[
+294.5,
+1187
+],
+[
+272.8,
+1187
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A213",
+"tipo": "oficina",
+"forma": [
+[
+295.5,
+1148
+],
+[
+317.2,
+1148
+],
+[
+317.2,
+1187
+],
+[
+295.5,
+1187
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A215",
+"tipo": "oficina",
+"forma": [
+[
+318.2,
+1148
+],
+[
+340.0,
+1148
+],
+[
+340.0,
+1187
+],
+[
+318.2,
+1187
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A217",
+"tipo": "oficina",
+"forma": [
+[
+341.0,
+1148
+],
+[
+362.8,
+1148
+],
+[
+362.8,
+1187
+],
+[
+341.0,
+1187
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A222",
+"tipo": "oficina",
+"forma": [
+[
+363.8,
+1148
+],
+[
+385.5,
+1148
+],
+[
+385.5,
+1187
+],
+[
+363.8,
+1187
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A224",
+"tipo": "oficina",
+"forma": [
+[
+386.5,
+1148
+],
+[
+408.2,
+1148
+],
+[
+408.2,
+1187
+],
+[
+386.5,
+1187
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A226",
+"tipo": "oficina",
+"forma": [
+[
+409.2,
+1148
+],
+[
+431.0,
+1148
+],
+[
+431.0,
+1187
+],
+[
+409.2,
+1187
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A228",
+"tipo": "oficina",
+"forma": [
+[
+432.0,
+1148
+],
+[
+453.8,
+1148
+],
+[
+453.8,
+1187
+],
+[
+432.0,
+1187
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A236",
+"tipo": "oficina",
+"forma": [
+[
+454.8,
+1148
+],
+[
+476.5,
+1148
+],
+[
+476.5,
+1187
+],
+[
+454.8,
+1187
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "Escalera",
+"tipo": "servicio",
+"forma": [
+[
+477.5,
+1148
+],
+[
+499.2,
+1148
+],
+[
+499.2,
+1187
+],
+[
+477.5,
+1187
+]
+],
+"extra": {
+"kind": "servicio",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A240",
+"tipo": "oficina",
+"forma": [
+[
+500.2,
+1148
+],
+[
+522.0,
+1148
+],
+[
+522.0,
+1187
+],
+[
+500.2,
+1187
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A256",
+"tipo": "oficina",
+"forma": [
+[
+523.0,
+1148
+],
+[
+544.8,
+1148
+],
+[
+544.8,
+1187
+],
+[
+523.0,
+1187
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A258",
+"tipo": "oficina",
+"forma": [
+[
+545.8,
+1148
+],
+[
+567.5,
+1148
+],
+[
+567.5,
+1187
+],
+[
+545.8,
+1187
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A260",
+"tipo": "oficina",
+"forma": [
+[
+568.5,
+1148
+],
+[
+590.2,
+1148
+],
+[
+590.2,
+1187
+],
+[
+568.5,
+1187
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A262",
+"tipo": "oficina",
+"forma": [
+[
+591.2,
+1148
+],
+[
+613.0,
+1148
+],
+[
+613.0,
+1187
+],
+[
+591.2,
+1187
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A264",
+"tipo": "oficina",
+"forma": [
+[
+614.0,
+1148
+],
+[
+635.8,
+1148
+],
+[
+635.8,
+1187
+],
+[
+614.0,
+1187
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A266",
+"tipo": "oficina",
+"forma": [
+[
+636.8,
+1148
+],
+[
+658.5,
+1148
+],
+[
+658.5,
+1187
+],
+[
+636.8,
+1187
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A268",
+"tipo": "oficina",
+"forma": [
+[
+659.5,
+1148
+],
+[
+681.2,
+1148
+],
+[
+681.2,
+1187
+],
+[
+659.5,
+1187
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A270",
+"tipo": "oficina",
+"forma": [
+[
+682.2,
+1148
+],
+[
+704.0,
+1148
+],
+[
+704.0,
+1187
+],
+[
+682.2,
+1187
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A272",
+"tipo": "oficina",
+"forma": [
+[
+705.0,
+1148
+],
+[
+726.8,
+1148
+],
+[
+726.8,
+1187
+],
+[
+705.0,
+1187
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A274",
+"tipo": "oficina",
+"forma": [
+[
+727.8,
+1148
+],
+[
+749.5,
+1148
+],
+[
+749.5,
+1187
+],
+[
+727.8,
+1187
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A277",
+"tipo": "oficina",
+"forma": [
+[
+750.5,
+1148
+],
+[
+772.2,
+1148
+],
+[
+772.2,
+1187
+],
+[
+750.5,
+1187
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "A",
+"piso": 2,
+"nombre": "A279",
+"tipo": "oficina",
+"forma": [
+[
+773.2,
+1148
+],
+[
+795.0,
+1148
+],
+[
+795.0,
+1187
+],
+[
+773.2,
+1187
+]
+],
+"extra": {
+"kind": "depto",
+"group": "DEP2"
+}
+},
+{
+"edificio": "K",
+"piso": 2,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+152,
+572
+],
+[
+190,
+572
+],
+[
+190,
+588
+],
+[
+152,
+588
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 2,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+150,
+346
+],
+[
+188,
+346
+],
+[
+188,
+360
+],
+[
+150,
+360
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 2,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+152,
+764
+],
+[
+190,
+764
+],
+[
+190,
+780
+],
+[
+152,
+780
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 2,
+"nombre": "Ascensor",
+"tipo": "servicio",
+"forma": [
+[
+214,
+322
+],
+[
+221,
+322
+],
+[
+221,
+344
+],
+[
+214,
+344
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 2,
+"nombre": "Escalera desde el 1.er piso",
+"tipo": "servicio",
+"forma": [
+[
+142,
+300
+],
+[
+256,
+300
+],
+[
+256,
+320
+],
+[
+142,
+320
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 2,
+"nombre": "Escalera desde el 1.er piso",
+"tipo": "servicio",
+"forma": [
+[
+106,
+666
+],
+[
+256,
+666
+],
+[
+256,
+684
+],
+[
+106,
+684
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 2,
+"nombre": "",
+"tipo": "espacio",
+"forma": [
+[
+152,
+796
+],
+[
+256,
+796
+],
+[
+256,
+877
+],
+[
+152,
+877
+]
+],
+"extra": {
+"kind": "restringido"
+}
+},
+{
+"edificio": "K",
+"piso": 2,
+"nombre": "K200",
+"tipo": "sala",
+"forma": [
+[
+150,
+384.5
+],
+[
+256,
+384.5
+],
+[
+256,
+436
+],
+[
+150,
+436
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": 2,
+"nombre": "K201",
+"tipo": "sala",
+"forma": [
+[
+150,
+438
+],
+[
+256,
+438
+],
+[
+256,
+483
+],
+[
+150,
+483
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": 2,
+"nombre": "K202",
+"tipo": "sala",
+"forma": [
+[
+150,
+485
+],
+[
+256,
+485
+],
+[
+256,
+532
+],
+[
+150,
+532
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": 2,
+"nombre": "Baño",
+"tipo": "servicio",
+"forma": [
+[
+150,
+590
+],
+[
+256,
+590
+],
+[
+256,
+611
+],
+[
+150,
+611
+]
+],
+"extra": {
+"kind": "servicio",
+"ls": 0.8
+}
+},
+{
+"edificio": "K",
+"piso": 2,
+"nombre": "K203",
+"tipo": "sala",
+"forma": [
+[
+150,
+613
+],
+[
+256,
+613
+],
+[
+256,
+633
+],
+[
+150,
+633
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": 2,
+"nombre": "K204",
+"tipo": "sala",
+"forma": [
+[
+150,
+635
+],
+[
+256,
+635
+],
+[
+256,
+664
+],
+[
+150,
+664
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": 2,
+"nombre": "Baño",
+"tipo": "servicio",
+"forma": [
+[
+149.5,
+742
+],
+[
+190.5,
+742
+],
+[
+190.5,
+762
+],
+[
+149.5,
+762
+]
+],
+"extra": {
+"kind": "servicio",
+"ls": 0.75
+}
+},
+{
+"edificio": "K",
+"piso": 2,
+"nombre": "Bodega",
+"tipo": "servicio",
+"forma": [
+[
+150,
+322
+],
+[
+212,
+322
+],
+[
+212,
+344
+],
+[
+150,
+344
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 2,
+"nombre": "Baño",
+"tipo": "servicio",
+"forma": [
+[
+223,
+322
+],
+[
+248,
+322
+],
+[
+248,
+360
+],
+[
+223,
+360
+]
+],
+"extra": {
+"kind": "servicio",
+"ls": 0.8
+}
+},
+{
+"edificio": "F",
+"piso": 2,
+"nombre": "Escalera",
+"tipo": "servicio",
+"forma": [
+[
+986,
+548
+],
+[
+1027,
+548
+],
+[
+1027,
+584
+],
+[
+986,
+584
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "F",
+"piso": 2,
+"nombre": "Escalera",
+"tipo": "servicio",
+"forma": [
+[
+1029,
+538
+],
+[
+1058,
+538
+],
+[
+1058,
+598
+],
+[
+1029,
+598
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "B",
+"piso": 2,
+"nombre": "B201",
+"tipo": "sala",
+"forma": [
+[
+1395,
+769
+],
+[
+1454,
+769
+],
+[
+1454,
+793
+],
+[
+1395,
+793
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "B",
+"piso": 2,
+"nombre": "B202",
+"tipo": "sala",
+"forma": [
+[
+1395,
+795
+],
+[
+1454,
+795
+],
+[
+1454,
+818
+],
+[
+1395,
+818
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "B",
+"piso": 2,
+"nombre": "B203",
+"tipo": "sala",
+"forma": [
+[
+1395,
+820
+],
+[
+1454,
+820
+],
+[
+1454,
+843
+],
+[
+1395,
+843
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "F",
+"piso": 3,
+"nombre": "F310",
+"tipo": "sala",
+"forma": [
+[
+955,
+713
+],
+[
+1015,
+713
+],
+[
+1015,
+759
+],
+[
+955,
+759
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "F",
+"piso": 3,
+"nombre": "",
+"tipo": "oficina",
+"forma": [
+[
+843,
+682.6
+],
+[
+878,
+682.6
+],
+[
+878,
+703
+],
+[
+843,
+703
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "F",
+"piso": 3,
+"nombre": "Biblioteca",
+"tipo": "servicio",
+"forma": [
+[
+949,
+1046
+],
+[
+1013,
+1046
+],
+[
+1013,
+1182
+],
+[
+891,
+1182
+],
+[
+891,
+1105
+],
+[
+949,
+1105
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "A",
+"piso": 3,
+"nombre": "Oficina de profesores part time",
+"tipo": "oficina",
+"forma": [
+[
+224,
+1145
+],
+[
+508,
+1145
+],
+[
+508,
+1187
+],
+[
+224,
+1187
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "A",
+"piso": 3,
+"nombre": "Oficina de estudiantes de postgrado",
+"tipo": "oficina",
+"forma": [
+[
+511,
+1145
+],
+[
+795,
+1145
+],
+[
+795,
+1187
+],
+[
+511,
+1187
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "F",
+"piso": 3,
+"nombre": "F329",
+"tipo": "sala",
+"forma": [
+[
+780,
+1000
+],
+[
+805,
+1000
+],
+[
+805,
+1025
+],
+[
+780,
+1025
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "F",
+"piso": 3,
+"nombre": "F328",
+"tipo": "sala",
+"forma": [
+[
+780,
+1026
+],
+[
+805,
+1026
+],
+[
+805,
+1047
+],
+[
+780,
+1047
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "F",
+"piso": 3,
+"nombre": "F327",
+"tipo": "sala",
+"forma": [
+[
+780,
+1048
+],
+[
+805,
+1048
+],
+[
+805,
+1068
+],
+[
+780,
+1068
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "F",
+"piso": 3,
+"nombre": "F326",
+"tipo": "sala",
+"forma": [
+[
+780,
+1069
+],
+[
+805,
+1069
+],
+[
+805,
+1090
+],
+[
+780,
+1090
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "F",
+"piso": 3,
+"nombre": "F325",
+"tipo": "sala",
+"forma": [
+[
+780,
+1106
+],
+[
+812,
+1106
+],
+[
+812,
+1127
+],
+[
+780,
+1127
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "F",
+"piso": 3,
+"nombre": "Aula Magna",
+"tipo": "sala",
+"forma": [
+[
+805,
+865
+],
+[
+975,
+865
+],
+[
+975,
+946
+],
+[
+805,
+946
+]
+],
+"extra": {
+"kind": "aula"
+}
+},
+{
+"edificio": "F",
+"piso": 3,
+"nombre": "Comedor profesores",
+"tipo": "comida",
+"forma": [
+[
+863.6,
+604.3
+],
+[
+1014.8,
+604.3
+],
+[
+1014.8,
+712.3
+],
+[
+939,
+712.3
+],
+[
+939,
+618
+],
+[
+892,
+618
+],
+[
+892,
+680.6
+],
+[
+863.6,
+680.6
+]
+],
+"extra": {
+"kind": "casino",
+"at": [
+975.9,
+625.9
+]
+}
+},
+{
+"edificio": "F",
+"piso": 3,
+"nombre": "Escalera",
+"tipo": "servicio",
+"forma": [
+[
+894,
+620
+],
+[
+937,
+620
+],
+[
+937,
+653
+],
+[
+894,
+653
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "F",
+"piso": 3,
+"nombre": "Espacio coworking",
+"tipo": "oficina",
+"forma": [
+[
+843,
+705
+],
+[
+878,
+705
+],
+[
+878,
+763
+],
+[
+843,
+763
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "F",
+"piso": 3,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+880,
+686
+],
+[
+937,
+686
+],
+[
+937,
+729
+],
+[
+880,
+729
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "F",
+"piso": 3,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+893,
+1048
+],
+[
+946,
+1048
+],
+[
+946,
+1102
+],
+[
+893,
+1102
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 3,
+"nombre": "K300B",
+"tipo": "sala",
+"forma": [
+[
+140,
+298
+],
+[
+150,
+298
+],
+[
+150,
+360
+],
+[
+131.8,
+360
+]
+],
+"extra": {
+"kind": "sala",
+"ls": 0.7
+}
+},
+{
+"edificio": "K",
+"piso": 3,
+"nombre": "Baño",
+"tipo": "servicio",
+"forma": [
+[
+150,
+298
+],
+[
+214,
+298
+],
+[
+214,
+322
+],
+[
+150,
+322
+]
+],
+"extra": {
+"kind": "servicio",
+"ls": 0.8
+}
+},
+{
+"edificio": "K",
+"piso": 3,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+150,
+346
+],
+[
+188,
+346
+],
+[
+188,
+360
+],
+[
+150,
+360
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 3,
+"nombre": "Bodega",
+"tipo": "servicio",
+"forma": [
+[
+150,
+322
+],
+[
+214,
+322
+],
+[
+214,
+344
+],
+[
+221,
+344
+],
+[
+221,
+360
+],
+[
+188,
+360
+],
+[
+188,
+346
+],
+[
+150,
+346
+]
+],
+"extra": {
+"kind": "servicio",
+"at": [
+182,
+334
+],
+"ls": 0.7
+}
+},
+{
+"edificio": "K",
+"piso": 3,
+"nombre": "Ascensor",
+"tipo": "servicio",
+"forma": [
+[
+214,
+322
+],
+[
+221,
+322
+],
+[
+221,
+344
+],
+[
+214,
+344
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 3,
+"nombre": "K300",
+"tipo": "sala",
+"forma": [
+[
+256,
+372
+],
+[
+256,
+420
+],
+[
+123.8,
+420
+],
+[
+130.2,
+372
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": 3,
+"nombre": "K301",
+"tipo": "sala",
+"forma": [
+[
+256,
+420
+],
+[
+256,
+480
+],
+[
+115.8,
+480
+],
+[
+123.8,
+420
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": 3,
+"nombre": "K302",
+"tipo": "sala",
+"forma": [
+[
+256,
+480
+],
+[
+256,
+540
+],
+[
+107.9,
+540
+],
+[
+115.8,
+480
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": 3,
+"nombre": "Baño",
+"tipo": "servicio",
+"forma": [
+[
+152,
+572
+],
+[
+152,
+588
+],
+[
+106,
+588
+],
+[
+106,
+572
+]
+],
+"extra": {
+"kind": "servicio",
+"ls": 0.7
+}
+},
+{
+"edificio": "K",
+"piso": 3,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+152,
+572
+],
+[
+190,
+572
+],
+[
+190,
+588
+],
+[
+152,
+588
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 3,
+"nombre": "Bodega",
+"tipo": "servicio",
+"forma": [
+[
+190,
+572
+],
+[
+256,
+572
+],
+[
+256,
+588
+],
+[
+190,
+588
+]
+],
+"extra": {
+"kind": "servicio",
+"ls": 0.7
+}
+},
+{
+"edificio": "K",
+"piso": 3,
+"nombre": "K303",
+"tipo": "sala",
+"forma": [
+[
+106,
+588
+],
+[
+256,
+588
+],
+[
+256,
+647
+],
+[
+106,
+647
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": 3,
+"nombre": "K304",
+"tipo": "sala",
+"forma": [
+[
+106,
+647
+],
+[
+256,
+647
+],
+[
+256,
+706
+],
+[
+106,
+706
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": 3,
+"nombre": "K305",
+"tipo": "sala",
+"forma": [
+[
+106,
+706
+],
+[
+256,
+706
+],
+[
+256,
+750
+],
+[
+106,
+750
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": 3,
+"nombre": "Baño",
+"tipo": "servicio",
+"forma": [
+[
+106,
+750
+],
+[
+256,
+750
+],
+[
+256,
+764
+],
+[
+106,
+764
+]
+],
+"extra": {
+"kind": "servicio",
+"ls": 0.7
+}
+},
+{
+"edificio": "K",
+"piso": 3,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+152,
+764
+],
+[
+190,
+764
+],
+[
+190,
+780
+],
+[
+152,
+780
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 3,
+"nombre": "K306",
+"tipo": "sala",
+"forma": [
+[
+106,
+792
+],
+[
+256,
+792
+],
+[
+256,
+830
+],
+[
+106,
+830
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": 3,
+"nombre": "K307",
+"tipo": "sala",
+"forma": [
+[
+106,
+830
+],
+[
+256,
+830
+],
+[
+256,
+860
+],
+[
+300,
+860
+],
+[
+300,
+877
+],
+[
+106,
+877
+]
+],
+"extra": {
+"kind": "sala",
+"at": [
+181,
+853
+]
+}
+},
+{
+"edificio": "F",
+"piso": 4,
+"nombre": "F405",
+"tipo": "sala",
+"forma": [
+[
+780,
+363.0
+],
+[
+865.8,
+363.0
+],
+[
+865.8,
+461.0
+],
+[
+780,
+461.0
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "F",
+"piso": 4,
+"nombre": "F404",
+"tipo": "sala",
+"forma": [
+[
+780,
+459.8
+],
+[
+865.8,
+459.8
+],
+[
+865.8,
+556.4
+],
+[
+780,
+556.4
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "F",
+"piso": 4,
+"nombre": "F403",
+"tipo": "sala",
+"forma": [
+[
+780,
+556.4
+],
+[
+865.8,
+556.4
+],
+[
+865.8,
+653.0
+],
+[
+780,
+653.0
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "F",
+"piso": 4,
+"nombre": "F406",
+"tipo": "sala",
+"forma": [
+[
+865.8,
+363.0
+],
+[
+933.6,
+363.0
+],
+[
+933.6,
+459.8
+],
+[
+865.8,
+459.8
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "F",
+"piso": 4,
+"nombre": "Escalera",
+"tipo": "servicio",
+"forma": [
+[
+883.5,
+459.4
+],
+[
+933.6,
+459.4
+],
+[
+933.6,
+556.2
+],
+[
+883.5,
+556.2
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "F",
+"piso": 4,
+"nombre": "",
+"tipo": "oficina",
+"forma": [
+[
+865.8,
+589.3
+],
+[
+914.9,
+589.3
+],
+[
+914.9,
+653.0
+],
+[
+865.8,
+653.0
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "F",
+"piso": 4,
+"nombre": "F402",
+"tipo": "sala",
+"forma": [
+[
+962.4,
+363.0
+],
+[
+1034,
+363.0
+],
+[
+1034,
+459.2
+],
+[
+962.4,
+459.2
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "F",
+"piso": 4,
+"nombre": "F401",
+"tipo": "sala",
+"forma": [
+[
+962.4,
+458.8
+],
+[
+1034,
+458.8
+],
+[
+1034,
+556.0
+],
+[
+962.4,
+556.0
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "F",
+"piso": 4,
+"nombre": "F400",
+"tipo": "sala",
+"forma": [
+[
+962.4,
+556.0
+],
+[
+1034,
+556.0
+],
+[
+1034,
+653.0
+],
+[
+962.4,
+653.0
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "F",
+"piso": 4,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+880,
+686
+],
+[
+937,
+686
+],
+[
+937,
+729
+],
+[
+880,
+729
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "F",
+"piso": 4,
+"nombre": "F409",
+"tipo": "sala",
+"forma": [
+[
+780,
+826.7
+],
+[
+805.2,
+826.7
+],
+[
+805.2,
+879.1
+],
+[
+780,
+879.1
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "F",
+"piso": 4,
+"nombre": "F408",
+"tipo": "sala",
+"forma": [
+[
+780,
+879.1
+],
+[
+805.2,
+879.1
+],
+[
+805.2,
+931.6
+],
+[
+780,
+931.6
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "F",
+"piso": 4,
+"nombre": "F410",
+"tipo": "sala",
+"forma": [
+[
+818.7,
+826.7
+],
+[
+915,
+826.7
+],
+[
+915,
+920.2
+],
+[
+818.7,
+920.2
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "F",
+"piso": 4,
+"nombre": "F406",
+"tipo": "sala",
+"forma": [
+[
+929.8,
+826.7
+],
+[
+995.1,
+826.7
+],
+[
+995.1,
+879.1
+],
+[
+929.8,
+879.1
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "F",
+"piso": 4,
+"nombre": "F407",
+"tipo": "sala",
+"forma": [
+[
+929.0,
+879.1
+],
+[
+995.1,
+879.1
+],
+[
+995.1,
+931.6
+],
+[
+929.0,
+931.6
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "F",
+"piso": 4,
+"nombre": "Baños",
+"tipo": "servicio",
+"forma": [
+[
+780,
+983.0
+],
+[
+819.5,
+983.0
+],
+[
+819.5,
+1042.3
+],
+[
+780,
+1042.3
+]
+],
+"extra": {
+"kind": "servicio",
+"split": [
+"y",
+"bl"
+]
+}
+},
+{
+"edificio": "F",
+"piso": 4,
+"nombre": "F427",
+"tipo": "sala",
+"forma": [
+[
+780,
+1042.3
+],
+[
+804.4,
+1042.3
+],
+[
+804.4,
+1069.5
+],
+[
+780,
+1069.5
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "F",
+"piso": 4,
+"nombre": "F426",
+"tipo": "sala",
+"forma": [
+[
+780,
+1069.5
+],
+[
+804.4,
+1069.5
+],
+[
+804.4,
+1095.2
+],
+[
+780,
+1095.2
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "F",
+"piso": 4,
+"nombre": "F425",
+"tipo": "sala",
+"forma": [
+[
+780,
+1095.2
+],
+[
+819.5,
+1095.2
+],
+[
+819.5,
+1132.0
+],
+[
+780,
+1132.0
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "F",
+"piso": 4,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+893,
+1048
+],
+[
+946,
+1048
+],
+[
+946,
+1102
+],
+[
+893,
+1102
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "F",
+"piso": 4,
+"nombre": "Sala de estar profesores y funcionarios",
+"tipo": "oficina",
+"forma": [
+[
+948,
+1042.2
+],
+[
+1034,
+1042.2
+],
+[
+1034,
+1114.3
+],
+[
+948,
+1114.3
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "F",
+"piso": 4,
+"nombre": "Dirección de Adm. y Finanzas",
+"tipo": "oficina",
+"forma": [
+[
+874.9,
+1104
+],
+[
+946,
+1104
+],
+[
+946,
+1116.3
+],
+[
+1034,
+1116.3
+],
+[
+1034,
+1208.8
+],
+[
+874.9,
+1208.8
+]
+],
+"extra": {
+"kind": "depto"
+}
+},
+{
+"edificio": "K",
+"piso": 4,
+"nombre": "Baño",
+"tipo": "servicio",
+"forma": [
+[
+221,
+298
+],
+[
+256,
+298
+],
+[
+256,
+320
+],
+[
+221,
+320
+]
+],
+"extra": {
+"kind": "servicio",
+"ls": 0.7
+}
+},
+{
+"edificio": "K",
+"piso": 4,
+"nombre": "Bodega",
+"tipo": "servicio",
+"forma": [
+[
+140,
+298
+],
+[
+221,
+298
+],
+[
+221,
+320
+],
+[
+214,
+320
+],
+[
+214,
+344
+],
+[
+221,
+344
+],
+[
+221,
+360
+],
+[
+188,
+360
+],
+[
+188,
+346
+],
+[
+150,
+346
+],
+[
+150,
+360
+],
+[
+131.8,
+360
+]
+],
+"extra": {
+"kind": "servicio",
+"at": [
+180,
+326
+]
+}
+},
+{
+"edificio": "K",
+"piso": 4,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+150,
+346
+],
+[
+188,
+346
+],
+[
+188,
+360
+],
+[
+150,
+360
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 4,
+"nombre": "Ascensor",
+"tipo": "servicio",
+"forma": [
+[
+214,
+320
+],
+[
+221,
+320
+],
+[
+221,
+344
+],
+[
+214,
+344
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 4,
+"nombre": "K400",
+"tipo": "sala",
+"forma": [
+[
+256,
+372
+],
+[
+256,
+420
+],
+[
+123.8,
+420
+],
+[
+130.2,
+372
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": 4,
+"nombre": "K401",
+"tipo": "sala",
+"forma": [
+[
+256,
+420
+],
+[
+256,
+480
+],
+[
+115.8,
+480
+],
+[
+123.8,
+420
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": 4,
+"nombre": "K402",
+"tipo": "sala",
+"forma": [
+[
+256,
+480
+],
+[
+256,
+540
+],
+[
+107.9,
+540
+],
+[
+115.8,
+480
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": 4,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+152,
+572
+],
+[
+190,
+572
+],
+[
+190,
+588
+],
+[
+152,
+588
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 4,
+"nombre": "Bodega",
+"tipo": "servicio",
+"forma": [
+[
+190,
+572
+],
+[
+256,
+572
+],
+[
+256,
+588
+],
+[
+190,
+588
+]
+],
+"extra": {
+"kind": "servicio",
+"ls": 0.7
+}
+},
+{
+"edificio": "K",
+"piso": 4,
+"nombre": "K403",
+"tipo": "sala",
+"forma": [
+[
+106,
+588
+],
+[
+256,
+588
+],
+[
+256,
+644
+],
+[
+106,
+644
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": 4,
+"nombre": "K404",
+"tipo": "sala",
+"forma": [
+[
+106,
+644
+],
+[
+256,
+644
+],
+[
+256,
+700
+],
+[
+106,
+700
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": 4,
+"nombre": "K405",
+"tipo": "sala",
+"forma": [
+[
+106,
+700
+],
+[
+256,
+700
+],
+[
+256,
+712
+],
+[
+200,
+712
+],
+[
+200,
+740
+],
+[
+256,
+740
+],
+[
+256,
+780
+],
+[
+190,
+780
+],
+[
+190,
+764
+],
+[
+152,
+764
+],
+[
+152,
+744
+],
+[
+106,
+744
+]
+],
+"extra": {
+"kind": "sala",
+"at": [
+150,
+722
+]
+}
+},
+{
+"edificio": "K",
+"piso": 4,
+"nombre": "Baño",
+"tipo": "servicio",
+"forma": [
+[
+200,
+712
+],
+[
+256,
+712
+],
+[
+256,
+740
+],
+[
+200,
+740
+]
+],
+"extra": {
+"kind": "servicio",
+"ls": 0.7
+}
+},
+{
+"edificio": "K",
+"piso": 4,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+152,
+764
+],
+[
+190,
+764
+],
+[
+190,
+780
+],
+[
+152,
+780
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 4,
+"nombre": "K406",
+"tipo": "sala",
+"forma": [
+[
+106,
+800
+],
+[
+256,
+800
+],
+[
+256,
+833
+],
+[
+106,
+833
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": 4,
+"nombre": "K407",
+"tipo": "sala",
+"forma": [
+[
+106,
+833
+],
+[
+256,
+833
+],
+[
+256,
+856
+],
+[
+106,
+856
+]
+],
+"extra": {
+"kind": "sala"
+}
+},
+{
+"edificio": "K",
+"piso": 4,
+"nombre": "K408",
+"tipo": "sala",
+"forma": [
+[
+106,
+856
+],
+[
+256,
+856
+],
+[
+256,
+862
+],
+[
+300,
+862
+],
+[
+300,
+877
+],
+[
+106,
+877
+]
+],
+"extra": {
+"kind": "sala",
+"at": [
+181,
+866
+]
+}
+},
+{
+"edificio": "K",
+"piso": 5,
+"nombre": "Baño",
+"tipo": "servicio",
+"forma": [
+[
+221,
+298
+],
+[
+256,
+298
+],
+[
+256,
+320
+],
+[
+221,
+320
+]
+],
+"extra": {
+"kind": "servicio",
+"ls": 0.7
+}
+},
+{
+"edificio": "K",
+"piso": 5,
+"nombre": "Bodega",
+"tipo": "servicio",
+"forma": [
+[
+140,
+298
+],
+[
+221,
+298
+],
+[
+221,
+320
+],
+[
+214,
+320
+],
+[
+214,
+344
+],
+[
+221,
+344
+],
+[
+221,
+360
+],
+[
+188,
+360
+],
+[
+188,
+346
+],
+[
+150,
+346
+],
+[
+150,
+360
+],
+[
+131.8,
+360
+]
+],
+"extra": {
+"kind": "servicio",
+"at": [
+180,
+326
+]
+}
+},
+{
+"edificio": "K",
+"piso": 5,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+150,
+346
+],
+[
+188,
+346
+],
+[
+188,
+360
+],
+[
+150,
+360
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 5,
+"nombre": "Ascensor",
+"tipo": "servicio",
+"forma": [
+[
+214,
+320
+],
+[
+221,
+320
+],
+[
+221,
+344
+],
+[
+214,
+344
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 5,
+"nombre": "K500",
+"tipo": "sala",
+"forma": [
+[
+150,
+364
+],
+[
+150,
+394
+],
+[
+127.3,
+394
+],
+[
+131.2,
+364
+]
+],
+"extra": {
+"kind": "sala",
+"ls": 0.7
+}
+},
+{
+"edificio": "K",
+"piso": 5,
+"nombre": "DOCIV",
+"tipo": "oficina",
+"forma": [
+[
+127.3,
+394
+],
+[
+300,
+394
+],
+[
+300,
+548
+],
+[
+106.8,
+548
+]
+],
+"extra": {
+"kind": "depto",
+"at": [
+205,
+470
+],
+"full": "Departamento de Obras Civiles"
+}
+},
+{
+"edificio": "K",
+"piso": 5,
+"nombre": "Sala técnica",
+"tipo": "servicio",
+"forma": [
+[
+124,
+568
+],
+[
+152,
+568
+],
+[
+152,
+592
+],
+[
+124,
+592
+]
+],
+"extra": {
+"kind": "servicio",
+"ls": 0.7
+}
+},
+{
+"edificio": "K",
+"piso": 5,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+152,
+572
+],
+[
+190,
+572
+],
+[
+190,
+588
+],
+[
+152,
+588
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 5,
+"nombre": "Baño",
+"tipo": "servicio",
+"forma": [
+[
+190,
+564
+],
+[
+236,
+564
+],
+[
+236,
+598
+],
+[
+190,
+598
+]
+],
+"extra": {
+"kind": "servicio",
+"ls": 0.7
+}
+},
+{
+"edificio": "K",
+"piso": 5,
+"nombre": "DINF",
+"tipo": "oficina",
+"forma": [
+[
+106,
+602
+],
+[
+300,
+602
+],
+[
+300,
+745
+],
+[
+106,
+745
+]
+],
+"extra": {
+"kind": "depto",
+"full": "Departamento de Informática"
+}
+},
+{
+"edificio": "K",
+"piso": 5,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+152,
+764
+],
+[
+190,
+764
+],
+[
+190,
+780
+],
+[
+152,
+780
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 5,
+"nombre": "Baño",
+"tipo": "servicio",
+"forma": [
+[
+190,
+764
+],
+[
+222,
+764
+],
+[
+222,
+780
+],
+[
+190,
+780
+]
+],
+"extra": {
+"kind": "servicio",
+"ls": 0.7
+}
+},
+{
+"edificio": "K",
+"piso": 5,
+"nombre": "ELO",
+"tipo": "oficina",
+"forma": [
+[
+106,
+812
+],
+[
+300,
+812
+],
+[
+300,
+877
+],
+[
+106,
+877
+]
+],
+"extra": {
+"kind": "depto",
+"full": "Departamento de Electrónica"
+}
+},
+{
+"edificio": "K",
+"piso": 6,
+"nombre": "Baño",
+"tipo": "servicio",
+"forma": [
+[
+221,
+298
+],
+[
+256,
+298
+],
+[
+256,
+320
+],
+[
+221,
+320
+]
+],
+"extra": {
+"kind": "servicio",
+"ls": 0.7
+}
+},
+{
+"edificio": "K",
+"piso": 6,
+"nombre": "Bodega",
+"tipo": "servicio",
+"forma": [
+[
+140,
+298
+],
+[
+221,
+298
+],
+[
+221,
+320
+],
+[
+214,
+320
+],
+[
+214,
+344
+],
+[
+221,
+344
+],
+[
+221,
+360
+],
+[
+188,
+360
+],
+[
+188,
+346
+],
+[
+150,
+346
+],
+[
+150,
+360
+],
+[
+131.8,
+360
+]
+],
+"extra": {
+"kind": "servicio",
+"at": [
+180,
+326
+]
+}
+},
+{
+"edificio": "K",
+"piso": 6,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+150,
+346
+],
+[
+188,
+346
+],
+[
+188,
+360
+],
+[
+150,
+360
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 6,
+"nombre": "Ascensor",
+"tipo": "servicio",
+"forma": [
+[
+214,
+320
+],
+[
+221,
+320
+],
+[
+221,
+344
+],
+[
+214,
+344
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 6,
+"nombre": "K600",
+"tipo": "sala",
+"forma": [
+[
+150,
+364
+],
+[
+150,
+394
+],
+[
+127.3,
+394
+],
+[
+131.2,
+364
+]
+],
+"extra": {
+"kind": "sala",
+"ls": 0.7
+}
+},
+{
+"edificio": "K",
+"piso": 6,
+"nombre": "DINF",
+"tipo": "oficina",
+"forma": [
+[
+127.3,
+394
+],
+[
+300,
+394
+],
+[
+300,
+548
+],
+[
+106.8,
+548
+]
+],
+"extra": {
+"kind": "depto",
+"at": [
+205,
+470
+],
+"full": "Departamento de Informática"
+}
+},
+{
+"edificio": "K",
+"piso": 6,
+"nombre": "Sala técnica",
+"tipo": "servicio",
+"forma": [
+[
+124,
+568
+],
+[
+152,
+568
+],
+[
+152,
+592
+],
+[
+124,
+592
+]
+],
+"extra": {
+"kind": "servicio",
+"ls": 0.7
+}
+},
+{
+"edificio": "K",
+"piso": 6,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+152,
+572
+],
+[
+190,
+572
+],
+[
+190,
+588
+],
+[
+152,
+588
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 6,
+"nombre": "Baño",
+"tipo": "servicio",
+"forma": [
+[
+190,
+564
+],
+[
+236,
+564
+],
+[
+236,
+598
+],
+[
+190,
+598
+]
+],
+"extra": {
+"kind": "servicio",
+"ls": 0.7
+}
+},
+{
+"edificio": "K",
+"piso": 6,
+"nombre": "DFIS",
+"tipo": "oficina",
+"forma": [
+[
+106,
+602
+],
+[
+300,
+602
+],
+[
+300,
+745
+],
+[
+106,
+745
+]
+],
+"extra": {
+"kind": "depto",
+"full": "Departamento de Física"
+}
+},
+{
+"edificio": "K",
+"piso": 6,
+"nombre": "Escalera y ascensor",
+"tipo": "servicio",
+"forma": [
+[
+152,
+764
+],
+[
+190,
+764
+],
+[
+190,
+780
+],
+[
+152,
+780
+]
+],
+"extra": {
+"kind": "servicio"
+}
+},
+{
+"edificio": "K",
+"piso": 6,
+"nombre": "Baño",
+"tipo": "servicio",
+"forma": [
+[
+190,
+764
+],
+[
+222,
+764
+],
+[
+222,
+780
+],
+[
+190,
+780
+]
+],
+"extra": {
+"kind": "servicio",
+"ls": 0.7
+}
+},
+{
+"edificio": "K",
+"piso": 6,
+"nombre": "DFIS",
+"tipo": "oficina",
+"forma": [
+[
+106,
+812
+],
+[
+300,
+812
+],
+[
+300,
+877
+],
+[
+106,
+877
+]
+],
+"extra": {
+"kind": "depto",
+"full": "Departamento de Física"
+}
+}
+]
 }

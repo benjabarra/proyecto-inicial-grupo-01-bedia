@@ -1,0 +1,154 @@
+{% load static %}<!DOCTYPE html>
+{# pagina del mapa: pantalla completa. el dibujo lo hace mapa.js; los datos van abajo en bloques json #}
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FFC72C">
+<title>Mapa · U-Pin</title>
+<link rel="icon" type="image/png" sizes="32x32" href="{% static 'mi_app/marca/favicon-32.png' %}">
+<link rel="apple-touch-icon" href="{% static 'mi_app/marca/apple-touch-icon.png' %}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="{% static 'mi_app/mapa/mapa.css' %}">
+</head>
+<body>
+{# mapa u-pin: plano base de Isidora Morales (mapa USM) y OpenStreetMap, corregido por el equipo #}
+
+
+<div class="app">
+  <div id="legend" class="legend">
+  <button id="legBtn" type="button" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg>Simbología</button>
+  <ul>
+    <li><i style="background:#FFFFFF"></i>Salas y auditorios</li>
+    <li><i style="background:#E4DCF2"></i>Oficinas</li>
+    <li><i style="background:#EDE6DA"></i>Servicios y bodegas</li>
+    <li><i style="background:linear-gradient(90deg,#F6C9D6 50%,#BFDDF4 50%)"></i>Baños</li>
+    <li><i style="background:#F6DCA8"></i>Comida</li>
+    <li><i class="st"><svg viewBox="0 0 24 24"><path d="M5 18h4v-4h4v-4h4V6h2"/></svg></i>Escalera</li>
+    <li><i class="lf"><svg viewBox="0 0 24 24"><path d="M8 10l4-5 4 5zM8 14l4 5 4-5z"/></svg></i>Ascensor</li>
+    <li><span class="dbl"><i class="st"><svg viewBox="0 0 24 24"><path d="M5 18h4v-4h4v-4h4V6h2"/></svg></i><i class="lf"><svg viewBox="0 0 24 24"><path d="M8 10l4-5 4 5zM8 14l4 5 4-5z"/></svg></i></span>Escalera y ascensor</li>
+    <li><i style="background:repeating-linear-gradient(135deg,#D6D5D1 0 3px,#9E9C97 3px 4px)"></i>Sin acceso</li>
+  </ul>
+</div>
+<canvas id="gl" aria-hidden="true"></canvas>
+  <canvas id="cv" aria-label="Mapa del campus San Joaquín. Arrastra para mover, dos dedos para girar y acercar."></canvas>
+
+  <header class="top">
+    <div class="brand">
+      <svg viewBox="-4 -14 72 78" width="26" height="28" aria-hidden="true"><path fill="#FFC72C" d="M32 4C19.3 4 9 14.3 9 27c0 15.6 23 33 23 33s23-17.4 23-33C55 14.3 44.7 4 32 4z"/><circle cx="24.5" cy="26" r="3.2" fill="#2B2100"/><circle cx="39.5" cy="26" r="3.2" fill="#2B2100"/><path fill="none" stroke="#2B2100" stroke-width="4.6" stroke-linecap="round" d="M23.5 33.5v1a8 8 0 0 0 17 0v-1"/><g transform="translate(32 3) scale(.72) rotate(-16) translate(-32 -10)"><path fill="#1D1D1F" d="M20 11v8c0 4 24 4 24 0v-8z"/><path fill="#1D1D1F" stroke="#fff" stroke-width="1.6" d="M32 -1L59 9 32 19 5 9z"/></g></svg>
+      <b>U-Pin</b><span>Campus San Joaquín</span>
+    </div>
+    <div class="search">
+      <label for="q" class="sr">Buscar sala</label>
+      <input id="q" type="search" placeholder="Buscar en el campus…" autocomplete="off">
+      <ul id="res" role="listbox" hidden></ul>
+    </div>
+    <div class="mode" role="group" aria-label="Vista del mapa">
+      <button id="m2d" aria-pressed="false">2D</button>
+      <button id="m25" aria-pressed="true">2.5D</button>
+    </div>
+    <button class="catbtn" id="catbtn" aria-expanded="false" aria-controls="cats"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.3-7-11.5a7 7 0 0 1 14 0C19 14.7 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span class="tx">Reportes</span><span class="n" id="catn">0</span></button>
+    <button class="prof" id="prof" type="button" aria-label="Mi perfil"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c1.2-3.6 4.2-5.5 7.5-5.5s6.3 1.9 7.5 5.5"/></svg></button>
+  </header>
+
+  <button class="fltog" id="fltog" type="button" aria-expanded="false" aria-controls="floors"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg><b id="fltx">Ext</b></button>
+  <nav class="floors fcol" aria-label="Pisos" id="floors"></nav>
+  <div class="ctrl">
+    <div class="pad loc off" id="locpad"><button id="loc" type="button" aria-label="Ir a mi ubicación"><svg viewBox="0 0 40 40" width="52" height="52" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="#FFC72C"/><g class="eyes"><circle cx="14" cy="17" r="2.7" fill="#2B2100"/><circle cx="26" cy="17" r="2.7" fill="#2B2100"/></g><path d="M12.6 23.2a7.4 7.4 0 0 0 14.8 0" fill="none" stroke="#2B2100" stroke-width="3" stroke-linecap="round"/></svg></button></div>
+    <div class="pad">
+      <button id="compass" aria-label="Apuntar al norte del plano"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M12 3l4 9h-8z" fill="#E5484D"/><path d="M12 21l-4-9h8z" fill="#9A9AA3"/></svg></button>
+      <button id="rl" aria-label="Girar a la izquierda">⟲</button>
+      <button id="rr" aria-label="Girar a la derecha">⟳</button>
+    </div>
+    <div class="pad">
+      <button id="zin" aria-label="Acercar">+</button>
+      <button id="zout" aria-label="Alejar">−</button>
+    </div>
+  </div>
+  <div class="me">
+    <div class="gpsinfo" id="gpsinfo" hidden></div>
+    <button id="gps" class="gpsbtn" aria-pressed="false"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>Mi ubicación</button>
+    <button id="walk">Simular mi ubicación</button><button id="fab" class="fab" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>Reportar</span></button>
+  </div>
+  <div class="notice" id="notice" hidden></div>
+  <div class="pick" id="pick" hidden><span id="pickTx">Toca la sala donde está el problema</span><button type="button" id="pickX">Cancelar</button></div>
+  <div class="chip" id="chip" hidden>
+    <b id="chipName">Edificio</b>
+    <button id="chipIn" class="btn pri sm">Ver salas</button>
+    <button id="chipX" class="x" aria-label="Quitar selección del edificio">✕</button>
+  </div>
+
+  <section class="sheet" id="sheet" aria-live="polite">
+    <div class="grab"></div>
+    <h2 id="sTitle">Sala</h2>
+    <p id="sSub"></p>
+    <div class="row">
+      <button class="btn pri" id="sReport"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 2l8 19-8-4-8 4z"/></svg>Reportar aquí</button>
+      <button class="btn sec xbtn" id="sClose" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="demo" id="sDemo" hidden></div>
+  </section>
+  <section class="cats" id="cats" hidden aria-label="Filtrar reportes por categoría">
+    <div class="chead"><h3 id="cTitle">Reportes</h3><button type="button" id="cCfg" class="cfg" aria-pressed="false" aria-label="Ajustes: elegir qué se muestra en el mapa"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg></button></div>
+    <p class="sub" id="cSub">Toca un tipo para ver sus reportes y uno para ir a su lugar.</p>
+    <div class="estados" role="group" aria-label="Estado">
+      <button id="eAct" aria-pressed="true">Activos</button>
+      <button id="eTodos" aria-pressed="false">Todos</button>
+    </div>
+    <div id="catlist"></div>
+    <div class="todo" id="cTodo"><button id="cAll">Mostrar todas</button><button id="cNone">Ocultar todas</button></div>
+  </section>
+  <section class="sheet rsheet" id="rsheet" aria-live="polite">
+    <div class="grab"></div>
+    <h2 id="rTitle">Reporte</h2>
+    <p id="rSub"></p>
+    <div class="tags" id="rTags"></div>
+    <div class="row">
+      <button class="btn pri" id="rApoyo">A mí también me pasa</button>
+      <a class="btn sec" id="rVer" href="#">Ver detalle</a>
+      <button class="btn sec xbtn" id="rClose" aria-label="Cerrar"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="demo" id="rDemo" hidden></div>
+  </section>
+    <section class="page" id="pgRep" hidden aria-labelledby="rpT">
+    <div class="pin">
+      <div class="phead"><div><h1 id="rpT">Reportes</h1><p id="rpSub"></p></div>
+        <button type="button" class="cfg" id="rpCfg" aria-label="Elegir qué tipos se ven en el mapa"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg></button></div>
+      <div class="seg" role="group" aria-label="Estado"><button type="button" data-e="act" aria-pressed="true">Activos</button><button type="button" data-e="all" aria-pressed="false">Todos</button><button type="button" data-e="mine" aria-pressed="false">Mis apoyos</button></div>
+      <div class="rchips" id="rpChips" role="group" aria-label="Tipo de reporte"></div>
+      <ul class="rlist" id="rpList"></ul>
+      <p class="pnote">Toca un reporte para verlo en el mapa.</p>
+    </div>
+  </section>
+  <section class="page" id="pgPerf" hidden aria-labelledby="pfT">
+    <div class="pin">
+      <div class="pcard"><div class="avatar" aria-hidden="true">E</div><div><h1 id="pfT">Mi perfil</h1><p>Estudiante USM · Campus San Joaquín</p></div></div>
+      <div class="stats"><div><b id="pfAp">0</b><span>Apoyos dados</span></div><div><b>0</b><span>Reportes hechos</span></div><div><b id="pfAct">0</b><span>Activos en el campus</span></div></div>
+      <ul class="plist">
+        <li><button type="button" id="pfMine"><span>Mis apoyos</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button></li>
+        <li><button type="button" class="pdemo"><span>Notificaciones</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button></li>
+        <li><button type="button" class="pdemo"><span>Editar perfil</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button></li>
+        <li><button type="button" class="pdemo out"><span>Cerrar sesión</span></button></li>
+      </ul>
+      <p class="pnote" id="pfNote" hidden>En la app esto abre tu cuenta real.</p>
+    </div>
+  </section>
+  <nav class="tabbar" id="tabbar" aria-label="Secciones">
+    <button type="button" data-tab="map" aria-current="page"><span class="ti"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4L3.5 6v14L9 18l6 2 5.5-2V4L15 6z"/><path d="M9 4v14M15 6v14"/></svg></span><span class="tl">Mapa</span></button>
+    <button type="button" data-tab="rep"><span class="ti"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.3-7-11.5a7 7 0 0 1 14 0C19 14.7 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><i class="tb" id="tabN">0</i></span><span class="tl">Reportes</span></button>
+    <button type="button" data-tab="perf"><span class="ti"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c1.2-3.6 4.2-5.5 7.5-5.5s6.3 1.9 7.5 5.5"/></svg></span><span class="tl">Mi perfil</span></button>
+  </nav>
+  <div class="credit">Plano base: Isidora Morales (mapa USM) · © colaboradores de OpenStreetMap</div>
+</div>
+
+
+{# datos para mapa.js: edificios y arboles, salas por piso, grupos, reportes y direcciones de la app #}
+{{ escena|json_script:'d-escena' }}
+{{ pisos|json_script:'d-pisos' }}
+{{ grupos|json_script:'d-grupos' }}
+{{ reportes|json_script:'d-reportes' }}
+{{ config|json_script:'d-config' }}
+<script src="{% static 'mi_app/mapa/mapa.js' %}"></script>
+</body>
+</html>

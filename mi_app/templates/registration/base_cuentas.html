@@ -1,0 +1,22 @@
+{% extends "reportes/base.html" %}
+{% load static %}
+{# pantallas de cuenta: en computador se ven en dos columnas, foto del campus a la izquierda y el formulario a la derecha #}
+{% block principal %}
+<main class="cuentas">
+  <aside class="cuentas-arte" style="background-image: url('{% if tema.imagen %}{% static tema.imagen %}{% else %}{% static 'mi_app/img/usm-san-joaquin.jpg' %}{% endif %}')">
+    <div class="cuentas-arte-in">
+      <span class="cuentas-marca"><img src="{% static 'mi_app/marca/pin.svg' %}" alt="" width="34" height="36">U-Pin</span>
+      <h2>Reporta lo que no funciona en tu campus.</h2>
+      <ul>
+        <li>Ubica el problema en el mapa, sala por sala.</li>
+        <li>Apoya los reportes de otros: “a mí también me pasa”.</li>
+        <li>Sigue su estado hasta que quede resuelto.</li>
+      </ul>
+      <p class="cuentas-credito">{% if tema.campus %}{{ tema.sigla }} · Campus {{ tema.campus }}{% else %}Campus San Joaquín{% endif %}</p>
+    </div>
+  </aside>
+  <div class="cuentas-form">
+    {% block contenido %}{% endblock %}
+  </div>
+</main>
+{% endblock %}

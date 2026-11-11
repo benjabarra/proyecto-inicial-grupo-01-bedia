@@ -1,3 +1,4 @@
+# migracion 0002: carga las primeras categorias de problemas
 from django.db import migrations
 
 CATEGORIAS = [

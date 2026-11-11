@@ -1,3 +1,4 @@
+# migracion 0004: agrega las universidades y sus colores
 from django.db import migrations, models
 
 

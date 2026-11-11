@@ -1,8 +1,10 @@
 {% extends "reportes/base.html" %}
+{# formulario de reporte nuevo; en computador lleva consejos al lado #}
 
 {% block titulo %}Nuevo reporte{% endblock %}
 
 {% block contenido %}
+<div class="crear-grid">
 <div class="panel panel-ancho">
   <h1>Nuevo reporte</h1>
   <p class="sub">Cuéntanos qué pasa y dónde. Evita fotografiar a personas.</p>
@@ -13,5 +15,15 @@
       <button type="submit" class="btn btn-block">Enviar reporte</button>
     </div>
   </form>
+</div>
+<aside class="crear-ayuda">
+  <h2>Un buen reporte</h2>
+  <ol>
+    <li><b>Título corto</b> que diga qué pasa: “La luz parpadea”.</li>
+    <li><b>La sala o el lugar</b> exacto. Si vienes del mapa, ya está puesto.</li>
+    <li><b>Una foto</b> ayuda al encargado a encontrarlo, pero es opcional.</li>
+  </ol>
+  <a class="btn btn-claro btn-block" href="{% url 'reportes:mapa' %}">Elegir el lugar en el mapa</a>
+</aside>
 </div>
 {% endblock %}

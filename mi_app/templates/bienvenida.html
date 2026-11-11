@@ -1,10 +1,19 @@
 {% extends "reportes/base.html" %}
+{# portada: elegir universidad y campus. en computador muestra una foto del campus al lado #}
 {% load static %}
 
 {% block titulo %}Bienvenida{% endblock %}
 
 {% block principal %}
 <main class="portada">
+  <div class="portada-grid">
+  <aside class="portada-arte" aria-hidden="true">
+    <img src="{% static 'mi_app/img/usm-san-joaquin.jpg' %}" alt="">
+    <div class="portada-arte-txt">
+      <b>Un mapa de tu campus, sala por sala.</b>
+      <span>Toca el lugar del problema, repórtalo en segundos y sigue cómo se resuelve.</span>
+    </div>
+  </aside>
   <form class="portada-in" method="post">
     {% csrf_token %}
     <div class="logo"><img src="{% static 'mi_app/marca/pin.svg' %}" alt="" width="38" height="40">U-Pin</div>
@@ -74,5 +83,6 @@
     </script>
     <p class="aparte">¿No tienes cuenta? <a href="{% url 'registro' %}">Crear cuenta</a></p>
   </form>
+  </div>
 </main>
 {% endblock %}

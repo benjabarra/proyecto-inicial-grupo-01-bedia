@@ -1,23 +1,43 @@
+# vistas de u-pin: cada funcion responde a una direccion de la pagina
 from django.contrib import messages
 from django.contrib.auth import get_user_model, login
+import json
+from functools import lru_cache
+from pathlib import Path
+
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
-from django.db.models import Q
+from django.db.models import Count, Exists, OuterRef, Q
+from django.http import JsonResponse
+from django.middleware.csrf import get_token
+from django.urls import reverse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
 
 from .forms import CodigoForm, EntrarForm, RegistroForm, ReporteForm
-from .models import Campus, Perfil, Reporte, Universidad, rol_de, universidad_para_correo
+from .models import (
+    CLAVE_CATEGORIA,
+    Apoyo,
+    Campus,
+    Perfil,
+    Reporte,
+    Sala,
+    Universidad,
+    rol_de,
+    universidad_para_correo,
+)
 
-BACKEND = "django.contrib.auth.backends.ModelBackend"
+BACKEND = "django.contrib.auth.backends.ModelBackend"  # forma normal de iniciar sesion de django
 
 
 # ---------- bienvenida y cuentas ----------
 
+# portada: elegir universidad y campus antes de entrar.
+# si ya inicio sesion, va directo al mapa
 def bienvenida(request):
     if request.user.is_authenticated:
-        return redirect("reportes:lista")
+        return redirect("reportes:mapa")
     if request.method == "POST":
         campus = (
             Campus.objects.select_related("universidad")
@@ -35,6 +55,7 @@ def bienvenida(request):
     return render(request, "bienvenida.html", {"universidades": universidades, "error": error})
 
 
+# guarda en el perfil el campus elegido en la portada
 def _guardar_campus(request, usuario):
     """si eligio campus en la bienvenida y su perfil no tiene, se lo guardamos"""
     perfil = getattr(usuario, "perfil", None)
@@ -46,6 +67,7 @@ def _guardar_campus(request, usuario):
             perfil.save(update_fields=["campus"])
 
 
+# crea el codigo de verificacion y lo manda por correo
 def enviar_codigo(usuario):
     """crea un codigo nuevo y lo manda al correo (en pruebas sale en la terminal)"""
     perfil, _ = Perfil.objects.get_or_create(
@@ -63,9 +85,11 @@ def enviar_codigo(usuario):
     )
 
 
+# crear cuenta: solo con correo institucional.
+# la cuenta queda inactiva hasta poner el codigo que llega al correo
 def registro(request):
     if request.user.is_authenticated:
-        return redirect("reportes:lista")
+        return redirect("reportes:mapa")
     form = RegistroForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
         datos = form.cleaned_data
@@ -86,9 +110,10 @@ def registro(request):
     return render(request, "registration/registro.html", {"form": form})
 
 
+# iniciar sesion con correo y contraseña. si falta verificar, pide el codigo
 def entrar(request):
     if request.user.is_authenticated:
-        return redirect("reportes:lista")
+        return redirect("reportes:mapa")
     form = EntrarForm(request.POST or None)
     error = None
     if request.method == "POST" and form.is_valid():
@@ -114,7 +139,7 @@ def entrar(request):
             siguiente = request.POST.get("next") or request.GET.get("next")
             if siguiente and url_has_allowed_host_and_scheme(siguiente, {request.get_host()}):
                 return redirect(siguiente)
-            return redirect("reportes:lista")
+            return redirect("reportes:mapa")
     return render(
         request,
         "registration/login.html",
@@ -122,6 +147,7 @@ def entrar(request):
     )
 
 
+# usuario que esta confirmando su correo (se guarda en la sesion)
 def _usuario_por_verificar(request):
     pk = request.session.get("verificar_id")
     if not pk:
@@ -129,6 +155,7 @@ def _usuario_por_verificar(request):
     return get_user_model().objects.filter(pk=pk, is_active=False).first()
 
 
+# revisa el codigo de 6 numeros y activa la cuenta
 def verificar(request):
     usuario = _usuario_por_verificar(request)
     if usuario is None:
@@ -153,7 +180,7 @@ def verificar(request):
             login(request, usuario, backend=BACKEND)
             _guardar_campus(request, usuario)
             messages.success(request, "¡Listo! Tu cuenta quedó confirmada.")
-            return redirect("reportes:lista")
+            return redirect("reportes:mapa")
     return render(
         request,
         "registration/verificar.html",
@@ -161,6 +188,7 @@ def verificar(request):
     )
 
 
+# manda otro codigo si paso al menos un minuto
 @require_POST
 def reenviar_codigo(request):
     usuario = _usuario_por_verificar(request)
@@ -174,11 +202,118 @@ def reenviar_codigo(request):
     return redirect("verificar")
 
 
-# ---------- reportes ----------
+# ---------- mapa ----------
+
+# carpeta con los archivos fijos del mapa
+DATOS = Path(__file__).resolve().parent / "datos"
+
+
+@lru_cache
+def _dato(nombre):
+    """lee una vez los archivos fijos del mapa (edificios, arboles, canchas...)"""
+    return json.loads((DATOS / nombre).read_text(encoding="utf-8"))
+
+
+# agrega a cada reporte cuantos apoyos tiene y si yo lo apoye
+def _con_apoyos(reportes, usuario):
+    return reportes.annotate(
+        n_apoyos=Count("apoyos", distinct=True),
+        yo_apoyo=Exists(Apoyo.objects.filter(reporte=OuterRef("pk"), usuario=usuario)),
+    )
+
+
+def _pisos_del_mapa():
+    """salas agrupadas por piso, con lo que el mapa necesita para dibujarlas"""
+    pisos = {}
+    for s in Sala.objects.select_related("edificio").order_by("pk"):
+        sala = {
+            "pk": s.pk,
+            "pts": s.forma,
+            "label": s.nombre,
+            "building": s.edificio.nombre,
+            "kind": s.extra.get("kind", "sala"),
+        }
+        sala.update({k: v for k, v in s.extra.items() if k != "kind"})
+        pisos.setdefault(str(s.piso), []).append(sala)
+    return pisos
+
+
+# reportes en el formato que usa el mapa (posicion, color, estado, apoyos)
+def _reportes_del_mapa(usuario):
+    datos = []
+    reportes = _con_apoyos(
+        Reporte.objects.select_related("categoria", "sala__edificio"), usuario
+    )
+    for r in reportes:
+        punto = r.punto_mapa()
+        if punto is None:
+            continue  # reportes antiguos sin lugar en el mapa: salen solo en la lista
+        piso, x, y = punto
+        datos.append(
+            {
+                "pk": r.pk,
+                "t": r.titulo,
+                "cat": CLAVE_CATEGORIA.get(r.categoria.nombre, "otro"),
+                "e": r.estado,
+                "f": piso,
+                "x": x,
+                "y": y,
+                "b": r.sala.edificio.nombre if r.sala else "",
+                "room": r.sala.nombre if r.sala else r.ubicacion.split(" · ")[0],
+                "salapk": r.sala_id,
+                "ap": r.n_apoyos,
+                "yo": r.yo_apoyo,
+                "url": reverse("reportes:detalle", args=[r.pk]),
+                "urlApoyo": reverse("reportes:apoyar", args=[r.pk]),
+            }
+        )
+    return datos
+
+
+# pagina principal: el mapa del campus en 2.5d.
+# le pasa al navegador las salas, los reportes y las direcciones para reportar y apoyar
+@login_required
+def mapa(request):
+    from django.templatetags.static import static
+
+    return render(
+        request,
+        "reportes/mapa.html",
+        {
+            "escena": _dato("mapa_escena.json"),
+            "grupos": _dato("mapa_grupos.json"),
+            "pisos": _pisos_del_mapa(),
+            "reportes": _reportes_del_mapa(request.user),
+            "config": {
+                "csrf": get_token(request),
+                "urlCrear": reverse("reportes:crear"),
+                "urlPerfil": reverse("reportes:perfil"),
+                "suelo": static("mi_app/mapa/suelo.png"),
+                "sueloHd": static("mi_app/mapa/suelo_hd.png"),
+            },
+        },
+    )
+
 
 @login_required
+@require_POST
+def apoyar(request, pk):
+    """'a mi tambien me pasa': si ya lo apoyaba, lo quita"""
+    reporte = get_object_or_404(Reporte, pk=pk)
+    apoyo, nuevo = Apoyo.objects.get_or_create(reporte=reporte, usuario=request.user)
+    if not nuevo:
+        apoyo.delete()
+    if request.headers.get("X-Requested-With") == "fetch":
+        return JsonResponse({"apoyos": reporte.apoyos.count(), "yo": nuevo})
+    return redirect("reportes:detalle", pk=pk)
+
+
+# ---------- reportes ----------
+
+# lista de todos los reportes, con filtro de activos
+@login_required
 def lista_reportes(request):
-    reportes = Reporte.objects.select_related("categoria", "autor")
+    reportes = _con_apoyos(Reporte.objects.select_related("categoria", "autor"), request.user)
     filtro = request.GET.get("ver", "todos")
     if filtro == "activos":
         reportes = reportes.exclude(estado=Reporte.Estado.RESUELTO)
@@ -189,9 +324,12 @@ def lista_reportes(request):
     )
 
 
+# solo los reportes que hizo la persona
 @login_required
 def mis_reportes(request):
-    reportes = Reporte.objects.filter(autor=request.user).select_related("categoria", "autor")
+    reportes = _con_apoyos(
+        Reporte.objects.filter(autor=request.user).select_related("categoria", "autor"), request.user
+    )
     return render(
         request,
         "reportes/lista.html",
@@ -199,6 +337,8 @@ def mis_reportes(request):
     )
 
 
+# formulario para un reporte nuevo.
+# desde el mapa llega con la sala o el punto ya elegidos
 @login_required
 def crear_reporte(request):
     if request.method == "POST":
@@ -209,17 +349,37 @@ def crear_reporte(request):
             reporte.save()
             return redirect("reportes:detalle", pk=reporte.pk)
     else:
-        # "reportar aqui" desde el mapa llega con ?sala=<id>
-        form = ReporteForm(initial={"sala": request.GET.get("sala")})
+        # "reportar aqui" desde el mapa llega con ?sala=<id>, o con un punto: ?piso=&x=&y=&lugar=
+        g = request.GET
+        form = ReporteForm(
+            initial={
+                "sala": g.get("sala"),
+                "piso": g.get("piso", "")[:4],
+                "mapa_x": g.get("x"),
+                "mapa_y": g.get("y"),
+                "ubicacion": g.get("lugar", "")[:150],
+            }
+        )
     return render(request, "reportes/crear.html", {"form": form})
 
 
+# pagina de un reporte con sus datos, apoyos y enlace al mapa
 @login_required
 def detalle_reporte(request, pk):
     reporte = get_object_or_404(Reporte.objects.select_related("sala__edificio"), pk=pk)
-    return render(request, "reportes/detalle.html", {"reporte": reporte})
+    return render(
+        request,
+        "reportes/detalle.html",
+        {
+            "reporte": reporte,
+            "apoyos": reporte.apoyos.count(),
+            "yo_apoyo": reporte.apoyos.filter(usuario=request.user).exists(),
+            "en_mapa": reporte.punto_mapa() is not None,
+        },
+    )
 
 
+# mi perfil: cambiar nombre y campus, y ver mis cifras
 @login_required
 def perfil(request):
     usuario = request.user
