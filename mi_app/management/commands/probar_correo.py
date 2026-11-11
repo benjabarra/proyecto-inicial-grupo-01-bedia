@@ -23,10 +23,19 @@ class Command(BaseCommand):
             return
         self.stdout.write(f"Enviando desde {settings.EMAIL_HOST_USER} a {opciones['correo']}...")
         try:
-            send_mail("Prueba de U-Pin", "Si te llegó este correo, los códigos de verificación funcionan.",
-                      None, [opciones["correo"]])
+            send_mail(
+                "Prueba de U-Pin",
+                "Si te llegó este correo, los códigos de verificación funcionan.",
+                None,
+                [opciones["correo"]],
+                html_message="<p>Si te llegó este correo, los códigos de verificación de <b>U-Pin</b> funcionan.</p>",
+            )
         except Exception as error:
             self.stdout.write(self.style.ERROR(f"No se pudo enviar: {error}"))
             self.stdout.write("Revisa la contraseña de aplicación de Gmail (16 letras, sin espacios) y el correo.")
             return
         self.stdout.write(self.style.SUCCESS("Listo, revisa la bandeja de entrada (y spam)."))
+        self.stdout.write(
+            "Si es un correo de la universidad (Outlook) y no llega: revisa 'Correo no deseado' y 'Otros',\n"
+            "y agrega a remitentes seguros el correo de U-Pin. Igual el código sale en la terminal."
+        )

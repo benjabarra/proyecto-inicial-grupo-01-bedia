@@ -1,11 +1,11 @@
 # vistas de u-pin: cada funcion responde a una direccion de la pagina
-from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model, login
 import json
 from functools import lru_cache
 from pathlib import Path
 
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.db.models import Count, Exists, OuterRef, Q
@@ -13,6 +13,7 @@ from django.http import HttpResponseForbidden, JsonResponse
 from django.middleware.csrf import get_token
 from django.urls import reverse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.html import escape
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
 
@@ -72,25 +73,35 @@ def _guardar_campus(request, usuario):
 
 # crea el codigo de verificacion y lo manda por correo
 def enviar_codigo(usuario):
-    """crea un codigo nuevo y lo manda al correo (en pruebas sale en la terminal)"""
+    """crea un codigo nuevo y lo manda al correo (en desarrollo tambien sale en la terminal)"""
     perfil, _ = Perfil.objects.get_or_create(
         usuario=usuario,
         defaults={"universidad": universidad_para_correo(usuario.email)},
     )
     codigo = perfil.nuevo_codigo()
+    if settings.DEBUG:
+        # en desarrollo el codigo siempre queda en la terminal: si el correo se demora, igual se puede entrar
+        print(f"\n[u-pin] codigo de {usuario.email}: {codigo}\n", flush=True)
+    texto = (
+        f"Hola {usuario.first_name or ''}.\n\n"
+        f"Tu código para entrar a U-Pin es: {codigo}\n\n"
+        f"Vence en {Perfil.MINUTOS_CODIGO} minutos. Si no fuiste tú, ignora este correo."
+    )
+    # version con formato (los correos solo de texto plano llegan mas seguido a spam)
+    html = (
+        '<div style="font-family:Arial,sans-serif;max-width:420px;margin:auto;color:#1B1A17">'
+        f'<p>Hola {escape(usuario.first_name or "")},</p>'
+        "<p>Tu código para entrar a <b>U-Pin</b> es:</p>"
+        f'<p style="font-size:30px;font-weight:bold;letter-spacing:6px;background:#FFF4D0;'
+        f'border-radius:12px;padding:14px;text-align:center">{codigo}</p>'
+        f"<p>Vence en {Perfil.MINUTOS_CODIGO} minutos. Si no fuiste tú, ignora este correo.</p>"
+        '<p style="color:#77746C;font-size:12px">U-Pin · reportes de infraestructura del campus</p></div>'
+    )
     try:
-        send_mail(
-            "Tu código de U-Pin",
-            f"Hola {usuario.first_name or ''}.\n\n"
-            f"Tu código para entrar a U-Pin es: {codigo}\n\n"
-            f"Vence en {Perfil.MINUTOS_CODIGO} minutos. Si no fuiste tú, ignora este correo.",
-            None,
-            [usuario.email],
-        )
+        send_mail("Tu código de U-Pin: " + codigo, texto, None, [usuario.email], html_message=html)
     except Exception as error:  # correo mal configurado o sin internet: la pagina no se cae
         if settings.DEBUG:
-            # en desarrollo el codigo queda en la terminal para poder seguir probando
-            print(f"\n[u-pin] no se pudo enviar el correo ({error}).\n[u-pin] codigo de {usuario.email}: {codigo}\n")
+            print(f"[u-pin] no se pudo enviar el correo ({error}).", flush=True)
 
 
 # crear cuenta: solo con correo institucional.

@@ -155,6 +155,11 @@ if EMAIL_HOST:
     EMAIL_HOST_USER = os.environ.get("DJANGO_EMAIL_USER", "")
     EMAIL_HOST_PASSWORD = os.environ.get("DJANGO_EMAIL_PASSWORD", "")
     EMAIL_USE_TLS = True
+    # cada correo lleva un "message-id" con el nombre del computador que lo manda. en codespaces ese nombre
+    # es raro y el correo de la universidad (outlook) puede tomarlo como spam: usamos el dominio del remitente
+    from django.core.mail.utils import DNS_NAME
+
+    DNS_NAME._fqdn = (EMAIL_HOST_USER.split("@")[-1] or "localhost") if "@" in EMAIL_HOST_USER else "localhost"
 else:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 DEFAULT_FROM_EMAIL = os.environ.get("DJANGO_EMAIL_FROM", "U-Pin <no-responder@upin.cl>")
