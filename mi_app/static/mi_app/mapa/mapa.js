@@ -387,11 +387,11 @@ function drawOverlay(){
   document.querySelector('#compass svg').style.transform=`rotate(${cam.b}rad)`;
 }
 // la imagen 3d se dibuja con un tope de píxeles y baja la resolución sola si el equipo va lento
-var GQ=1,INTQ=1,lastTouch=0;function glScale(){return Math.min(dpr,Math.sqrt(4.2e6/Math.max(1,W*H)))*GQ*INTQ}
+var GQ=1,INTQ=1,lastTouch=0;const TABLET=matchMedia('(pointer:coarse)').matches;function glScale(){return Math.min(dpr,Math.sqrt((TABLET?2.8e6:4.2e6)/Math.max(1,W*H)))*GQ*INTQ}
 
 // ajusta la resolucion del mapa al tamaño de la pantalla
 function resizeGL(){const g=glScale(),w=Math.round(W*g),h=Math.round(H*g);if(glc.width!==w||glc.height!==h){glc.width=w;glc.height=h}dirty=true}
-function resize(){dpr=Math.min(2,devicePixelRatio||1);W=cv.clientWidth;H=cv.clientHeight;cv.width=W*dpr;cv.height=H*dpr;const g=glScale();glc.width=Math.round(W*g);glc.height=Math.round(H*g);dirty=true}
+function resize(){dpr=Math.min(TABLET&&cv.clientWidth*cv.clientHeight>500000?1.6:2,devicePixelRatio||1);W=cv.clientWidth;H=cv.clientHeight;cv.width=W*dpr;cv.height=H*dpr;const g=glScale();glc.width=Math.round(W*g);glc.height=Math.round(H*g);dirty=true}
 new ResizeObserver(resize).observe(cv);resize();
 const ZMIN=.25,ZMAX=6,VEL={x:0,y:0,z:0,b:0,p:0};let INER=null,WZ=null,lastT=performance.now();
 
@@ -587,7 +587,8 @@ const CATS=[
 const CAT=Object.fromEntries(CATS.map(c=>[c.id,c]));CATS.forEach(c=>c.p=new Path2D(c.i));
 const ESTADO={pendiente:'Pendiente',en_proceso:'En proceso',resuelto:'Resuelto'};
 const REPORTS=leerDato("d-reportes");
-REPORTS.forEach(r=>{if(r.salapk!=null)r.r=(FLOORS_DATA[r.f]||[]).find(o=>o.pk===r.salapk);if(r.f==='ext'||r.x!=null)return;const room=(FLOORS_DATA[r.f]||[]).find(o=>o.label===r.room&&o.building===r.b);
+function edificioEn(p,f){const b=S.buildings.find(b=>!b.bridge&&/^Edificio/.test(b.name)&&inPoly(p,(b.fp&&f&&b.fp[f])||b.pts));return b?b.name:''}
+REPORTS.forEach(r=>{if(!r.b&&r.f!=='ext'&&r.x!=null)r.b=edificioEn([r.x,r.y],r.f);if(r.salapk!=null)r.r=(FLOORS_DATA[r.f]||[]).find(o=>o.pk===r.salapk);if(r.f==='ext'||r.x!=null)return;const room=(FLOORS_DATA[r.f]||[]).find(o=>o.label===r.room&&o.building===r.b);
   if(room){r.r=room;[r.x,r.y]=centroid(room.pts)}else{const lb=S.labels.find(l=>l[0]===r.b);r.x=lb[1];r.y=lb[2]}});
 const catOn=new Set(CATS.map(c=>c.id));let soloActivos=true,selRep=null,PINS=[];
 
@@ -595,8 +596,8 @@ const catOn=new Set(CATS.map(c=>c.id));let soloActivos=true,selRep=null,PINS=[];
 function repVisible(r){return catOn.has(r.cat)&&(!soloActivos||r.e!=='resuelto')}
 function pinsNow(){return REPORTS.filter(repVisible).filter(r=>{
   if(floor==='ext')return !selB||r.b===selB||r.f==='ext';
-  return r.f===floor&&r.r&&(!selB||r.b===selB)})}
-function pinZ(r){if(r.f==='ext')return 0;if(floor==='ext')return (BH[r.b]||2)*FH+1;return 5+rh(r.r)}
+  return r.f===floor&&(r.r||r.x!=null)&&(!selB||r.b===selB)})}
+function pinZ(r){if(r.f==='ext')return 0;if(floor==='ext')return (BH[r.b]||2)*FH+1;return 5+(r.r?rh(r.r):0)}
 // de lejos: un pin amarillo por edificio con el total de reportes
 let agrupado=true;
 function drawCluster(cx,cy,n,s){const R=(15+Math.min(n,20)*0.35)*s,hy=cy-30*s;ctx.save();
@@ -650,7 +651,7 @@ const svgIcon=(c,size)=>`<svg viewBox="0 0 24 24" width="${size}" height="${size
 // abrir la hoja de un reporte
 function openReport(r){selRep=r;closeSheet(true);const c=CAT[r.cat];
   document.getElementById('rTitle').textContent=r.t;
-  document.getElementById('rSub').textContent=r.f==='ext'?'Exterior del campus':`${r.room} · ${r.b} · Piso ${r.f}`;
+  document.getElementById('rSub').textContent=r.f==='ext'?'Exterior del campus':[r.room,r.b,'Piso '+r.f.replace('-','−')].filter(Boolean).join(' · ');
   document.getElementById('rTags').innerHTML=`<span class="tag" style="background:${c.c};color:${c.k||'#fff'}">${svgIcon(c,16)}${c.n}</span><span class="est ${r.e}">${ESTADO[r.e]}</span><span class="apo">▲ ${r.ap} apoyos</span>`;
   document.getElementById('rDemo').hidden=true;rsheet.classList.add('open');animTo({x:r.x,y:r.y});dirty=true}
 
@@ -1050,7 +1051,7 @@ const _tap=tap;tap=function(e){
   const rooms=(FLOORS_DATA[floor]||[]).filter(x=>x.label&&!/escalera|ascensor/i.test(x.label)&&(!selB||x.building===selB));
   const [n,d]=nearest(mp,rooms);
   if(n&&d<90)point(mp,'Cerca de '+(/^[A-Z]+\d/.test(n.label)?'sala '+n.label:n.label),(n.building||'')+' · Piso '+floor.replace('-','−'));
-  else point(mp,'Pasillo o espacio común',(selB||'')+' · Piso '+floor.replace('-','−'));
+  else point(mp,'Pasillo o espacio común',[edificioEn(mp,floor)||selB,'Piso '+floor.replace('-','−')].filter(Boolean).join(' · '));
 };
 const _cs=closeSheet;closeSheet=function(k){if(RPIN){RPIN=null;dirty=true}_cs(k)};
 })();
@@ -1097,3 +1098,7 @@ if(qs){for(const [f,rs] of Object.entries(FLOORS_DATA)){const r=rs.find(o=>Strin
 // "nuevo reporte" en un punto: sin las etiquetas de la última sala abierta
 (function(){const t=document.getElementById('sTitle');
 new MutationObserver(()=>{const m=document.querySelector('#sheet .meta');if(m)m.style.display=t.textContent==='Nuevo reporte'?'none':''}).observe(t,{childList:true,characterData:true,subtree:true})})();
+// precarga mi perfil y la lista de reportes mientras se usa el mapa: al tocarlos se abren casi al instante
+(function(){if(!HTMLScriptElement.supports||!HTMLScriptElement.supports('speculationrules'))return;
+const s=document.createElement('script');s.type='speculationrules';
+s.textContent=JSON.stringify({prerender:[{urls:[UPIN.urlPerfil],eagerness:'immediate'}],prefetch:[{urls:[UPIN.urlPerfil,UPIN.urlCrear]}]});document.head.appendChild(s)})();

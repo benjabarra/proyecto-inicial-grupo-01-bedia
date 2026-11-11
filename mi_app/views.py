@@ -259,7 +259,7 @@ def _reportes_del_mapa(usuario):
                 "x": x,
                 "y": y,
                 "b": r.sala.edificio.nombre if r.sala else "",
-                "room": r.sala.nombre if r.sala else r.ubicacion.split(" · ")[0],
+                "room": r.sala.nombre if r.sala else r.ubicacion.split(" · ")[0].strip(),
                 "salapk": r.sala_id,
                 "ap": r.n_apoyos,
                 "yo": r.yo_apoyo,

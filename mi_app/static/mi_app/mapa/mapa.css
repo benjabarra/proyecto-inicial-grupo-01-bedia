@@ -481,6 +481,14 @@ body[data-tab="rep"] .cats{position:absolute;z-index:12;top:calc(80px + env(safe
 @keyframes popin2{from{opacity:0;transform:scale(.4) translateY(8px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.ctrl .loc button::after{display:none}}
 
+/* cambio de pagina suave: el navegador funde una pagina con la otra (chrome, edge y safari nuevos) */
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: 160ms cubic-bezier(.4,0,1,1) both salir-pagina; }
+::view-transition-new(root) { animation: 260ms cubic-bezier(.22,1,.36,1) both entrar-pagina; }
+@keyframes salir-pagina { to { opacity: 0; } }
+@keyframes entrar-pagina { from { opacity: 0; transform: translateY(8px); } }
+@media (prefers-reduced-motion: reduce) { ::view-transition-old(root), ::view-transition-new(root) { animation: none; } }
+
 /* app */
 .demo{display:none!important}
 #rVer{display:inline-flex;align-items:center;text-decoration:none}

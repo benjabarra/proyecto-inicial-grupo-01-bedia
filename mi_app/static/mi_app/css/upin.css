@@ -391,3 +391,11 @@ h2 { font-weight: 800; letter-spacing: -0.025em; font-size: 1.2rem; }
   .portada-arte { aspect-ratio: auto; height: min(640px, calc(100vh - 140px)); }
 }
 @media (max-width: 899px) { .cuentas { padding: 28px 16px 40px; } .cuentas-form .panel { margin: 0 auto; } }
+
+/* cambio de pagina suave: el navegador funde una pagina con la otra (chrome, edge y safari nuevos) */
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: 160ms cubic-bezier(.4,0,1,1) both salir-pagina; }
+::view-transition-new(root) { animation: 260ms cubic-bezier(.22,1,.36,1) both entrar-pagina; }
+@keyframes salir-pagina { to { opacity: 0; } }
+@keyframes entrar-pagina { from { opacity: 0; transform: translateY(8px); } }
+@media (prefers-reduced-motion: reduce) { ::view-transition-old(root), ::view-transition-new(root) { animation: none; } }

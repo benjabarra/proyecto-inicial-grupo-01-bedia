@@ -489,3 +489,12 @@ class MapaYApoyosTests(TestCase):
         carpeta = Path(__file__).resolve().parent / "static" / "mi_app" / "mapa"
         self.assertIn("function leerDato", (carpeta / "mapa.js").read_text(encoding="utf-8"))
         self.assertGreater((carpeta / "mapa.css").stat().st_size, 10000)
+
+    def test_reporte_en_pasillo_va_a_su_piso(self):
+        # un reporte en un punto sin sala (pasillo) tambien se dibuja en su piso
+        datos = {"titulo": "Silla rota", "categoria": self.cat.pk, "descripcion": "en el pasillo",
+                 "ubicacion": "Pasillo o espacio común ·  · Piso 3", "piso": "3", "mapa_x": "275", "mapa_y": "600"}
+        self.client.post(reverse("reportes:crear"), datos)
+        self.assertEqual(Reporte.objects.get().ubicacion, "Pasillo o espacio común · Piso 3")
+        rep = self.client.get(reverse("reportes:mapa")).context["reportes"][0]
+        self.assertEqual((rep["f"], rep["x"], rep["salapk"]), ("3", 275.0, None))
