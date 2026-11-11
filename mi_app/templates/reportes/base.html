@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
   <meta name="theme-color" content="#FFC72C">
   <title>{% block titulo %}Reportes del campus{% endblock %} · U-Pin</title>
   <link rel="icon" type="image/png" sizes="32x32" href="{% static 'mi_app/marca/favicon-32.png' %}">
@@ -15,6 +15,15 @@
   <style>:root { --accent: {{ tema.color_primario }}; }</style>
   {# precarga la pagina siguiente al tocar un enlace, para que el cambio sea casi instantaneo #}
   <script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/admin/*"}},{"not":{"href_matches":"/cuentas/salir/*"}}]},"eagerness":"moderate"}]}</script>
+  <script>
+    // al ir al mapa no se hace la transicion de pagina (el mapa no la usa y el navegador avisaria un error)
+    addEventListener("pageswap", function (e) {
+      if (e.viewTransition && e.activation && /\/mapa\//.test(new URL(e.activation.entry.url).pathname)) {
+        e.viewTransition.ready.catch(function () {}); e.viewTransition.finished.catch(function () {});
+        e.viewTransition.skipTransition();
+      }
+    });
+  </script>
 </head>
 <body>
   {# cabecera: logo y menu. en celular el menu se reemplaza por la barra inferior #}

@@ -103,12 +103,12 @@ else{
   ['cam','res','z','b','tp','hk','t','gsz','fh','dk','wr','us','uq','ug','uz0','um','uf','ut'].forEach(u=>prog[u]=gl.getUniformLocation(prog,u));
   gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);
   tex=gl.createTexture();const big=gl.getParameter(gl.MAX_TEXTURE_SIZE)>=4096;
-  const loadTex=(src,hd)=>{const img=new Image();img.onload=()=>{gl.bindTexture(gl.TEXTURE_2D,tex);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,img);
+  const loadTex=(src,hd)=>{const img=new Image();img.onload=function sube(){if(hd&&(ptr.size||INER||WZ||target)){setTimeout(sube,300);return}gl.bindTexture(gl.TEXTURE_2D,tex);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,img);
     const mip=GL2;if(mip)gl.generateMipmap(gl.TEXTURE_2D);
     gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,mip?gl.LINEAR_MIPMAP_LINEAR:gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
     const an=gl.getExtension('EXT_texture_filter_anisotropic');if(an&&mip)gl.texParameterf(gl.TEXTURE_2D,an.TEXTURE_MAX_ANISOTROPY_EXT,Math.min(8,gl.getParameter(an.MAX_TEXTURE_MAX_ANISOTROPY_EXT)));
     gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);texReady=true;geoDirty=true;dirty=true;
-    if(!hd&&big)loadTex(UPIN.sueloHd,true)};img.src=src};
+    if(!hd&&big){const go=()=>{if(ptr.size||INER||WZ||target){setTimeout(go,500);return}loadTex(TABLET?UPIN.sueloMd:UPIN.sueloHd,true)};setTimeout(go,1800)}};img.src=src};
   // primero la versión liviana (aparece al tiro) y luego la nítida
   loadTex(UPIN.suelo,false);
 }
@@ -440,7 +440,7 @@ const outB=()=>cam.x<BX[0]||cam.x>BX[1]||cam.y<BY[0]||cam.y>BY[1];
 const clampB=()=>({x:Math.max(BX[0],Math.min(BX[1],cam.x)),y:Math.max(BY[0],Math.min(BY[1],cam.y))});
 const SAMP=[];function samp(){const t=performance.now();SAMP.push({t,x:cam.x,y:cam.y,z:Math.log(cam.z),b:cam.b});while(SAMP.length&&t-SAMP[0].t>120)SAMP.shift()}
 const soft=z=>z>ZMAX?ZMAX*Math.pow(z/ZMAX,0.3):z<ZMIN?ZMIN*Math.pow(z/ZMIN,0.3):z;let zRaw=1;
-cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);lastTouch=performance.now();target=null;if(INTQ===1&&W*H>650000&&floor==='ext'&&!reduceMotion()){INTQ=0.7;resizeGL()}INER=null;WZ=null;for(const k in VEL)VEL[k]=0;SAMP.length=0;zRaw=cam.z;ptr.set(e.pointerId,{x:e.clientX,y:e.clientY,b:e.button,sh:e.shiftKey});moved=0;target=null;cv.classList.add('drag');if(ptr.size===2)g0=gest()});
+cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);lastTouch=performance.now();target=null;INER=null;WZ=null;for(const k in VEL)VEL[k]=0;SAMP.length=0;zRaw=cam.z;ptr.set(e.pointerId,{x:e.clientX,y:e.clientY,b:e.button,sh:e.shiftKey});moved=0;target=null;cv.classList.add('drag');if(ptr.size===2)g0=gest()});
 cv.addEventListener('pointermove',e=>{if(!ptr.has(e.pointerId))return;lastTouch=performance.now();const p=ptr.get(e.pointerId);const dx=e.clientX-p.x,dy=e.clientY-p.y;
   if(ptr.size===1){moved+=Math.abs(dx)+Math.abs(dy);
     if(p.b===2||p.sh){cam.b+=dx*0.006;cam.p=Math.max(0,Math.min(1.15,cam.p-dy*0.005))}

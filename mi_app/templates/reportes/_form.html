@@ -4,7 +4,8 @@
     {% for e in form.non_field_errors %}<p>{{ e }}</p>{% endfor %}
   </div>
 {% endif %}
-{% for campo in form.hidden_fields %}{{ campo }}{% endfor %}
+{# errores de los campos escondidos (punto del mapa): se muestran arriba para que no queden ocultos #}
+{% for campo in form.hidden_fields %}{{ campo }}{% for e in campo.errors %}<p class="error">{{ e }}</p>{% endfor %}{% endfor %}
 {% for campo in form.visible_fields %}
   <div class="campo">
     <label for="{{ campo.id_for_label }}">{{ campo.label }}</label>

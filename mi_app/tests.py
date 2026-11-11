@@ -498,3 +498,14 @@ class MapaYApoyosTests(TestCase):
         self.assertEqual(Reporte.objects.get().ubicacion, "Pasillo o espacio común · Piso 3")
         rep = self.client.get(reverse("reportes:mapa")).context["reportes"][0]
         self.assertEqual((rep["f"], rep["x"], rep["salapk"]), ("3", 275.0, None))
+
+    def test_punto_del_mapa_con_numeros_raros(self):
+        # si la direccion trae un punto que no es numero, el formulario lo ignora en vez de fallar
+        resp = self.client.get(reverse("reportes:crear") + "?piso=ext&x=abc&y=&lugar=Cancha")
+        self.assertEqual(resp.status_code, 200)
+        self.assertIsNone(resp.context["form"]["mapa_x"].value())
+
+    def test_paginas_comprimidas(self):
+        # el mapa viaja comprimido (pesa mucho menos por internet)
+        resp = self.client.get(reverse("reportes:mapa"), HTTP_ACCEPT_ENCODING="gzip")
+        self.assertEqual(resp.get("Content-Encoding"), "gzip")
