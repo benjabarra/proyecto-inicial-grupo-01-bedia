@@ -695,3 +695,53 @@ class CorreoCodigoTests(TestCase):
         self.assertIn(codigo, correo.subject)
         self.assertEqual(correo.alternatives[0][1], "text/html")
         self.assertIn(codigo, correo.alternatives[0][0])
+
+
+class ContraseñaComunTests(TestCase):
+    """la lista de reglas tambien avisa que no sirven contraseñas comunes ni parecidas al nombre"""
+
+    def test_contraseña_comun_se_explica(self):
+        resp = self.client.post(reverse("registro"), {
+            "nombre": "Benja", "apellido": "Barra", "correo": "benja.barra@usm.cl",
+            "password1": "password123", "password2": "password123",
+        })
+        self.assertContains(resp, "demasiado común")
+        self.assertContains(resp, "muy común")
+
+
+class PulidoComputadorTests(TestCase):
+    """perfil con cuatro cifras, detalle con columna de apoyos y lista con contador"""
+
+    def setUp(self):
+        self.ana = get_user_model().objects.create_user("ana@usm.cl", "ana@usm.cl", "clave-segura-123")
+        self.client.login(username="ana@usm.cl", password="clave-segura-123")
+        self.r = Reporte.objects.create(titulo="Luz", descripcion="d", categoria=Categoria.objects.get(nombre="Iluminación"),
+                                        sala=Sala.objects.get(nombre="A010"), ubicacion="A010 · Edificio A · Piso 1 · al fondo", autor=self.ana)
+
+    def test_perfil_cifras(self):
+        resp = self.client.get(reverse("reportes:perfil"))
+        self.assertEqual((resp.context["activos"], resp.context["apoyos_dados"]), (1, 0))
+        self.assertContains(resp, "Apoyos dados")
+
+    def test_detalle_muestra_detalle_del_lugar(self):
+        resp = self.client.get(reverse("reportes:detalle", args=[self.r.pk]))
+        self.assertContains(resp, "Detalle del lugar")
+        self.assertContains(resp, "personas dicen que también les pasa")
+
+    def test_lista_cuenta_reportes(self):
+        self.assertContains(self.client.get(reverse("reportes:lista")), "1 reporte<")
+
+
+class PortadaFotosTests(TestCase):
+    """la portada trae las fotos del carrusel y todas existen"""
+
+    def test_fotos_de_la_portada(self):
+        from .views import FOTOS_PORTADA
+        resp = self.client.get(reverse("bienvenida"))
+        self.assertContains(resp, 'id="d-fotos"')
+        self.assertContains(resp, 'data-uni="USM"')
+        carpeta = Path(__file__).resolve().parent / "static" / "mi_app" / "img"
+        for archivo, uni, campus in FOTOS_PORTADA:
+            self.assertTrue((carpeta / archivo).exists(), archivo)
+        # el campus elegible tiene al menos una foto propia
+        self.assertTrue(any(c == "Campus San Joaquín" for _, _, c in FOTOS_PORTADA))

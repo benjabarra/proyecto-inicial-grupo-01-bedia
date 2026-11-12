@@ -11,6 +11,7 @@ from django.core.mail import send_mail
 from django.db.models import Count, Exists, OuterRef, Q
 from django.http import HttpResponseForbidden, JsonResponse
 from django.middleware.csrf import get_token
+from django.templatetags.static import static
 from django.urls import reverse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.html import escape
@@ -39,6 +40,34 @@ BACKEND = "django.contrib.auth.backends.ModelBackend"  # forma normal de iniciar
 
 # portada: elegir universidad y campus antes de entrar.
 # si ya inicio sesion, va directo al mapa
+# fotos que van pasando en la portada (computador). uni = sigla de la universidad;
+# campus = nombre exacto del campus o "" si la foto es de la universidad en general.
+# la primera de cada campus es la principal
+FOTOS_PORTADA = [
+    ("usm-san-joaquin.jpg", "USM", "Campus San Joaquín"),
+    ("portada/usm-san-joaquin-patio.jpg", "USM", "Campus San Joaquín"),
+    ("portada/usm-casa-central.jpg", "USM", "Casa Central"),
+    ("portada/usm-casa-central-torre.jpg", "USM", "Casa Central"),
+    ("portada/usm-edificio-dorado.jpg", "USM", ""),
+    ("portada/usm-campus-aereo.jpg", "USM", ""),
+    ("portada/usm-jardines.jpg", "USM", ""),
+    ("portada/usm-sede.jpg", "USM", ""),
+]
+
+
+def _fotos_portada():
+    """lista para el carrusel de la portada: direccion de la foto, universidad, campus y texto del lugar"""
+    return [
+        {
+            "src": static("mi_app/img/" + archivo),
+            "uni": uni,
+            "campus": campus,
+            "lugar": f"{uni} · {campus}" if campus else "Universidad Técnica Federico Santa María",
+        }
+        for archivo, uni, campus in FOTOS_PORTADA
+    ]
+
+
 def bienvenida(request):
     if request.user.is_authenticated:
         return redirect("reportes:mapa")
@@ -56,7 +85,11 @@ def bienvenida(request):
     else:
         error = None
     universidades = Universidad.objects.prefetch_related("campus_set").order_by("-activa", "pk")
-    return render(request, "bienvenida.html", {"universidades": universidades, "error": error})
+    return render(
+        request,
+        "bienvenida.html",
+        {"universidades": universidades, "error": error, "fotos": _fotos_portada()},
+    )
 
 
 # guarda en el perfil el campus elegido en la portada
@@ -294,7 +327,6 @@ def _reportes_del_mapa(usuario):
 # le pasa al navegador las salas, los reportes y las direcciones para reportar y apoyar
 @login_required
 def mapa(request):
-    from django.templatetags.static import static
 
     return render(
         request,
@@ -486,8 +518,10 @@ def perfil(request):
         {
             "rol_nombre": Perfil.Rol(rol_de(usuario)).label,
             "total": mis.count(),
+            "activos": mis.exclude(estado=Reporte.Estado.RESUELTO).count(),
             "resueltos": mis.filter(estado=Reporte.Estado.RESUELTO).count(),
-            "recientes": mis.select_related("categoria")[:3],
+            "apoyos_dados": Apoyo.objects.filter(usuario=usuario).count(),
+            "recientes": mis.select_related("categoria")[:5],
             "campus_activos": Campus.objects.filter(activo=True, universidad__activa=True).select_related("universidad"),
         },
     )

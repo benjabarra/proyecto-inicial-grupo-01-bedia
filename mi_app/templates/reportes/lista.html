@@ -1,5 +1,6 @@
 {% extends "reportes/base.html" %}
-{# lista de reportes del campus con filtros (todos, activos, mis reportes) #}
+{# lista de reportes del campus con filtros (todos, activos, mis reportes).
+   cada tarjeta mide lo mismo: estado y apoyos arriba, titulo, lugar y autor; la foto va como miniatura #}
 {% load static %}
 
 {% block titulo %}{{ titulo }}{% endblock %}
@@ -16,32 +17,40 @@
   <h1>{{ titulo }}</h1>
 {% endif %}
 
-<nav class="filtros" aria-label="Filtrar reportes">
-  <a href="{% url 'reportes:lista' %}" {% if filtro == "todos" %}aria-current="true"{% endif %}>Todos</a>
-  <a href="{% url 'reportes:lista' %}?ver=activos" {% if filtro == "activos" %}aria-current="true"{% endif %}>Activos</a>
-  <a href="{% url 'reportes:mis_reportes' %}" {% if filtro == "mios" %}aria-current="true"{% endif %}>Mis reportes</a>
-</nav>
+<div class="barra-lista">
+  <nav class="filtros" aria-label="Filtrar reportes">
+    <a href="{% url 'reportes:lista' %}" {% if filtro == "todos" %}aria-current="true"{% endif %}>Todos</a>
+    <a href="{% url 'reportes:lista' %}?ver=activos" {% if filtro == "activos" %}aria-current="true"{% endif %}>Activos</a>
+    <a href="{% url 'reportes:mis_reportes' %}" {% if filtro == "mios" %}aria-current="true"{% endif %}>Mis reportes</a>
+  </nav>
+  <p class="cuenta">{{ reportes|length }} reporte{{ reportes|length|pluralize }}</p>
+</div>
 
 {% if reportes %}
   <div class="tarjetas">
     {% for r in reportes %}
-      <article class="tarjeta">
-        {% if r.foto %}
-          <a href="{% url 'reportes:detalle' r.pk %}"><img src="{{ r.foto.url }}" alt="Foto del reporte {{ r.titulo }}" loading="lazy"></a>
-        {% else %}
-          <div class="sin-foto"></div>
-        {% endif %}
+      <article class="tarjeta{% if r.foto %} con-foto{% endif %}">
         <div class="tarjeta-cuerpo">
-          <span class="estado estado-{{ r.estado }}">{{ r.get_estado_display }}</span>
+          <div class="tarjeta-arriba">
+            <span class="estado estado-{{ r.estado }}">{{ r.get_estado_display }}</span>
+            <span class="t-apoyos{% if r.yo_apoyo %} mio{% endif %}" title="{% if r.yo_apoyo %}Tú también lo apoyaste{% endif %}">▲ {{ r.n_apoyos }} apoyo{{ r.n_apoyos|pluralize }}</span>
+          </div>
           <h3><a href="{% url 'reportes:detalle' r.pk %}">{{ r.titulo }}</a></h3>
-          <p class="meta">{{ r.categoria }} · {{ r.ubicacion }}</p>
-          <p class="meta">Por {{ r.autor.get_full_name|default:r.autor.username }} · {{ r.creado|date:"d/m/Y H:i" }}</p>
-          <p class="meta apoyos">▲ {{ r.n_apoyos }} apoyo{{ r.n_apoyos|pluralize }}{% if r.yo_apoyo %} · tú también{% endif %}</p>
+          <p class="meta t-lugar">{{ r.ubicacion }}</p>
+          <p class="meta t-cat">{{ r.categoria }}</p>
+          <p class="meta t-pie">{{ r.autor.get_full_name|default:r.autor.username }} · {{ r.creado|date:"d/m/Y" }}{% if r.yo_apoyo %} · tú también{% endif %}</p>
         </div>
+        {% if r.foto %}
+          <img class="tarjeta-mini" src="{{ r.foto.url }}" alt="" loading="lazy">
+        {% endif %}
       </article>
     {% endfor %}
   </div>
 {% else %}
-  <p class="vacio">No hay reportes todavía.</p>
+  <div class="vacio">
+    <p><b>No hay reportes aquí todavía.</b></p>
+    <p>Cuando alguien reporte algo en el campus, aparecerá en esta lista.</p>
+    <a class="btn" href="{% url 'reportes:crear' %}">Reportar un problema</a>
+  </div>
 {% endif %}
 {% endblock %}

@@ -7,13 +7,18 @@
 {% block principal %}
 <main class="portada">
   <div class="portada-grid">
+  {# fotos que van pasando (solo computador): de todas, de la universidad abierta o del campus elegido #}
   <aside class="portada-arte" aria-hidden="true">
-    <img src="{% static 'mi_app/img/usm-san-joaquin.jpg' %}" alt="">
+    <img class="pa-foto on" src="{% static 'mi_app/img/usm-san-joaquin.jpg' %}" alt="">
+    <img class="pa-foto" alt="">
     <div class="portada-arte-txt">
+      <span class="pa-lugar">USM · Campus San Joaquín</span>
       <b>Un mapa de tu campus, sala por sala.</b>
       <span>Toca el lugar del problema, repórtalo en segundos y sigue cómo se resuelve.</span>
     </div>
   </aside>
+  {{ fotos|json_script:"d-fotos" }}
+  <script src="{% static 'mi_app/js/portada.js' %}" defer></script>
   <form class="portada-in" method="post">
     {% csrf_token %}
     <div class="logo"><img src="{% static 'mi_app/marca/pin.svg' %}" alt="" width="38" height="40">U-Pin</div>
@@ -22,7 +27,7 @@
     <p class="etiqueta">Universidad y campus</p>
     {% for u in universidades %}
       {% if u.activa %}
-        <div class="uni-caja" data-uni>
+        <div class="uni-caja" data-uni="{{ u.sigla }}">
           <button type="button" class="uni-cab" aria-expanded="false" aria-controls="campus-{{ u.pk }}">
             <span class="sigla" style="background: {{ u.color_primario }}">{{ u.sigla }}</span>
             <span><b>{{ u.nombre }}</b><small>Toca para elegir tu campus</small></span>
@@ -36,7 +41,7 @@
                   {% if c.activo %}
                     <label class="campus-op">
                       <span><b>{{ c.nombre }}</b><small>{{ c.ciudad }}</small></span>
-                      <input type="radio" name="campus" value="{{ c.pk }}">
+                      <input type="radio" name="campus" value="{{ c.pk }}" data-campus="{{ c.nombre }}">
                     </label>
                   {% else %}
                     <div class="campus-op apagado" aria-disabled="true">
@@ -80,6 +85,7 @@
           r.addEventListener("change", function () { boton.disabled = false; });
         });
       })();
+
     </script>
     <p class="aparte">¿No tienes cuenta? <a href="{% url 'registro' %}">Crear cuenta</a></p>
   </form>

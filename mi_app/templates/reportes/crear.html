@@ -8,7 +8,7 @@
 <div class="panel panel-ancho">
   <h1>Nuevo reporte</h1>
   <p class="sub">Cuéntanos qué pasa y dónde. Evita fotografiar a personas.</p>
-  <form method="post" enctype="multipart/form-data">
+  <form method="post" enctype="multipart/form-data" class="form-reporte">
     {% csrf_token %}
     {% include "reportes/_form.html" %}
     <div class="acciones">

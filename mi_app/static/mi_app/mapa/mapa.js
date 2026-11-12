@@ -1170,12 +1170,12 @@ const PASOS=[
   {fin:true,t:'Gestos en tu '+equipo,x:'Así te mueves por el mapa:'}
 ].filter(p=>!p.s||caja(p.s));
 
-let i=0,raiz,card,anillo,sombras;
+let i=0,raiz,card,anillo,sombra;
 function armar(){
   raiz=document.createElement('div');raiz.className='tuto';raiz.setAttribute('role','dialog');raiz.setAttribute('aria-modal','true');raiz.setAttribute('aria-labelledby','tutoT');
-  raiz.innerHTML='<div class="tuto-bloq"></div><div class="tuto-s"></div><div class="tuto-s"></div><div class="tuto-s"></div><div class="tuto-s"></div><div class="tuto-anillo"></div><div class="tuto-card" tabindex="-1"></div>';
+  raiz.innerHTML='<div class="tuto-bloq"></div><div class="tuto-s"></div><div class="tuto-anillo"></div><div class="tuto-card" tabindex="-1"></div>';
   document.body.appendChild(raiz);
-  sombras=[...raiz.querySelectorAll('.tuto-s')];anillo=raiz.querySelector('.tuto-anillo');card=raiz.querySelector('.tuto-card');
+  sombra=raiz.querySelector('.tuto-s');anillo=raiz.querySelector('.tuto-anillo');card=raiz.querySelector('.tuto-card');
   raiz.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a;if(a==='sig')ir(i+1);else if(a==='atras')ir(i-1);else cerrar()});
   addEventListener('keydown',tecla,true);addEventListener('resize',ubicar);
   requestAnimationFrame(()=>raiz.classList.add('on'));
@@ -1186,14 +1186,14 @@ function pintar(){
   const p=PASOS[i],ult=i===PASOS.length-1;
   let h='';
   if(p.inicio)h+='<div class="tuto-logo">'+logo+'</div>';
+  else h+='<div class="tuto-cab"><span class="tuto-puntos" aria-hidden="true">'+PASOS.slice(1).map((_,k)=>'<i'+(k+1===i?' class="on"':'')+'></i>').join('')+'</span><span class="tuto-paso">Paso '+i+' de '+(PASOS.length-1)+'</span></div>';
   h+='<h2 id="tutoT">'+p.t+'</h2><p>'+p.x+'</p>';
   if(p.nota)h+='<p class="tuto-nota">'+p.nota+'</p>';
   if(p.fin)h+='<ul class="tuto-gestos">'+gestos.map(([k,t])=>'<li><span class="tuto-ic"><svg viewBox="0 0 24 24" aria-hidden="true">'+ico[k]+'</svg></span><span>'+t+'</span></li>').join('')+'</ul>';
   h+='<div class="tuto-pie">';
   if(p.inicio)h+='<button type="button" class="tuto-saltar" data-a="saltar">Saltar</button><button type="button" class="tuto-pri" data-a="sig">Ver cómo funciona</button>';
   else{
-    h+='<span class="tuto-puntos" aria-label="Paso '+i+' de '+(PASOS.length-1)+'">'+PASOS.slice(1).map((_,k)=>'<i'+(k+1===i?' class="on"':'')+'></i>').join('')+'</span>';
-    h+='<span class="tuto-btns">'+(ult?'':'<button type="button" class="tuto-saltar" data-a="saltar">Saltar</button>')+'<button type="button" class="tuto-sec" data-a="atras" aria-label="Paso anterior">Atrás</button><button type="button" class="tuto-pri" data-a="sig">'+(ult?'Ir al mapa':'Siguiente')+'</button></span>';
+    h+=(ult?'<span></span>':'<button type="button" class="tuto-saltar" data-a="saltar">Saltar</button>')+'<span class="tuto-btns"><button type="button" class="tuto-sec" data-a="atras" aria-label="Paso anterior">Atrás</button><button type="button" class="tuto-pri" data-a="sig">'+(ult?'Ir al mapa':'Siguiente')+'</button></span>';
   }
   h+='</div>';
   card.innerHTML=h;card.classList.toggle('grande',!!(p.inicio||p.fin));
@@ -1206,11 +1206,11 @@ function ubicar(){
   const p=PASOS[i],W=innerWidth,H=innerHeight,m=8;
   let r=p.s?caja(p.s):null;
   if(r)r={left:r.left-m,top:r.top-m,right:r.right+m,bottom:r.bottom+m};
-  // cuatro sombras alrededor del hueco (sin hueco: una sola sombra cubre todo)
-  const hx=r?r.left:W/2,hy=r?r.top:H/2,hw=r?r.right-r.left:0,hh=r?r.bottom-r.top:0;
+  // una sola capa difuminada con un hueco redondeado recortado (sin hueco: el hueco mide cero en el centro)
+  const hx=r?r.left:W/2,hy=r?r.top:H/2,hw=r?r.right-r.left:0,hh=r?r.bottom-r.top:0,ra=r?Math.min(22,hw/2,hh/2):0;
+  const n=v=>Math.round(v*10)/10;
+  sombra.style.clipPath=`path(evenodd,"M0 0H${W}V${H}H0Z M${n(hx+ra)} ${n(hy)}H${n(hx+hw-ra)}A${ra} ${ra} 0 0 1 ${n(hx+hw)} ${n(hy+ra)}V${n(hy+hh-ra)}A${ra} ${ra} 0 0 1 ${n(hx+hw-ra)} ${n(hy+hh)}H${n(hx+ra)}A${ra} ${ra} 0 0 1 ${n(hx)} ${n(hy+hh-ra)}V${n(hy+ra)}A${ra} ${ra} 0 0 1 ${n(hx+ra)} ${n(hy)}Z")`;
   const pon=(el,x,y,w,h)=>{el.style.left=x+'px';el.style.top=y+'px';el.style.width=Math.max(0,w)+'px';el.style.height=Math.max(0,h)+'px'};
-  pon(sombras[0],0,0,W,hy);pon(sombras[1],0,hy+hh,W,H-hy-hh);pon(sombras[2],0,hy,hx,hh);pon(sombras[3],hx+hw,hy,W-hx-hw,hh);
-  if(!r){pon(sombras[0],0,0,W,H);[1,2,3].forEach(k=>pon(sombras[k],0,0,0,0))}
   anillo.style.opacity=r?1:0;if(r)pon(anillo,hx,hy,hw,hh);
   // la tarjeta va al lado del hueco donde quepa (abajo, arriba, izquierda, derecha) o al centro
   const cw=card.offsetWidth,ch=card.offsetHeight,g=14,b=16;
