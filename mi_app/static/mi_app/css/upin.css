@@ -46,7 +46,7 @@ p { margin: 0 0 1em; }
 }
 .nav-in { max-width: 980px; margin: 0 auto; padding: 0 22px; height: 60px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .marca { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: 1.1rem; letter-spacing: -0.02em; color: var(--text); white-space: nowrap; text-decoration: none; }
-.marca img { width: 30px; height: 32px; }
+.marca img { width: 28px; height: 36px; }
 .nav nav { display: flex; align-items: center; gap: 16px; font-size: 0.92rem; }
 .nav nav a { color: var(--text); text-decoration: none; opacity: 0.8; }
 .nav nav a:hover, .nav nav a[aria-current="page"] { opacity: 1; }
@@ -167,7 +167,7 @@ button.link:hover { opacity: 1; }
 .portada { min-height: calc(100vh - 61px); display: flex; justify-content: center; padding: 32px 22px 40px; }
 .portada-in { width: 100%; max-width: 440px; display: flex; flex-direction: column; }
 .portada .logo { display: flex; align-items: center; gap: 10px; font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; }
-.portada .logo img { width: 38px; height: 40px; }
+.portada .logo img { width: 34px; height: 44px; }
 .portada h1 { font-size: clamp(2.2rem, 8vw, 2.8rem); margin: 22px 0 10px; }
 .portada .lema { color: var(--muted); font-size: 1.05rem; }
 .portada .foto { width: 100%; height: 210px; object-fit: cover; border-radius: 22px; display: block; margin: 6px 0 24px; }

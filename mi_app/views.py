@@ -16,6 +16,7 @@ from django.urls import reverse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.html import escape
 from django.utils.http import url_has_allowed_host_and_scheme
+from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
 
 from .categorias import ORDEN_CATEGORIAS, visual
@@ -140,6 +141,7 @@ def enviar_codigo(usuario):
 
 # crear cuenta: solo con correo institucional.
 # la cuenta queda inactiva hasta poner el codigo que llega al correo
+@never_cache  # el navegador no la guarda: al volver atras despues de entrar, no aparece la pagina vieja
 def registro(request):
     if request.user.is_authenticated:
         return redirect("reportes:mapa")
@@ -165,6 +167,7 @@ def registro(request):
 
 
 # iniciar sesion con correo y contraseña. si falta verificar, pide el codigo
+@never_cache  # el navegador no la guarda: al volver atras despues de entrar, no aparece la pagina vieja
 def entrar(request):
     if request.user.is_authenticated:
         return redirect("reportes:mapa")
@@ -210,6 +213,7 @@ def _usuario_por_verificar(request):
 
 
 # revisa el codigo de 6 numeros y activa la cuenta
+@never_cache  # el navegador no la guarda: al volver atras despues de entrar, no aparece la pagina vieja
 def verificar(request):
     usuario = _usuario_por_verificar(request)
     if usuario is None:
