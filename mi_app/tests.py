@@ -774,6 +774,22 @@ class SesionEnIpadTests(TestCase):
         for url in (reverse("reportes:perfil"), reverse("reportes:mapa"), reverse("reportes:lista")):
             self.assertNotContains(self.cliente.get(url), "{#")
 
+    def test_paginas_de_cuenta_no_quedan_guardadas(self):
+        for url in (reverse("login"), reverse("registro")):
+            resp = self.cliente.get(url)
+            self.assertIn("no-store", resp["Cache-Control"])
+            self.assertContains(resp, "e.persisted")
+        # si ya entraste y vuelves a la pagina de entrar, te lleva al mapa
+        self.cliente.login(username="leo@usm.cl", password="clave-segura-123")
+        self.assertRedirects(self.cliente.get(reverse("login")), reverse("reportes:mapa"), fetch_redirect_response=False)
+
+    def test_mapa_sin_zonas_negras_ni_x_encima(self):
+        carpeta = Path(__file__).resolve().parent / "static" / "mi_app" / "mapa"
+        js = (carpeta / "mapa.js").read_text(encoding="utf-8")
+        self.assertIn("new Uint8Array([222,221,216])", js)  # suelo provisorio mientras llega la imagen
+        self.assertIn("closest('.sheet').appendChild(x)", js)
+        self.assertIn("animation-fill-mode:backwards", (carpeta / "mapa.css").read_text(encoding="utf-8"))
+
     def test_formulario_se_envia_una_sola_vez(self):
         self.assertContains(self.cliente.get(reverse("login")), "f.dataset.enviando")
 

@@ -5,7 +5,7 @@
 <main class="cuentas">
   <aside class="cuentas-arte" style="background-image: url('{% if tema.imagen %}{% static tema.imagen %}{% else %}{% static 'mi_app/img/usm-san-joaquin.jpg' %}{% endif %}')">
     <div class="cuentas-arte-in">
-      <span class="cuentas-marca"><img src="{% static 'mi_app/marca/pin.svg' %}" alt="" width="34" height="36">U-Pin</span>
+      <span class="cuentas-marca"><img src="{% static 'mi_app/marca/pin.svg' %}" alt="" width="31" height="40">U-Pin</span>
       <h2>Reporta lo que no funciona en tu campus.</h2>
       <ul>
         <li>Ubica el problema en el mapa, sala por sala.</li>
@@ -19,4 +19,9 @@
     {% block contenido %}{% endblock %}
   </div>
 </main>
+<script>
+  // en el ipad, el gesto de volver (deslizar desde el borde) mostraba esta pagina guardada aunque ya hubieras entrado,
+  // y parecia que te habia sacado de la cuenta. si la pagina viene guardada, se pide de nuevo: si ya entraste, te lleva al mapa
+  addEventListener("pageshow", function (e) { if (e.persisted) location.reload(); });
+</script>
 {% endblock %}

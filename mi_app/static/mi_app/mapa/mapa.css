@@ -533,3 +533,14 @@ html,body{margin:0}
 .tuto-puntos i.on{width:16px;border-radius:3px;background:#FFC72C}
 @media (max-width:360px){.tuto-card p{font-size:15px}.tuto-pie button{padding:10px 13px}}
 @media (prefers-reduced-motion:reduce){.tuto,.tuto-s,.tuto-anillo,.tuto-card{transition:none}.tuto-card.entra,.tuto-logo svg{animation:none}}
+
+/* ---------- hojas de sala y reporte ---------- */
+/* el cambio suave de contenido ya no deja "pegado" un transform: en safari eso hacia que la x se fuera encima de "reportar aqui" */
+.sheet.swap>*:not(.grab){animation-fill-mode:backwards}
+.sheet>.xbtn{animation:none!important;z-index:2}
+/* en tablet y computador la hoja es una tarjeta flotante con todas las esquinas redondeadas, no un borde cortado */
+@media (min-width:701px){
+  .sheet{border-radius:30px;bottom:calc(var(--tabh) + 6px)}
+}
+/* si hay mas contenido del que cabe, un degradado abajo avisa que se puede subir la hoja para ver el resto */
+.sheet.mas::after{content:"";position:absolute;left:0;right:0;bottom:0;height:64px;border-radius:0 0 30px 30px;background:linear-gradient(to bottom,rgba(255,255,255,0),rgba(255,255,255,.98) 80%);pointer-events:none}

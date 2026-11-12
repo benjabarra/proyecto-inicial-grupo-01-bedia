@@ -102,7 +102,7 @@ else{
   ['p','c','w'].forEach(a=>prog[a]=gl.getAttribLocation(prog,a));
   ['cam','res','z','b','tp','hk','t','gsz','fh','dk','wr','us','uq','ug','uz0','um','uf','ut'].forEach(u=>prog[u]=gl.getUniformLocation(prog,u));
   gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);
-  tex=gl.createTexture();const big=gl.getParameter(gl.MAX_TEXTURE_SIZE)>=4096;
+  tex=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,tex);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,1,1,0,gl.RGB,gl.UNSIGNED_BYTE,new Uint8Array([222,221,216]));gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.NEAREST);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.NEAREST);const big=gl.getParameter(gl.MAX_TEXTURE_SIZE)>=4096;
   const loadTex=(src,hd)=>{const img=new Image();img.onload=function sube(){if(hd&&(ptr.size||INER||WZ||target)){setTimeout(sube,300);return}gl.bindTexture(gl.TEXTURE_2D,tex);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,img);
     const mip=GL2;if(mip)gl.generateMipmap(gl.TEXTURE_2D);
     gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,mip?gl.LINEAR_MIPMAP_LINEAR:gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
@@ -1232,3 +1232,11 @@ function cerrar(){marcar();if(!raiz)return;removeEventListener('keydown',tecla,t
 function empezar(){setTimeout(()=>{armar();pintar()},forzar?250:700)}
 if(document.prerendering)document.addEventListener('prerenderingchange',empezar,{once:true});else empezar();
 })();
+
+// hojas del mapa: la x va como hija directa de la hoja (en safari, dentro de la fila, quedaba encima de "reportar aqui")
+document.querySelectorAll('.sheet .xbtn').forEach(x=>x.closest('.sheet').appendChild(x));
+// si la hoja tiene mas contenido del que cabe, se marca con "mas" para mostrar un degradado abajo
+['sheet','rsheet'].forEach(id=>{const sh=document.getElementById(id);if(!sh)return;
+  const mira=()=>{const m=!sh.classList.contains('full')&&sh.classList.contains('open')&&sh.scrollHeight>sh.clientHeight+6;if(sh.classList.contains('mas')!==m)sh.classList.toggle('mas',m)};
+  new MutationObserver(()=>requestAnimationFrame(mira)).observe(sh,{attributes:true,attributeFilter:['class'],childList:true,subtree:true});
+  sh.addEventListener('transitionend',mira);addEventListener('resize',mira)});
