@@ -1,56 +1,80 @@
 {% extends "reportes/base.html" %}
-{# lista de reportes del campus con filtros (todos, activos, mis reportes).
-   cada tarjeta mide lo mismo: estado y apoyos arriba, titulo, lugar y autor; la foto va como miniatura #}
+{% comment %} la unica lista de reportes de la app (el boton Reportes del mapa tambien trae aqui).
+   arriba el titulo y las cuatro pestañas; despues los chips de categoria; cada reporte muestra su foto
+   con el icono chico de la categoria, o el icono grande si no tiene foto. ordenada por apoyos {% endcomment %}
 {% load static %}
 
 {% block titulo %}{{ titulo }}{% endblock %}
 
 {% block contenido %}
-{% if hero and tema.imagen %}
-  <section class="hero" style="background-image: url('{% static tema.imagen %}')">
-    <div class="hero-txt">
-      <h1>{{ titulo }}</h1>
-      <p>{{ tema.sigla }} · {{ tema.campus }}</p>
-    </div>
-  </section>
-{% else %}
-  <h1>{{ titulo }}</h1>
+<div class="pagina-reportes">
+<header class="lista-cab">
+  <h1>Reportes</h1>
+  <p class="muted">{{ activos_campus }} activo{{ activos_campus|pluralize }} en el campus · ordenados por apoyos</p>
+</header>
+
+<nav class="pestanas" aria-label="Filtrar reportes">
+  <a href="{% url 'reportes:lista' %}" {% if filtro == "activos" %}aria-current="true"{% endif %}>Activos</a>
+  <a href="{% url 'reportes:lista' %}?ver=todos" {% if filtro == "todos" %}aria-current="true"{% endif %}>Todos</a>
+  <a href="{% url 'reportes:lista' %}?ver=apoyos" {% if filtro == "apoyos" %}aria-current="true"{% endif %}>Mis apoyos</a>
+  <a href="{% url 'reportes:mis_reportes' %}" {% if filtro == "mios" %}aria-current="true"{% endif %}>Mis reportes</a>
+</nav>
+
+{% if chips %}
+<nav class="chips-cat" aria-label="Filtrar por categoría">
+  <a href="?ver={{ filtro }}" {% if not cat %}aria-current="true"{% endif %}>Todos</a>
+  {% for clave, c in chips %}
+  <a href="?ver={{ filtro }}&amp;cat={{ clave }}" {% if cat == clave %}aria-current="true"{% endif %}>
+    <span class="cat-ico" style="background: {{ c.vis.color }}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ c.vis.icono }}"/></svg></span>
+    {{ c.nombre }} · {{ c.n }}
+  </a>
+  {% endfor %}
+</nav>
 {% endif %}
 
-<div class="barra-lista">
-  <nav class="filtros" aria-label="Filtrar reportes">
-    <a href="{% url 'reportes:lista' %}" {% if filtro == "todos" %}aria-current="true"{% endif %}>Todos</a>
-    <a href="{% url 'reportes:lista' %}?ver=activos" {% if filtro == "activos" %}aria-current="true"{% endif %}>Activos</a>
-    <a href="{% url 'reportes:mis_reportes' %}" {% if filtro == "mios" %}aria-current="true"{% endif %}>Mis reportes</a>
-  </nav>
-  <p class="cuenta">{{ reportes|length }} reporte{{ reportes|length|pluralize }}</p>
-</div>
-
 {% if reportes %}
-  <div class="tarjetas">
+  <div class="filas">
     {% for r in reportes %}
-      <article class="tarjeta{% if r.foto %} con-foto{% endif %}">
-        <div class="tarjeta-cuerpo">
-          <div class="tarjeta-arriba">
-            <span class="estado estado-{{ r.estado }}">{{ r.get_estado_display }}</span>
-            <span class="t-apoyos{% if r.yo_apoyo %} mio{% endif %}" title="{% if r.yo_apoyo %}Tú también lo apoyaste{% endif %}">▲ {{ r.n_apoyos }} apoyo{{ r.n_apoyos|pluralize }}</span>
-          </div>
-          <h3><a href="{% url 'reportes:detalle' r.pk %}">{{ r.titulo }}</a></h3>
-          <p class="meta t-lugar">{{ r.ubicacion }}</p>
-          <p class="meta t-cat">{{ r.categoria }}</p>
-          <p class="meta t-pie">{{ r.autor.get_full_name|default:r.autor.username }} · {{ r.creado|date:"d/m/Y" }}{% if r.yo_apoyo %} · tú también{% endif %}</p>
-        </div>
+      <a class="fila" href="{% url 'reportes:detalle' r.pk %}">
         {% if r.foto %}
-          <img class="tarjeta-mini" src="{{ r.foto.url }}" alt="" loading="lazy">
+          {# con foto: la foto y un icono chico de la categoria en la esquina #}
+          <span class="fila-foto">
+            <img src="{{ r.foto.url }}" alt="" loading="lazy">
+            <span class="cat-ico" style="background: {{ r.vis.color }}" title="{{ r.categoria }}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ r.vis.icono }}"/></svg></span>
+          </span>
+        {% else %}
+          <span class="cat-ico grande" style="background: {{ r.vis.color }}" title="{{ r.categoria }}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ r.vis.icono }}"/></svg></span>
         {% endif %}
-      </article>
+        <span class="fila-txt">
+          <b>{{ r.titulo }}</b>
+          <span class="meta">{{ r.ubicacion }}</span>
+          <span class="estado estado-{{ r.estado }}">{{ r.get_estado_display }}</span>
+        </span>
+        <span class="fila-apoyos{% if r.yo_apoyo %} mio{% endif %}" title="{% if r.yo_apoyo %}Tú también lo apoyaste{% endif %}"><b>▲ {{ r.n_apoyos }}</b> apoyo{{ r.n_apoyos|pluralize }}</span>
+      </a>
     {% endfor %}
   </div>
 {% else %}
-  <div class="vacio">
-    <p><b>No hay reportes aquí todavía.</b></p>
-    <p>Cuando alguien reporte algo en el campus, aparecerá en esta lista.</p>
-    <a class="btn" href="{% url 'reportes:crear' %}">Reportar un problema</a>
+  <div class="vacio vacio-pin">
+    {# el pin feliz si no hay problemas activos; triste si la pestaña quedo vacia #}
+    <img class="pin-vacio" src="{% if filtro == 'activos' %}{% static 'mi_app/marca/pin.svg' %}{% else %}{% static 'mi_app/marca/pin-triste.svg' %}{% endif %}" alt="" width="84" height="90">
+    {% if filtro == "apoyos" %}
+      <p><b>Todavía no apoyas ningún reporte.</b></p>
+      <p>Cuando toques «A mí también me pasa» en un reporte, aparecerá aquí.</p>
+      <a class="btn btn-claro" href="{% url 'reportes:lista' %}">Ver reportes activos</a>
+    {% elif filtro == "mios" %}
+      <p><b>Aún no reportas nada.</b></p>
+      <p>Si algo no funciona en el campus, cuéntanos y lo ubicamos en el mapa.</p>
+      <a class="btn btn-amarillo" href="{% url 'reportes:crear' %}">Reportar un problema</a>
+    {% elif filtro == "activos" %}
+      <p><b>¡Todo funcionando!</b></p>
+      <p>No hay problemas activos en el campus por ahora.</p>
+    {% else %}
+      <p><b>No hay reportes aquí todavía.</b></p>
+      <p>Cuando alguien reporte algo en el campus, aparecerá en esta lista.</p>
+      <a class="btn btn-amarillo" href="{% url 'reportes:crear' %}">Reportar un problema</a>
+    {% endif %}
   </div>
 {% endif %}
+</div>
 {% endblock %}

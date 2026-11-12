@@ -9,6 +9,7 @@ from datetime import timedelta
 from pathlib import Path
 
 from django.contrib.auth import get_user_model
+from django.core.files import File
 from django.core.management.base import BaseCommand
 from django.db import transaction
 from django.utils import timezone
@@ -40,15 +41,16 @@ P, E, R = Reporte.Estado.PENDIENTE, Reporte.Estado.EN_PROCESO, Reporte.Estado.RE
 
 # reportes: autor (indice de CUENTAS), titulo, descripcion, categoria,
 # lugar (edificio, piso, sala) o ("ext", lugar exterior), dias atras, apoyos, historial [(estado, comentario)]
+# y, si tiene, el nombre de la foto
 REPORTES = [
     (0, "El proyector no prende", "Se apaga a los pocos segundos de encenderlo. Tuvimos que hacer la clase sin presentación.",
      "Proyector y equipos", ("K", 3, "K303"), 6, 4,
      [(E, "Revisamos el equipo: falta el cable HDMI. Llega mañana."), ]),
     (1, "El aire acondicionado no funciona", "En la tarde la sala queda muy calurosa y no se puede estar.",
      "Climatización", ("K", 2, "K202"), 3, 5, []),
-    (2, "No hay papel ni jabón", "Los dispensadores están vacíos desde el lunes.",
-     "Baños", ("K", 3, "Baño"), 9, 3,
-     [(E, "Le avisamos al equipo de aseo."), (R, "Se repuso el papel y el jabón en todos los baños del piso.")]),
+    (2, "El lavamanos no tiene agua", "En el baño de hombres el lavamanos no da agua aunque uno apriete la llave, no hay cómo lavarse las manos.",
+     "Agua y goteras", ("B", 1, "Baños"), 9, 3,
+     [(E, "Mantención va a revisar la llave de paso del baño.")], "lavamanos.jpg"),
     (3, "El WiFi se cae en la sala de estudio", "La red eduroam se desconecta cada pocos minutos en el sector de mesas.",
      "Internet y WiFi", ("F", 2, "Biblioteca"), 4, 5,
      [(E, "Informática instalará otra antena en el sector de mesas.")]),
@@ -61,21 +63,21 @@ REPORTES = [
      [(R, "Se cambió el tubo fluorescente.")]),
     (2, "Enchufes sin corriente", "Los enchufes de la fila de atrás no dan corriente, no podemos cargar los notebooks.",
      "Electricidad y enchufes", ("B", 1, "B021"), 1, 3, []),
-    (3, "La puerta no cierra con llave", "La cerradura está trabada y la sala queda abierta en la noche.",
-     "Puertas, ventanas y cerraduras", ("B", 1, "Sala LDS"), 7, 1,
-     [(E, "Pedimos una cerradura nueva al proveedor.")]),
-    (4, "Gotera cuando llueve", "Cae agua del techo cerca de la puerta, el piso queda resbaloso.",
-     "Agua y goteras", ("K", -1, "KS110"), 8, 2, []),
+    (3, "Puerta del baño sin manilla ni seguro", "A la puerta del cubículo le sacaron la manilla y el seguro, quedaron solo los agujeros y no se puede cerrar.",
+     "Puertas, ventanas y cerraduras", ("K", 1, "Baño"), 7, 1,
+     [(E, "Pedimos una manilla y un seguro nuevos al proveedor.")], "puerta_cerradura.jpg"),
+    (4, "Gotera cuando llueve", "Cae agua del techo cerca de la puerta. Ya hay una mancha con hongos y el cielo se está soltando.",
+     "Agua y goteras", ("K", -1, "KS110"), 8, 2, [], "gotera_techo.jpg"),
     (0, "Arco con la red rota", "La red del arco norte está rota y la pelota se pasa.",
      "Áreas verdes y exteriores", ("ext", "Canchas de fútbol"), 4, 4, []),
-    (1, "Tablero de básquetbol suelto", "El tablero se mueve cuando la pelota pega en el aro.",
-     "Áreas verdes y exteriores", ("ext", "Básquetbol"), 10, 3,
-     [(E, "Mantención lo revisará el viernes. Mientras tanto no usen ese aro.")]),
-    (2, "Grieta en el muro", "Apareció una grieta larga en el muro junto a la ventana.",
-     "Daños en muro, techo o piso", ("F", 4, "F404"), 6, 0, []),
-    (3, "El ascensor se detiene entre pisos", "Se quedó parado unos segundos entre el piso 1 y el 2.",
-     "Ascensor, escaleras y rampas", ("K", 1, "Ascensor"), 2, 5,
-     [(E, "Se pidió revisión técnica urgente a la empresa del ascensor.")]),
+    (1, "Tablero de básquetbol quebrado", "En la cancha de básquetbol del gimnasio el vidrio del tablero está quebrado y caen pedazos a las graderías.",
+     "Otro", ("F", 1, "Gimnasio"), 10, 3,
+     [(E, "Mantención lo revisará el viernes. Mientras tanto no usen ese aro.")], "tablero_basquetbol.jpg"),
+    (2, "Se cayeron planchas del cielo", "En el Testamento faltan varias planchas del cielo y se ve la estructura. Da miedo que se caiga otra.",
+     "Daños en muro, techo o piso", ("F", 1, "Testamento"), 6, 2, [], "cielo_hall.jpg"),
+    (3, "El ascensor se detiene entre pisos", "Se quedó detenido en el cuarto piso y el botón queda con la luz roja.",
+     "Ascensor, escaleras y rampas", ("K", 4, "Ascensor"), 2, 5,
+     [(E, "Se pidió revisión técnica urgente a la empresa del ascensor.")], "ascensor.jpg"),
     (4, "La pantalla del proyector no baja", "El motor de la pantalla suena pero no se mueve.",
      "Proyector y equipos", ("E", 2, "E201"), 14, 1,
      [(E, "Revisando el motor."), (R, "Se reparó el motor de la pantalla.")]),
@@ -85,7 +87,17 @@ REPORTES = [
      "Iluminación", ("ext", "Auditorio"), 3, 2, []),
     (2, "Camarines sin agua caliente", "Las duchas de los camarines solo tienen agua fría.",
      "Agua y goteras", ("F", 1, "Gimnasio"), 5, 3, []),
+    (3, "Estanque del WC trizado", "El estanque tiene una trizadura grande en la tapa y bota agua al tirar la cadena.",
+     "Baños", ("K", 2, "Baño"), 2, 3, [], "estanque_bano.jpg"),
+    (4, "Vidrios quebrados en el casino", "Varios vidrios del ventanal del casino están quebrados y pueden caer pedazos sobre las mesas.",
+     "Puertas, ventanas y cerraduras", ("F", 1, "Casino"), 1, 5, [], "vidrios_quebrados.jpg"),
+    (0, "Monitor quebrado en la B035", "La pantalla del computador está quebrada y no se ve nada, el puesto no se puede usar.",
+     "Proyector y equipos", ("B", 1, "B035"), 3, 2,
+     [(E, "Informática pidió un monitor de reemplazo.")], "monitor_roto.jpg"),
 ]
+
+# fotos reales de problemas del campus tomadas por el equipo (carpeta mi_app/datos/fotos_demo)
+FOTOS = Path(__file__).resolve().parents[2] / "datos" / "fotos_demo"
 
 
 def lugares_exteriores():
@@ -133,7 +145,7 @@ class Command(BaseCommand):
         exteriores = lugares_exteriores()
         ahora = timezone.now()
         creados, saltados = 0, []
-        for i, (autor, titulo, texto, categoria, lugar, dias, n_apoyos, historial) in enumerate(REPORTES):
+        for i, (autor, titulo, texto, categoria, lugar, dias, n_apoyos, historial, *foto) in enumerate(REPORTES):
             datos = {
                 "titulo": titulo,
                 "descripcion": texto,
@@ -154,7 +166,11 @@ class Command(BaseCommand):
                     saltados.append(titulo)
                     continue
                 datos.update(sala=sala, piso=str(sala.piso), ubicacion=str(sala)[:150])
-            reporte = Reporte.objects.create(**datos)
+            reporte = Reporte(**datos)
+            if foto:
+                with open(FOTOS / foto[0], "rb") as archivo:
+                    reporte.foto.save(foto[0], File(archivo), save=False)
+            reporte.save()
             # fecha en el pasado (unas horas distinta para cada uno)
             creado = ahora - timedelta(days=dias, hours=(i * 5) % 9)
             estado = Reporte.Estado.PENDIENTE

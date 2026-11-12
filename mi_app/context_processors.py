@@ -1,7 +1,7 @@
 # datos que reciben todas las paginas: colores de la universidad, iniciales y rol
 from types import SimpleNamespace
 
-from .models import Campus, Universidad, iniciales, rol_de, universidad_para_correo
+from .models import Campus, Reporte, Universidad, iniciales, rol_de, universidad_para_correo
 
 # tema por defecto (antes de elegir universidad): colores de u-pin
 TEMA_UPIN = SimpleNamespace(
@@ -29,3 +29,11 @@ def tema(request):
         uni = Universidad.objects.filter(pk=request.session["universidad_id"]).first()
         campus = Campus.objects.filter(pk=request.session.get("campus_id")).first()
     return {"tema": uni or TEMA_UPIN, "campus_actual": campus, **datos}
+
+
+def barra(request):
+    """numero de reportes activos del campus para el globito de 'Reportes' en la barra de abajo (igual que en el mapa).
+    se pasa como funcion: solo se cuenta si la pagina muestra la barra"""
+    def contar():
+        return Reporte.objects.exclude(estado=Reporte.Estado.RESUELTO).count()
+    return {"reportes_activos": contar}

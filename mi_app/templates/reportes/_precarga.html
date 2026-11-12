@@ -1,0 +1,19 @@
+{% comment %}
+precarga la pagina siguiente al tocar un enlace, para que el cambio sea casi instantaneo.
+   solo en chrome y edge ('prerendering' existe solo ahi): safari (ipad) hace la precarga a su manera y
+   a veces guardaba la pagina de "inicia sesion" en vez de la real, y parecia que te sacaba de la cuenta.
+   nunca se precargan las paginas de cuenta (entrar, salir, verificar) ni el formulario de reportar
+{% endcomment %}
+<script>
+  if ("prerendering" in document && HTMLScriptElement.supports && HTMLScriptElement.supports("speculationrules")) {
+    var reglas = document.createElement("script");
+    reglas.type = "speculationrules";
+    reglas.textContent = JSON.stringify({ prerender: [{ where: { and: [
+      { href_matches: "/*" },
+      { not: { href_matches: "/admin/*" } },
+      { not: { href_matches: "/cuentas/*" } },
+      { not: { href_matches: "/reportes/nuevo/*" } }
+    ] }, eagerness: "moderate" }] });
+    document.head.appendChild(reglas);
+  }
+</script>

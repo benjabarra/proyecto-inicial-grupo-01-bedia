@@ -86,6 +86,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'mi_app.context_processors.tema',
+                'mi_app.context_processors.barra',
             ],
         },
     },

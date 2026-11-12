@@ -18,6 +18,7 @@ from django.utils.html import escape
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
 
+from .categorias import ORDEN_CATEGORIAS, visual
 from .forms import CodigoForm, EntrarForm, EstadoForm, RegistroForm, ReporteForm
 from .models import (
     CLAVE_CATEGORIA,
@@ -340,6 +341,7 @@ def mapa(request):
                 "csrf": get_token(request),
                 "urlCrear": reverse("reportes:crear"),
                 "urlPerfil": reverse("reportes:perfil"),
+                "urlLista": reverse("reportes:lista"),
                 "suelo": static("mi_app/mapa/suelo.png"),
                 "sueloHd": static("mi_app/mapa/suelo_hd.png"),
                 "sueloMd": static("mi_app/mapa/suelo_md.png"),
@@ -363,31 +365,57 @@ def apoyar(request, pk):
 
 # ---------- reportes ----------
 
-# lista de todos los reportes, con filtro de activos
-@login_required
-def lista_reportes(request):
-    reportes = _con_apoyos(Reporte.objects.select_related("categoria", "autor"), request.user)
-    filtro = request.GET.get("ver", "todos")
-    if filtro == "activos":
-        reportes = reportes.exclude(estado=Reporte.Estado.RESUELTO)
+# arma la lista igual que la del mapa: ordenada por apoyos, con el icono de cada categoria
+# y chips para filtrar por categoria (con cuantos hay de cada una)
+def _pagina_lista(request, reportes, titulo, filtro, hero=False):
+    reportes = list(
+        _con_apoyos(reportes.select_related("categoria", "autor", "sala__edificio"), request.user).order_by(
+            "-n_apoyos", "-creado"
+        )
+    )
+    chips = {}
+    for r in reportes:
+        r.vis = visual(r.categoria.nombre)
+        chip = chips.setdefault(r.vis.clave, {"vis": r.vis, "nombre": r.categoria.nombre, "n": 0})
+        chip["n"] += 1
+    cat = request.GET.get("cat", "")
+    if cat in chips:
+        reportes = [r for r in reportes if r.vis.clave == cat]
+    else:
+        cat = ""
     return render(
         request,
         "reportes/lista.html",
-        {"reportes": reportes, "titulo": "Reportes del campus", "hero": True, "filtro": filtro},
+        {
+            "reportes": reportes,
+            "titulo": titulo,
+            "hero": hero,
+            "filtro": filtro,
+            "chips": sorted(chips.items(), key=lambda c: ORDEN_CATEGORIAS.index(c[0])),  # mismo orden que en el mapa
+            "cat": cat,
+            "activos_campus": Reporte.objects.exclude(estado=Reporte.Estado.RESUELTO).count(),
+        },
     )
+
+
+# lista de reportes del campus: activos (como en el mapa), todos o los que apoye
+@login_required
+def lista_reportes(request):
+    filtro = request.GET.get("ver", "activos")
+    reportes = Reporte.objects.all()
+    if filtro == "activos":
+        reportes = reportes.exclude(estado=Reporte.Estado.RESUELTO)
+    elif filtro == "apoyos":
+        reportes = reportes.filter(pk__in=Apoyo.objects.filter(usuario=request.user).values("reporte"))
+    else:
+        filtro = "todos"
+    return _pagina_lista(request, reportes, "Reportes", filtro)
 
 
 # solo los reportes que hizo la persona
 @login_required
 def mis_reportes(request):
-    reportes = _con_apoyos(
-        Reporte.objects.filter(autor=request.user).select_related("categoria", "autor"), request.user
-    )
-    return render(
-        request,
-        "reportes/lista.html",
-        {"reportes": reportes, "titulo": "Mis reportes", "filtro": "mios"},
-    )
+    return _pagina_lista(request, Reporte.objects.filter(autor=request.user), "Mis reportes", "mios")
 
 
 # formulario para un reporte nuevo.
@@ -530,4 +558,8 @@ def perfil(request):
 # pagina que sale si falla la revision de seguridad (csrf) de un formulario.
 # pasa cuando la pagina quedo vieja: en vez del error en ingles de django, se explica y se ofrece volver a intentar
 def csrf_fallo(request, reason=""):
+    # si ya tenias la sesion abierta y el formulario era el de entrar o crear cuenta (pasa en safari cuando
+    # rellena la contraseña y se envia dos veces), no hay nada que reintentar: te llevamos al mapa
+    if request.user.is_authenticated and request.path in (reverse("login"), reverse("registro"), reverse("verificar")):
+        return redirect("reportes:mapa")
     return render(request, "reportes/csrf_fallo.html", status=403)
