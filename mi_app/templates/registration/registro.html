@@ -7,7 +7,7 @@
 <div class="panel">
   <h1>Crea tu cuenta</h1>
   <p class="sub">Solo con tu correo institucional.</p>
-  <form method="post">
+  <form method="post" class="form-registro">
     {% csrf_token %}
     {% include "reportes/_form.html" %}
     <p class="nota">Usa tu correo institucional. Te enviaremos un código para confirmar que es tuyo.</p>
@@ -30,10 +30,17 @@
         ["Mínimo 8 caracteres", function (v) { return v.length >= 8; }],
         ["Al menos una letra", function (v) { return /[a-záéíóúñü]/i.test(v); }],
         ["Al menos un número", function (v) { return /\d/.test(v); }],
-        ["Las dos contraseñas coinciden", function (v) { return v.length > 0 && p2 && v === p2.value; }]
+        ["Las contraseñas coinciden", function (v) { return v.length > 0 && p2 && v === p2.value; }]
       ];
       reglas.forEach(function (r) { var li = document.createElement("li"); li.textContent = r[0]; lista.appendChild(li); });
-      if (ayuda) ayuda.replaceWith(lista); else p1.after(lista);
+      // la lista va debajo de las dos contraseñas (en computador quedan lado a lado)
+      if (ayuda) ayuda.remove();
+      (p2 ? p2.closest(".campo") : p1.closest(".campo")).after(lista);
+      // reglas que no se pueden marcar mientras escribes: se revisan al enviar
+      var extra = document.createElement("p");
+      extra.className = "reglas-extra";
+      extra.textContent = "Además, no puede ser una contraseña muy común (como “hola1234”) ni parecerse a tu nombre o correo.";
+      lista.after(extra);
       function revisar() {
         reglas.forEach(function (r, i) { lista.children[i].classList.toggle("ok", r[1](p1.value)); });
       }

@@ -6,11 +6,37 @@
 {% endif %}
 {# errores de los campos escondidos (punto del mapa): se muestran arriba para que no queden ocultos #}
 {% for campo in form.hidden_fields %}{{ campo }}{% for e in campo.errors %}<p class="error">{{ e }}</p>{% endfor %}{% endfor %}
+<div class="campos">
 {% for campo in form.visible_fields %}
-  <div class="campo">
+  {# cada campo lleva su nombre como clase (campo-titulo, campo-correo...) para ordenarlos en columnas en computador #}
+  <div class="campo campo-{{ campo.name }}">
     <label for="{{ campo.id_for_label }}">{{ campo.label }}</label>
-    {{ campo }}
+    {% if campo.name == "foto" %}
+      {# boton propio para elegir la foto (el del navegador sale en ingles) y una vista previa #}
+      <label class="subir-foto" for="{{ campo.id_for_label }}">
+        <span class="subir-icono" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span>
+        <span class="subir-txt"><b>Elegir foto</b><small data-nombre-foto>JPG o PNG, se achica sola</small></span>
+        <img class="subir-previa" alt="" hidden>
+      </label>
+      {{ campo }}
+    {% else %}
+      {{ campo }}
+    {% endif %}
     {% if campo.help_text %}<p class="ayuda">{{ campo.help_text }}</p>{% endif %}
     {% for e in campo.errors %}<p class="error">{{ e }}</p>{% endfor %}
   </div>
 {% endfor %}
+</div>
+<script>
+  // muestra el nombre y una miniatura de la foto elegida
+  document.querySelectorAll('.campo-foto input[type="file"]').forEach(function (input) {
+    input.addEventListener("change", function () {
+      var caja = input.closest(".campo"), nombre = caja.querySelector("[data-nombre-foto]"), previa = caja.querySelector(".subir-previa");
+      var f = input.files && input.files[0];
+      if (!f) { nombre.textContent = "JPG o PNG, se achica sola"; previa.hidden = true; return; }
+      nombre.textContent = f.name;
+      if (f.type.indexOf("image/") === 0) { previa.src = URL.createObjectURL(f); previa.hidden = false; }
+      caja.querySelector(".subir-foto b").textContent = "Cambiar foto";
+    });
+  });
+</script>

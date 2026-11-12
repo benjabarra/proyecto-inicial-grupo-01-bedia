@@ -95,7 +95,7 @@ class RegistroForm(forms.Form):
     password1 = forms.CharField(
         label="Contraseña",
         widget=forms.PasswordInput(attrs={"autocomplete": "new-password", "minlength": 8}),
-        help_text="Mínimo 8 caracteres, con al menos una letra y un número.",
+        help_text="Mínimo 8 caracteres, con al menos una letra y un número. No puede ser muy común ni parecerse a tu nombre o correo.",
     )
     password2 = forms.CharField(
         label="Repetir contraseña",

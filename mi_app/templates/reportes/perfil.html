@@ -1,57 +1,75 @@
 {% extends "reportes/base.html" %}
-{# mi perfil: nombre y apellido, correo, cifras, campus y cerrar sesion #}
+{# mi perfil: nombre y apellido, correo, cifras, mis reportes, campus, ayuda y cerrar sesion.
+   en computador: cabecera ancha con las cifras al lado; abajo reportes a la izquierda y ajustes a la derecha #}
 
 {% block titulo %}Mi perfil{% endblock %}
 
 {% block contenido %}
 <div class="perfil">
-  <div class="perfil-cab">
+  <section class="perfil-cab caja">
     <span class="avatar grande" aria-hidden="true">{{ iniciales }}</span>
-    <div>
+    <div class="perfil-quien">
       <h1>{{ user.get_full_name|default:user.username }}</h1>
       <p class="meta">{{ user.email }}</p>
       <p class="meta">{{ campus_actual.universidad.nombre|default:"Sin campus elegido" }}{% if campus_actual %} · {{ campus_actual.nombre }}{% endif %}</p>
       <span class="rol">{{ rol_nombre }}</span>
     </div>
-  </div>
-
-  <div class="cifras">
-    <div><b>{{ total }}</b><span>Reportes</span></div>
-    <div><b>{{ resueltos }}</b><span>Resueltos</span></div>
-  </div>
-
-  <section class="panel">
-    <h2>Mis reportes recientes</h2>
-    {% for r in recientes %}
-      <p class="fila"><a href="{% url 'reportes:detalle' r.pk %}">{{ r.titulo }}</a> <span class="estado estado-{{ r.estado }}">{{ r.get_estado_display }}</span></p>
-    {% empty %}
-      <p class="meta">Todavía no has reportado nada.</p>
-    {% endfor %}
-    {% if total %}<p class="aparte"><a href="{% url 'reportes:mis_reportes' %}">Ver todos</a></p>{% endif %}
+    <div class="cifras">
+      <div><b>{{ total }}</b><span>Reportes</span></div>
+      <div><b>{{ activos }}</b><span>Activos</span></div>
+      <div><b>{{ resueltos }}</b><span>Resueltos</span></div>
+      <div><b>{{ apoyos_dados }}</b><span>Apoyos dados</span></div>
+    </div>
   </section>
 
-  <section class="panel">
-    <h2>Mi campus</h2>
-    <form method="post">
-      {% csrf_token %}
-      <input type="hidden" name="accion" value="campus">
-      {% for c in campus_activos %}
-        <label class="campus-op">
-          <span><b>{{ c.universidad.sigla }} · {{ c.nombre }}</b><small>{{ c.ciudad }}</small></span>
-          <input type="radio" name="campus" value="{{ c.pk }}" {% if c == campus_actual %}checked{% endif %}>
-        </label>
+  <div class="perfil-grid">
+    <section class="caja perfil-recientes">
+      <div class="caja-titulo">
+        <h2>Mis reportes recientes</h2>
+        {% if total %}<a href="{% url 'reportes:mis_reportes' %}">Ver todos</a>{% endif %}
+      </div>
+      {% for r in recientes %}
+        <a class="fila-reporte" href="{% url 'reportes:detalle' r.pk %}">
+          <span class="fila-txt"><b>{{ r.titulo }}</b><small>{{ r.ubicacion }} · {{ r.creado|date:"d/m/Y" }}</small></span>
+          <span class="estado estado-{{ r.estado }}">{{ r.get_estado_display }}</span>
+        </a>
+      {% empty %}
+        <div class="vacio-chico">
+          <p>Todavía no has reportado nada.</p>
+          <a class="btn btn-sm" href="{% url 'reportes:mapa' %}">Reportar desde el mapa</a>
+        </div>
       {% endfor %}
-      <p class="nota">Las demás sedes y universidades aparecerán cuando tengan mapa.</p>
-      <button type="submit" class="btn btn-sm">Cambiar campus</button>
-    </form>
-  </section>
+    </section>
 
-  {# vuelve a mostrar el tutorial del mapa (explica cada boton y los gestos) #}
-  <a class="btn btn-borde btn-block" href="{% url 'reportes:mapa' %}?tutorial=1" style="margin-bottom: 10px;">Ver cómo usar el mapa</a>
+    <div class="perfil-lado">
+      <section class="caja">
+        <h2>Mi campus</h2>
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="accion" value="campus">
+          {% for c in campus_activos %}
+            <label class="campus-op">
+              <span><b>{{ c.universidad.sigla }} · {{ c.nombre }}</b><small>{{ c.ciudad }}</small></span>
+              <input type="radio" name="campus" value="{{ c.pk }}" {% if c == campus_actual %}checked{% endif %}>
+            </label>
+          {% endfor %}
+          <p class="nota">Las demás sedes y universidades aparecerán cuando tengan mapa.</p>
+          <button type="submit" class="btn btn-sm">Cambiar campus</button>
+        </form>
+      </section>
 
-  <form method="post" action="{% url 'logout' %}">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-borde btn-block">Cerrar sesión</button>
-  </form>
+      <section class="caja">
+        <h2>Ayuda</h2>
+        <p class="meta">Vuelve a ver para qué sirve cada botón del mapa y los gestos de tu dispositivo.</p>
+        {# vuelve a mostrar el tutorial del mapa (explica cada boton y los gestos) #}
+        <a class="btn btn-borde btn-block" href="{% url 'reportes:mapa' %}?tutorial=1">Ver cómo usar el mapa</a>
+      </section>
+
+      <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-borde btn-block btn-salir">Cerrar sesión</button>
+      </form>
+    </div>
+  </div>
 </div>
 {% endblock %}
