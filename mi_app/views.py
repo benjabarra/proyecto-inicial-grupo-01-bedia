@@ -19,7 +19,7 @@ from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
 
-from .categorias import ORDEN_CATEGORIAS, visual
+from .categorias import orden_alfabetico, visual
 from .forms import CodigoForm, EntrarForm, EstadoForm, RegistroForm, ReporteForm
 from .models import (
     CLAVE_CATEGORIA,
@@ -369,6 +369,9 @@ def apoyar(request, pk):
 
 # ---------- reportes ----------
 
+ORDENES = [("apoyos", "Más apoyos"), ("recientes", "Más recientes"), ("az", "A–Z")]
+
+
 # arma la lista igual que la del mapa: ordenada por apoyos, con el icono de cada categoria
 # y chips para filtrar por categoria (con cuantos hay de cada una)
 def _pagina_lista(request, reportes, titulo, filtro, hero=False):
@@ -382,6 +385,14 @@ def _pagina_lista(request, reportes, titulo, filtro, hero=False):
         r.vis = visual(r.categoria.nombre)
         chip = chips.setdefault(r.vis.clave, {"vis": r.vis, "nombre": r.categoria.nombre, "n": 0})
         chip["n"] += 1
+    # orden elegido: mas apoyos (el de siempre), mas recientes o por titulo de la a a la z
+    orden = request.GET.get("orden", "apoyos")
+    if orden == "recientes":
+        reportes.sort(key=lambda r: r.creado, reverse=True)
+    elif orden == "az":
+        reportes.sort(key=lambda r: orden_alfabetico(r.titulo)[1])
+    else:
+        orden = "apoyos"
     cat = request.GET.get("cat", "")
     if cat in chips:
         reportes = [r for r in reportes if r.vis.clave == cat]
@@ -395,7 +406,9 @@ def _pagina_lista(request, reportes, titulo, filtro, hero=False):
             "titulo": titulo,
             "hero": hero,
             "filtro": filtro,
-            "chips": sorted(chips.items(), key=lambda c: ORDEN_CATEGORIAS.index(c[0])),  # mismo orden que en el mapa
+            "chips": sorted(chips.items(), key=lambda c: orden_alfabetico(c[1]["nombre"])),  # de la a a la z
+            "orden": orden,
+            "ordenes": ORDENES,
             "cat": cat,
             "activos_campus": Reporte.objects.exclude(estado=Reporte.Estado.RESUELTO).count(),
         },

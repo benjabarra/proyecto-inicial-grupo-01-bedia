@@ -185,6 +185,7 @@ CLAVE_CATEGORIA = {
     "Aseo y basura": "aseo",
     "Áreas verdes y exteriores": "verde",
     "Ascensor, escaleras y rampas": "ascensor",
+    "Infraestructura": "infra",
     "Otro": "otro",
 }
 

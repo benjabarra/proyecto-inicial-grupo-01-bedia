@@ -13,10 +13,11 @@
   <form method="post">
     {% csrf_token %}
     <div class="campo">
-      <label for="{{ form.codigo.id_for_label }}">{{ form.codigo.label }}</label>
+      <label for="{{ form.codigo.id_for_label }}">{{ form.codigo.label }}<span class="obligatorio" aria-hidden="true"> *</span></label>
       <input type="text" name="codigo" id="{{ form.codigo.id_for_label }}" class="codigo" inputmode="numeric" autocomplete="one-time-code" maxlength="6" required autofocus value="{{ form.codigo.value|default:'' }}">
       {% for e in form.codigo.errors %}<p class="error">{{ e }}</p>{% endfor %}
     </div>
+    <p class="nota-obligatorio">* Obligatorio</p>
     <div class="acciones">
       <button type="submit" class="btn btn-block">Confirmar y entrar</button>
     </div>

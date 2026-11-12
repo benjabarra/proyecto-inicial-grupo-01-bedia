@@ -9,6 +9,7 @@ from datetime import timedelta
 
 from django.contrib.auth import get_user_model
 from django.core import mail
+from django.core.management import call_command
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client, TestCase, override_settings
 from django.urls import reverse
@@ -883,3 +884,39 @@ class ListaConFotoTests(TestCase):
         resp = self.client.get(reverse("reportes:lista"))
         self.assertContains(resp, 'class="fila-foto"', count=1)
         self.assertContains(resp, "cat-ico grande", count=1)
+
+
+# pedidos de quienes probaron la app: categorias a-z, ordenar la lista, asteriscos e infraestructura
+class PedidosDePruebaTests(TestCase):
+    def setUp(self):
+        call_command("datos_demo", stdout=StringIO())
+        self.client.force_login(get_user_model().objects.get(email="fernanda.diaz@usm.cl"))
+
+    def test_categorias_de_la_a_a_la_z_con_otro_al_final(self):
+        from .forms import ReporteForm
+
+        nombres = [c.nombre for c in ReporteForm().fields["categoria"].queryset]
+        self.assertEqual(nombres[-1], "Otro")
+        self.assertEqual(nombres[0], "Agua y goteras")
+        self.assertLess(nombres.index("Áreas verdes y exteriores"), nombres.index("Ascensor, escaleras y rampas"))
+
+    def test_ordenar_lista(self):
+        url = reverse("reportes:lista") + "?ver=todos&orden="
+        recientes = list(self.client.get(url + "recientes").context["reportes"])
+        self.assertEqual(recientes, sorted(recientes, key=lambda r: r.creado, reverse=True))
+        az = [r.titulo.lower() for r in self.client.get(url + "az").context["reportes"]]
+        self.assertEqual(az[0][0], sorted(az)[0][0])
+        self.assertContains(self.client.get(url + "az"), '<option value="az" selected>')
+
+    def test_asterisco_en_obligatorios(self):
+        r = self.client.get(reverse("reportes:crear"))
+        self.assertContains(r, "* Obligatorio")
+        self.assertContains(r, 'Categoría<span class="obligatorio"')
+        self.assertNotContains(r, 'Foto de evidencia<span class="obligatorio"')
+
+    def test_infraestructura_tiene_icono_propio(self):
+        from .categorias import visual
+
+        self.assertTrue(Categoria.objects.filter(nombre="Infraestructura").exists())
+        self.assertEqual(visual("Infraestructura").clave, "infra")
+        self.assertNotEqual(visual("Infraestructura").color, visual("Otro").color)
