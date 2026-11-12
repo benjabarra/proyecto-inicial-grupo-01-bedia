@@ -1090,8 +1090,11 @@ ap.onclick=async()=>{if(!selRep)return;ap.disabled=true;
 // mi perfil es la página de perfil de la app
 const tp=document.querySelector('#tabbar [data-tab="perf"]');
 if(tp)tp.addEventListener('click',e=>{e.stopImmediatePropagation();tp.classList.add('yendo');location.href=UPIN.urlPerfil},true);
+// reportes lleva a la pagina de reportes (la misma desde cualquier parte de la app), no a la lista dentro del mapa
+const tr=document.querySelector('#tabbar [data-tab="rep"]');
+if(tr)tr.addEventListener('click',e=>{e.stopImmediatePropagation();tr.classList.add('yendo');location.href=UPIN.urlLista},true);
 // al volver con el boton atras el navegador puede mostrar la pagina guardada: se quita la marca de "yendo"
-addEventListener('pageshow',()=>{if(tp)tp.classList.remove('yendo')});
+addEventListener('pageshow',()=>{if(tp)tp.classList.remove('yendo');if(tr)tr.classList.remove('yendo')});
 // abrir un reporte que viene en el enlace (?reporte=12)
 const q=new URLSearchParams(location.search).get('reporte');
 if(q){const r=REPORTS.find(x=>String(x.pk)===q);if(r)setTimeout(()=>goReport(r),400)}
@@ -1113,10 +1116,12 @@ function burbujas(){FLOORS.forEach((f,i)=>{const b=nav.children[i];if(!b||f==='e
 const _pf=paintFloors;paintFloors=function(){_pf();burbujas()};
 const _pc=paintCats;paintCats=function(){_pc();burbujas()};
 burbujas()})();
-// precarga mi perfil y la lista de reportes mientras se usa el mapa: al tocarlos se abren casi al instante
-(function(){if(!HTMLScriptElement.supports||!HTMLScriptElement.supports('speculationrules'))return;
+// precarga mi perfil mientras se usa el mapa: al tocarlo se abre casi al instante.
+// solo en chrome y edge. en safari (ipad) la precarga del formulario de reportar a veces traia la pagina
+// de "inicia sesion" y parecia que te sacaba de la cuenta, asi que ahi no se precarga nada
+(function(){if(!('prerendering' in document)||!HTMLScriptElement.supports||!HTMLScriptElement.supports('speculationrules'))return;
 const s=document.createElement('script');s.type='speculationrules';
-s.textContent=JSON.stringify({prerender:[{urls:[UPIN.urlPerfil],eagerness:'immediate'}],prefetch:[{urls:[UPIN.urlPerfil,UPIN.urlCrear]}]});document.head.appendChild(s)})();
+s.textContent=JSON.stringify({prerender:[{urls:[UPIN.urlPerfil],eagerness:'immediate'}]});document.head.appendChild(s)})();
 // tutorial de bienvenida: la primera vez que se abre el mapa explica cada boton y los gestos del dispositivo.
 // se puede ver de nuevo desde mi perfil (?tutorial=1)
 (function(){

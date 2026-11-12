@@ -255,7 +255,6 @@ class CuentasTests(TestCase):
         self.client.post(reverse("verificar"), {"codigo": self.codigo_enviado()})
         resp = self.client.get(reverse("reportes:lista"))
         self.assertContains(resp, "#004B85")
-        self.assertContains(resp, "usm-san-joaquin.jpg")
         self.assertContains(resp, ">AP</a>")
 
 
@@ -611,18 +610,20 @@ class EncargadoTests(TestCase):
         self.assertEqual(self.reporte.seguimientos.get().estado_nuevo, "resuelto")
 
 
+@override_settings(MEDIA_ROOT=MEDIA_TMP)
 class DatosDemoTests(TestCase):
-    """comando para llenar el mapa con reportes de ejemplo"""
+    """comando para llenar el mapa con reportes de ejemplo (9 con fotos reales del campus)"""
 
     def test_crea_y_borra_datos_de_ejemplo(self):
         from django.core.management import call_command
         call_command("datos_demo", stdout=StringIO())
-        self.assertEqual(Reporte.objects.filter(autor__username__endswith="@usm.cl").count(), 18)
+        self.assertEqual(Reporte.objects.filter(autor__username__endswith="@usm.cl").count(), 21)
+        self.assertEqual(Reporte.objects.exclude(foto="").count(), 9)
         self.assertTrue(Seguimiento.objects.exists())
         # todos con lugar en el mapa
         self.assertTrue(all(r.punto_mapa() for r in Reporte.objects.all()))
         call_command("datos_demo", stdout=StringIO())  # la segunda vez no duplica
-        self.assertEqual(Reporte.objects.count(), 18)
+        self.assertEqual(Reporte.objects.count(), 21)
         call_command("datos_demo", "--borrar", stdout=StringIO())
         self.assertEqual(Reporte.objects.count(), 0)
 
@@ -729,7 +730,7 @@ class PulidoComputadorTests(TestCase):
         self.assertContains(resp, "personas dicen que también les pasa")
 
     def test_lista_cuenta_reportes(self):
-        self.assertContains(self.client.get(reverse("reportes:lista")), "1 reporte<")
+        self.assertContains(self.client.get(reverse("reportes:lista")), "1 activo en el campus")
 
 
 class PortadaFotosTests(TestCase):
@@ -745,3 +746,124 @@ class PortadaFotosTests(TestCase):
             self.assertTrue((carpeta / archivo).exists(), archivo)
         # el campus elegible tiene al menos una foto propia
         self.assertTrue(any(c == "Campus San Joaquín" for _, _, c in FOTOS_PORTADA))
+
+
+class SesionEnIpadTests(TestCase):
+    """en safari (ipad) parecia que te sacaba de la cuenta al reportar: la precarga traia la pagina de inicia sesion"""
+
+    def setUp(self):
+        self.usuario = get_user_model().objects.create_user("leo@usm.cl", "leo@usm.cl", "clave-segura-123")
+        self.cliente = Client(enforce_csrf_checks=True)
+
+    def test_mapa_no_precarga_el_formulario_de_reportar(self):
+        js = (Path(__file__).resolve().parent / "static" / "mi_app" / "mapa" / "mapa.js").read_text(encoding="utf-8")
+        self.assertNotIn("prefetch:[{urls:[UPIN.urlPerfil,UPIN.urlCrear]", js)
+        self.assertIn("'prerendering' in document", js)
+
+    def test_paginas_no_precargan_cuentas_ni_reportar(self):
+        self.cliente.login(username="leo@usm.cl", password="clave-segura-123")
+        for url in (reverse("reportes:perfil"), reverse("reportes:mapa")):
+            resp = self.cliente.get(url)
+            self.assertNotContains(resp, '<script type="speculationrules">')
+            self.assertContains(resp, '"prerendering" in document')
+            self.assertContains(resp, '"/cuentas/*"')
+            self.assertContains(resp, '"/reportes/nuevo/*"')
+
+    def test_no_se_ven_comentarios_internos(self):
+        self.cliente.login(username="leo@usm.cl", password="clave-segura-123")
+        for url in (reverse("reportes:perfil"), reverse("reportes:mapa"), reverse("reportes:lista")):
+            self.assertNotContains(self.cliente.get(url), "{#")
+
+    def test_formulario_se_envia_una_sola_vez(self):
+        self.assertContains(self.cliente.get(reverse("login")), "f.dataset.enviando")
+
+    def test_entrar_dos_veces_lleva_al_mapa(self):
+        # el primer envio inicia sesion; el segundo llega con un token viejo
+        self.cliente.get(reverse("login"))
+        token = self.cliente.cookies["csrftoken"].value
+        datos = {"correo": "leo@usm.cl", "password": "clave-segura-123", "csrfmiddlewaretoken": token}
+        self.assertRedirects(self.cliente.post(reverse("login"), datos), reverse("reportes:mapa"), fetch_redirect_response=False)
+        datos["csrfmiddlewaretoken"] = "x" * 64
+        resp = self.cliente.post(reverse("login"), datos)
+        self.assertRedirects(resp, reverse("reportes:mapa"), fetch_redirect_response=False)
+
+    def test_token_viejo_sin_sesion_sigue_explicando(self):
+        self.cliente.get(reverse("login"))
+        resp = self.cliente.post(reverse("login"), {"correo": "x", "password": "y", "csrfmiddlewaretoken": "x" * 64})
+        self.assertContains(resp, "Intenta de nuevo", status_code=403)
+
+
+class ListaComoElMapaTests(TestCase):
+    """la pagina de reportes se ve igual que la lista del mapa: iconos, chips, orden por apoyos y globito"""
+
+    def setUp(self):
+        self.ana = get_user_model().objects.create_user("ana@usm.cl", "ana@usm.cl", "clave-segura-123")
+        self.leo = get_user_model().objects.create_user("leo@usm.cl", "leo@usm.cl", "clave-segura-123")
+        self.client.login(username="ana@usm.cl", password="clave-segura-123")
+        luz, agua = Categoria.objects.get(nombre="Iluminación"), Categoria.objects.get(nombre="Agua y goteras")
+        crear = lambda t, c, e="pendiente": Reporte.objects.create(titulo=t, descripcion="d", categoria=c, ubicacion="A", estado=e, autor=self.leo)
+        self.poco, self.mucho, self.listo = crear("poco", luz), crear("mucho", agua), crear("listo", luz, "resuelto")
+        from .models import Apoyo
+        Apoyo.objects.create(reporte=self.mucho, usuario=self.ana)
+        Apoyo.objects.create(reporte=self.mucho, usuario=self.leo)
+
+    def test_por_defecto_activos_ordenados_por_apoyos(self):
+        resp = self.client.get(reverse("reportes:lista"))
+        self.assertEqual([r.titulo for r in resp.context["reportes"]], ["mucho", "poco"])
+        self.assertContains(resp, "2 activos en el campus")
+
+    def test_iconos_y_chips_de_categoria(self):
+        resp = self.client.get(reverse("reportes:lista"))
+        self.assertContains(resp, "#1C7ED6")  # color de agua, igual que en el mapa
+        self.assertContains(resp, "Iluminación · 1")
+        resp = self.client.get(reverse("reportes:lista") + "?ver=todos&cat=luz")
+        self.assertEqual({r.titulo for r in resp.context["reportes"]}, {"poco", "listo"})
+
+    def test_mis_apoyos_cuenta_bien(self):
+        resp = self.client.get(reverse("reportes:lista") + "?ver=apoyos")
+        self.assertEqual([(r.titulo, r.n_apoyos) for r in resp.context["reportes"]], [("mucho", 2)])
+
+    def test_pantallas_vacias_con_el_pin(self):
+        resp = self.client.get(reverse("reportes:mis_reportes"))
+        self.assertContains(resp, "pin-triste.svg")
+        self.assertContains(resp, "Aún no reportas nada.")
+        Reporte.objects.update(estado="resuelto")
+        resp = self.client.get(reverse("reportes:lista"))
+        self.assertContains(resp, "¡Todo funcionando!")
+        self.assertNotContains(resp, "pin-triste.svg")
+
+    def test_reportes_del_mapa_lleva_a_esta_pagina(self):
+        js = (Path(__file__).resolve().parent / "static" / "mi_app" / "mapa" / "mapa.js").read_text(encoding="utf-8")
+        self.assertIn("location.href=UPIN.urlLista", js)
+        self.assertContains(self.client.get(reverse("reportes:mapa")), '"urlLista": "/reportes/"')
+
+    def test_globito_en_todas_las_paginas(self):
+        for url in (reverse("reportes:lista"), reverse("reportes:perfil")):
+            self.assertContains(self.client.get(url), '<i class="tb">2</i>')
+
+    def test_colores_iguales_al_mapa(self):
+        from .categorias import _DATOS
+        js = (Path(__file__).resolve().parent / "static" / "mi_app" / "mapa" / "mapa.js").read_text(encoding="utf-8")
+        for clave, (color, icono) in _DATOS.items():
+            self.assertIn(f"{{id:'{clave}',", js)
+            self.assertIn(f"c:'{color}'", js)
+            self.assertIn(icono, js)
+
+
+@override_settings(MEDIA_ROOT=MEDIA_TMP)
+class ListaConFotoTests(TestCase):
+    """en la lista, si el reporte tiene foto se ve la foto con el icono chico; si no, el icono grande"""
+
+    def test_foto_o_icono(self):
+        ana = get_user_model().objects.create_user("ana@usm.cl", "ana@usm.cl", "clave-segura-123")
+        self.client.login(username="ana@usm.cl", password="clave-segura-123")
+        cat = Categoria.objects.get(nombre="Iluminación")
+        Reporte.objects.create(titulo="sin", descripcion="d", categoria=cat, ubicacion="A", autor=ana)
+        resp = self.client.get(reverse("reportes:lista"))
+        self.assertContains(resp, "cat-ico grande")
+        self.assertNotContains(resp, 'class="fila-foto"')
+        self.client.post(reverse("reportes:crear"), {"titulo": "con", "descripcion": "d", "categoria": cat.pk,
+                                                    "ubicacion": "A", "foto": foto_de_prueba()})
+        resp = self.client.get(reverse("reportes:lista"))
+        self.assertContains(resp, 'class="fila-foto"', count=1)
+        self.assertContains(resp, "cat-ico grande", count=1)

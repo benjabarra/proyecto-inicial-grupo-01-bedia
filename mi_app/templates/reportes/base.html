@@ -13,8 +13,7 @@
   <link rel="apple-touch-icon" href="{% static 'mi_app/marca/apple-touch-icon.png' %}">
   <link rel="stylesheet" href="{% static 'mi_app/css/upin.css' %}">
   <style>:root { --accent: {{ tema.color_primario }}; }</style>
-  {# precarga la pagina siguiente al tocar un enlace, para que el cambio sea casi instantaneo #}
-  <script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/admin/*"}},{"not":{"href_matches":"/cuentas/salir/*"}}]},"eagerness":"moderate"}]}</script>
+  {% include "reportes/_precarga.html" %}
   <script>
     // antes de enviar un formulario se pone el token de seguridad (csrf) mas nuevo.
     // si la pagina quedo vieja (boton atras, otra pestaña, iniciaste sesion de nuevo) el token del formulario
@@ -24,6 +23,19 @@
       if (!m) return;
       e.target.querySelectorAll('input[name="csrfmiddlewaretoken"]').forEach(function (i) { i.value = decodeURIComponent(m[1]); });
     }, true);
+    // un formulario se envia una sola vez: safari a veces lo envia solo al rellenar la contraseña y ademas
+    // uno toca el boton. el segundo envio llegaba con un token viejo y salia "intenta de nuevo"
+    document.addEventListener("submit", function (e) {
+      var f = e.target;
+      if (e.defaultPrevented) return;  // otro script lo detuvo (ej: falta un dato): no cuenta como envio
+      if (f.dataset.enviando) { e.preventDefault(); return; }
+      f.dataset.enviando = "1";
+      setTimeout(function () { delete f.dataset.enviando; }, 8000);  // por si la red falla, se puede reintentar
+    });
+    // al volver con el boton atras, los formularios quedan listos para enviarse de nuevo
+    addEventListener("pageshow", function () {
+      document.querySelectorAll("form[data-enviando]").forEach(function (f) { delete f.dataset.enviando; });
+    });
     // al ir al mapa no se hace la transicion de pagina (el mapa no la usa y el navegador avisaria un error)
     addEventListener("pageswap", function (e) {
       if (e.viewTransition && e.activation && /\/mapa\//.test(new URL(e.activation.entry.url).pathname)) {
@@ -43,10 +55,9 @@
       </a>
       <nav>
         {% if user.is_authenticated %}
-          {# mapa y reportes estan en la barra de abajo #}
-          <a class="solo-ancho" href="{% url 'reportes:mis_reportes' %}">Mis reportes</a>
+          {# mapa, reportes (con sus pestañas, incluida mis reportes) y perfil estan en la barra de abajo #}
           {% if rol == "admin" or rol == "encargado" %}<a class="solo-ancho" href="{% url 'admin:index' %}">Administrar</a>{% endif %}
-          <a class="btn btn-sm btn-amarillo solo-ancho" href="{% url 'reportes:crear' %}">Reportar</a>
+          <a class="btn btn-amarillo btn-reportar solo-ancho" href="{% url 'reportes:crear' %}"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Reportar un problema</a>
           <a class="avatar" href="{% url 'reportes:perfil' %}" title="Mi perfil" aria-label="Mi perfil">{{ iniciales }}</a>
         {% else %}
           <a href="{% url 'login' %}">Iniciar sesión</a>
@@ -74,7 +85,7 @@
     <a href="{% url 'reportes:mapa' %}" {% if actual == 'mapa' %}aria-current="page"{% endif %}>
       <span class="ti"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4L3.5 6v14L9 18l6 2 5.5-2V4L15 6z"/><path d="M9 4v14M15 6v14"/></svg></span>Mapa</a>
     <a href="{% url 'reportes:lista' %}" {% if actual == 'lista' or actual == 'mis_reportes' or actual == 'detalle' or actual == 'crear' %}aria-current="page"{% endif %}>
-      <span class="ti"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.3-7-11.5a7 7 0 0 1 14 0C19 14.7 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span>Reportes</a>
+      <span class="ti"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.3-7-11.5a7 7 0 0 1 14 0C19 14.7 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>{% with n=reportes_activos %}{% if n %}<i class="tb">{{ n }}</i>{% endif %}{% endwith %}</span>Reportes</a>
     <a href="{% url 'reportes:perfil' %}" {% if actual == 'perfil' %}aria-current="page"{% endif %}>
       <span class="ti"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c1.2-3.6 4.2-5.5 7.5-5.5s6.3 1.9 7.5 5.5"/></svg></span>Mi perfil</a>
   </nav>
