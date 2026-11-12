@@ -706,18 +706,28 @@ const _selB=selectBuilding;selectBuilding=function(n){closeReport();_selB(n)};
 
 /* ---------- gps real (prueba) ---------- */
 // conversión gps -> plano del mapa, calculada con los edificios de openstreetmap (error aprox. 5-10 m)
-const GEO={lat0:-33.4915,lon0:-70.6185,KX:111320*Math.cos(33.49*Math.PI/180),KY:110574,a:-0.038112,b:-0.167138,tx:-147.443,ty:65.849,s:0.17143,dx:118,dy:15}; // dx,dy: ajuste con la entrada principal medida en terreno (2 lecturas)
+const GEO={lat0:-33.4915,lon0:-70.6185,KX:111320*Math.cos(33.49*Math.PI/180),KY:110574,M:[[-1.01111,5.71863],[5.94203,1.0296],[195.84088,941.83605]],P:[[187.5,321.3],[148.2,902.1],[240.5,887.7],[283.8,327.4],[420.2,745.4],[427.7,894.5],[739.3,740.5],[741.2,883.1],[234.3,1222.1],[812.5,1207.4],[784.4,907.0],[207.1,916.4],[1008.7,365.9],[791.9,366.6],[1010.6,1236.2],[828.5,1232.0],[1050.0,745.1],[1035.9,211.9],[1455.5,213.5],[1457.4,739.1],[1371.0,767.9],[1479.9,764.9],[1501.5,1179.0],[1399.2,1183.2],[560.5,454.8],[428.9,601.7],[690.3,602.2],[683.7,318.7],[416.7,313.2],[796.8,299.6],[708.0,258.1],[880.0,248.3],[880.9,351.0],[717.1,360.1],[744.5,479.7],[705.8,534.1],[779.4,533.3],[778.0,405.1],[704.6,413.2],[1342.8,161.1],[1344.7,73.9],[1035.9,58.7],[1025.6,155.4],[458.9,1048.3],[972.3,486.3],[893.2,982.2]],C:[[-83.524,-6.358],[-73.836,-8.917],[76.455,14.331],[65.883,-25.114],[10.652,-11.744],[-18.303,-21.416],[-1.587,-5.827],[-5.489,-3.706],[-10.244,-20.964],[-10.428,12.123],[-1.929,-7.59],[9.698,-12.015],[57.008,-4.43],[-34.968,-4.39],[29.067,-23.63],[-37.886,-25.161],[-40.955,-0.864],[-67.609,9.86],[-9.023,13.238],[-3.282,-0.344],[1.388,-2.369],[12.805,0.956],[7.225,10.865],[-21.578,7.208],[-6.354,15.097],[-25.985,23.8],[23.32,39.618],[-0.432,-2.409],[-18.977,13.368],[10.762,13.678],[29.1,13.213],[4.485,20.352],[11.577,5.5],[32.4,-6.56],[-5.759,-17.582],[-4.821,-11.679],[11.761,5.655],[-7.578,-4.224],[-18.055,-23.831],[20.318,15.136],[13.839,-34.838],[-2.912,-23.655],[17.425,6.284],[6.858,28.106],[-47.391,-17.771],[22.437,6.24]],S:170.0};
 
 // pasa la posicion del gps (latitud y longitud) al plano del mapa
-function geoToMap(lat,lon){const u=(lon-GEO.lon0)*GEO.KX-GEO.tx,v=-(lat-GEO.lat0)*GEO.KY-GEO.ty,d=GEO.a*GEO.a+GEO.b*GEO.b;
-  return [(GEO.a*u+GEO.b*v)/d+GEO.dx,(-GEO.b*u+GEO.a*v)/d+GEO.dy]}
+function geoToMap(lat,lon){const e=(lon-GEO.lon0)*GEO.KX,n=(lat-GEO.lat0)*GEO.KY,M=GEO.M,k2=2*GEO.S*GEO.S;let x=e*M[0][0]+n*M[1][0]+M[2][0],y=e*M[0][1]+n*M[1][1]+M[2][1],dx=0,dy=0;GEO.P.forEach((p,i)=>{const w=Math.exp(-((x-p[0])**2+(y-p[1])**2)/k2);dx+=w*GEO.C[i][0];dy+=w*GEO.C[i][1]});return [x+dx,y+dy]}
+// si te quedas quieto un rato (20 s) cerca de una sala, tu punto se acomoda en esa sala; al alejarte 15 m se suelta
+const FIJ={a:null,t:0,sala:null,u:null},PXM=1/0.17;
+function centroSala(r){if(!r.c){let x=0,y=0;r.pts.forEach(p=>{x+=p[0];y+=p[1]});r.c=[x/r.pts.length,y/r.pts.length]}return r.c}
+function fijar(x,y,ac){const t=Date.now();FIJ.u={x,y,ac};
+  if(FIJ.sala){if(Math.hypot(x-FIJ.sala.x,y-FIJ.sala.y)<15*PXM)return FIJ.sala;FIJ.sala=null}
+  if(!FIJ.a||Math.hypot(x-FIJ.a.x,y-FIJ.a.y)>8*PXM){FIJ.a={x,y};FIJ.t=t;return null}
+  if(t-FIJ.t<20000)return null;
+  const f=floor==='ext'?'1':floor;let best=null,bd=Math.max(10,Math.min(ac||10,18))*PXM;
+  (FLOORS_DATA[f]||[]).forEach(r=>{if(!r.label||!r.pts||!/^(sala|aula|depto|cafe|casino|gimnasio|servicio)$/.test(r.kind))return;const c=centroSala(r),d=Math.hypot(c[0]-x,c[1]-y);if(d<bd){bd=d;best={x:c[0],y:c[1],n:r.label}}});
+  FIJ.sala=best;return best}
+setInterval(()=>{if(gpsW===null||!FIJ.u||FIJ.sala)return;const u=FIJ.u,s=fijar(u.x,u.y,u.ac);if(s&&me){me={x:s.x,y:s.y,acc:u.ac};dirty=true}},4000);
 const gpsBtn=document.getElementById('gps'),gpsInfo=document.getElementById('gpsinfo');let gpsW=null,gpsFirst=true;
 
 // mensaje del gps
 function gpsMsg(h){gpsInfo.hidden=!h;gpsInfo.innerHTML=h||''}
 
 // apaga el gps
-function gpsStop(){if(gpsW!==null)navigator.geolocation.clearWatch(gpsW);gpsW=null;gpsBtn.setAttribute('aria-pressed',false);if(me&&me.acc)me=null;gpsMsg('');dirty=true}
+function gpsStop(){FIJ.a=null;FIJ.sala=null;FIJ.u=null;if(gpsW!==null)navigator.geolocation.clearWatch(gpsW);gpsW=null;gpsBtn.setAttribute('aria-pressed',false);if(me&&me.acc)me=null;gpsMsg('');dirty=true}
 gpsBtn.onclick=()=>{
   if(gpsW!==null){gpsStop();return}
   if(walkT){document.getElementById('walk').click()}
@@ -727,10 +737,10 @@ gpsBtn.onclick=()=>{
   gpsW=navigator.geolocation.watchPosition(pos=>{
     const {latitude:la,longitude:lo,accuracy:ac}=pos.coords;const [x,y]=geoToMap(la,lo);
     const fuera=x<-150||x>S.w+150||y<-150||y>S.h+150;
-    me={x,y,acc:ac};dirty=true;
-    gpsMsg(`<b>Precisión: ±${Math.round(ac)} m</b>${ac>25?' · señal débil':''}<br>${la.toFixed(6)}, ${lo.toFixed(6)}${fuera?'<br>Estás fuera del campus':''}`);
+    const sn=fijar(x,y,ac);me=sn?{x:sn.x,y:sn.y,acc:ac}:{x,y,acc:ac};dirty=true;
+    gpsMsg(`<b>Precisión: ±${Math.round(ac)} m</b>${ac>25?' · señal débil':''}<br>${la.toFixed(6)}, ${lo.toFixed(6)}${fuera?'<br>Estás fuera del campus':''}${sn?'<br>Estás en <b>'+sn.n+'</b>':''}`);
     if(gpsFirst&&!fuera){gpsFirst=false;animTo({x,y,z:Math.max(cam.z,2)})}
-  },err=>{
+  },err=>{if(err.code===3&&me)return;
     const m={1:'No diste permiso para usar tu ubicación. Puedes activarlo en los ajustes del navegador.',2:'No se pudo obtener tu ubicación. Prueba al aire libre.',3:'La ubicación tardó demasiado. Inténtalo de nuevo.'}[err.code]||'No se pudo obtener tu ubicación.';
     gpsStop();gpsMsg(m+(err.code===1?'<br>Si abriste el mapa dentro de Claude, puede que la vista no permita el GPS.':''));
   },{enableHighAccuracy:true,maximumAge:2000,timeout:20000});
