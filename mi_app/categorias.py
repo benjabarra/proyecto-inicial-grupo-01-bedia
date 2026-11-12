@@ -1,5 +1,6 @@
 # color e icono de cada categoria, los mismos que usa el mapa (mapa.js, lista CATS).
 # asi la lista de reportes se ve igual dentro y fuera del mapa
+import unicodedata
 from types import SimpleNamespace
 
 from .models import CLAVE_CATEGORIA
@@ -18,10 +19,17 @@ _DATOS = {
     "aseo": ("#2B8A3E", "M4 7h16 M9 7V4h6v3 M6 7l1 14h10l1-14 M10 11v6 M14 11v6"),
     "verde": ("#5C940D", "M12 21v-6 M12 3a5 5 0 0 0-5 5 4 4 0 0 0 1 7h8a4 4 0 0 0 1-7 5 5 0 0 0-5-5z"),
     "ascensor": ("#495057", "M3 20h5v-4h4v-4h4V8h5"),
+    "infra": ("#1E3A8A", "M3 21h18 M5 21V10 M19 21V10 M9.5 21v-7 M14.5 21v-7 M2.5 10L12 4l9.5 6"),
     "otro": ("#868E96", "M6 12h.01 M12 12h.01 M18 12h.01"),
 }
 
-ORDEN_CATEGORIAS = list(_DATOS)  # orden de los chips, igual que en el mapa
+ORDEN_CATEGORIAS = list(_DATOS)
+
+
+def orden_alfabetico(nombre):
+    """para ordenar categorias de la a a la z (sin fijarse en tildes), con "Otro" siempre al final"""
+    sin_tildes = unicodedata.normalize("NFD", nombre).encode("ascii", "ignore").decode().casefold()
+    return (nombre == "Otro", sin_tildes)
 
 
 def visual(nombre_categoria):

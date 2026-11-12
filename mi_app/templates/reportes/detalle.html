@@ -94,15 +94,17 @@
       <form class="caja cambiar-estado" method="post" action="{% url 'reportes:cambiar_estado' reporte.pk %}">
         {% csrf_token %}
         <h2>Actualizar estado</h2>
+        <p class="etiqueta-estado">Estado<span class="obligatorio" aria-hidden="true"> *</span></p>
         <div class="opciones-estado" role="radiogroup" aria-label="Estado">
           {% for radio in form_estado.estado %}
           <label class="opcion-estado estado-{{ radio.data.value }}">{{ radio.tag }}<span>{{ radio.choice_label }}</span></label>
           {% endfor %}
         </div>
         {{ form_estado.estado.errors }}
-        <label for="{{ form_estado.comentario.id_for_label }}">Comentario para quien lo reportó</label>
+        <label for="{{ form_estado.comentario.id_for_label }}">Comentario para quien lo reportó<span class="obligatorio" aria-hidden="true"> *</span></label>
         {{ form_estado.comentario }}
         {{ form_estado.comentario.errors }}
+        <p class="nota-obligatorio">* Obligatorio</p>
         <button type="submit" class="btn btn-amarillo btn-block">Guardar y avisar</button>
       </form>
       {% endif %}

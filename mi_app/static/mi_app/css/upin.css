@@ -676,3 +676,13 @@ body:has(.barra-inferior) { padding-bottom: calc(80px + env(safe-area-inset-bott
 .vacio-pin .btn { margin-top: 12px; }
 @keyframes pin-flota { 50% { transform: translateY(-8px); } }
 @media (prefers-reduced-motion: reduce) { .vacio-pin .pin-vacio { animation: none; } }
+
+/* campos obligatorios: asterisco en la etiqueta y nota al final del formulario */
+.obligatorio { color: #A33A08; font-weight: 700; }
+.nota-obligatorio { margin: 10px 2px 0; font-size: .82rem; color: var(--muted, #6E6E73); }
+.etiqueta-estado { margin: 0 0 6px 2px; font-size: .85rem; font-weight: 600; }
+
+/* selector para ordenar la lista de reportes */
+.orden-lista { display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin: 0 0 12px; }
+.orden-lista label { font-size: .88rem; font-weight: 600; color: var(--muted, #6E6E73); }
+.orden-lista select { min-height: 40px; padding: 0 34px 0 14px; border: 1px solid #D9D8D2; border-radius: 999px; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%231D1D1F' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center; color: var(--text, #1D1D1F); font: inherit; font-weight: 700; -webkit-appearance: none; appearance: none; }

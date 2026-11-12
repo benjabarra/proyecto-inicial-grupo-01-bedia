@@ -10,7 +10,7 @@
 {% for campo in form.visible_fields %}
   {# cada campo lleva su nombre como clase (campo-titulo, campo-correo...) para ordenarlos en columnas en computador #}
   <div class="campo campo-{{ campo.name }}">
-    <label for="{{ campo.id_for_label }}">{{ campo.label }}</label>
+    <label for="{{ campo.id_for_label }}">{{ campo.label }}{% if campo.field.required %}<span class="obligatorio" aria-hidden="true"> *</span>{% endif %}</label>
     {% if campo.name == "foto" %}
       {# boton propio para elegir la foto (el del navegador sale en ingles) y una vista previa #}
       <label class="subir-foto" for="{{ campo.id_for_label }}">
@@ -27,6 +27,8 @@
   </div>
 {% endfor %}
 </div>
+{# los campos con * son obligatorios #}
+<p class="nota-obligatorio">* Obligatorio</p>
 <script>
   // muestra el nombre y una miniatura de la foto elegida
   document.querySelectorAll('.campo-foto input[type="file"]').forEach(function (input) {

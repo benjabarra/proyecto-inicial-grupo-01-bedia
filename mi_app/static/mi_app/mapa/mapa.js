@@ -387,11 +387,11 @@ function drawOverlay(){
   document.querySelector('#compass svg').style.transform=`rotate(${cam.b}rad)`;
 }
 // la imagen 3d se dibuja con un tope de píxeles y baja la resolución sola si el equipo va lento
-var GQ=1,INTQ=1,lastTouch=0;const TABLET=matchMedia('(pointer:coarse)').matches;function glScale(){return Math.min(dpr,Math.sqrt((TABLET?2.8e6:4.2e6)/Math.max(1,W*H)))*GQ*INTQ}
+var GQ=1,INTQ=1,lastTouch=0;const TABLET=matchMedia('(pointer:coarse)').matches,LIVIANO=TABLET&&!/iPad|iPhone|Macintosh/.test(navigator.userAgent);function glScale(){return Math.min(dpr,Math.sqrt((LIVIANO?1.9e6:TABLET?2.8e6:4.2e6)/Math.max(1,W*H)))*GQ*INTQ}
 
 // ajusta la resolucion del mapa al tamaño de la pantalla
 function resizeGL(){const g=glScale(),w=Math.round(W*g),h=Math.round(H*g);if(glc.width!==w||glc.height!==h){glc.width=w;glc.height=h}dirty=true}
-function resize(){dpr=Math.min(TABLET&&cv.clientWidth*cv.clientHeight>500000?1.6:2,devicePixelRatio||1);W=cv.clientWidth;H=cv.clientHeight;cv.width=W*dpr;cv.height=H*dpr;const g=glScale();glc.width=Math.round(W*g);glc.height=Math.round(H*g);dirty=true}
+function resize(){dpr=Math.min(LIVIANO?1.5:TABLET&&cv.clientWidth*cv.clientHeight>500000?1.6:2,devicePixelRatio||1);W=cv.clientWidth;H=cv.clientHeight;cv.width=W*dpr;cv.height=H*dpr;const g=glScale();glc.width=Math.round(W*g);glc.height=Math.round(H*g);dirty=true}
 new ResizeObserver(resize).observe(cv);resize();
 const ZMIN=.25,ZMAX=6,VEL={x:0,y:0,z:0,b:0,p:0};let INER=null,WZ=null,lastT=performance.now();
 
@@ -402,8 +402,8 @@ function damp(cur,tgt,k,st,dt){const om=2/st,x=om*dt,ex=1/(1+x+0.48*x*x+0.235*x*
 function zoomAround(nz,sx,sy){const a=inv(sx,sy);cam.z=nz;const b=inv(sx,sy);cam.x+=a[0]-b[0];cam.y+=a[1]-b[1]}
 var FT={ema:16,slow:0,fast:0,was:false};
 (function loop(now){now=now||performance.now();const rawdt=now-lastT;const dt=Math.min(0.05,Math.max(0.001,rawdt/1000));lastT=now;
-  if(FT.was&&rawdt<200){FT.ema=FT.ema*0.9+rawdt*0.1;if(FT.ema>26){if(++FT.slow>40&&GQ>0.8){GQ=Math.max(0.8,GQ-0.1);FT.slow=0;FT.ema=16;resize()}}else FT.slow=0;
-    if(FT.ema<13){if(++FT.fast>240&&GQ<1){GQ=Math.min(1,GQ+0.1);FT.fast=0;resize()}}else FT.fast=0}FT.was=dirty;
+  if(FT.was&&rawdt<200){FT.ema=FT.ema*0.9+rawdt*0.1;if(FT.ema>26){if(++FT.slow>20&&GQ>(TABLET?0.6:0.8)){GQ=Math.max(TABLET?0.6:0.8,GQ-0.1);FT.slow=0;FT.ema=16;resizeGL()}}else FT.slow=0;
+    if(FT.ema<13){if(++FT.fast>240&&GQ<1){GQ=Math.min(1,GQ+0.1);FT.fast=0;resizeGL()}}else FT.fast=0}FT.was=dirty;
   if(FA)floorStep(now);if(SELA||PREVA)dirty=true;const fn=farNow();if(fn!==lastFar){lastFar=fn;if(floor!=='ext')geoDirty=true;dirty=true}
   if(target){let done=true;const st=target._st||0.26;
     for(const k in target){if(k[0]==='_')continue;const tg=target[k];
@@ -583,8 +583,9 @@ const CATS=[
  {id:'aseo',n:'Aseo y basura',c:'#2B8A3E',i:'M4 7h16 M9 7V4h6v3 M6 7l1 14h10l1-14 M10 11v6 M14 11v6'},
  {id:'verde',n:'Áreas verdes y exteriores',c:'#5C940D',i:'M12 21v-6 M12 3a5 5 0 0 0-5 5 4 4 0 0 0 1 7h8a4 4 0 0 0 1-7 5 5 0 0 0-5-5z'},
  {id:'ascensor',n:'Ascensor, escaleras y rampas',c:'#495057',i:'M3 20h5v-4h4v-4h4V8h5'},
+ {id:'infra',n:'Infraestructura',c:'#1E3A8A',i:'M3 21h18 M5 21V10 M19 21V10 M9.5 21v-7 M14.5 21v-7 M2.5 10L12 4l9.5 6'},
  {id:'otro',n:'Otro',c:'#868E96',i:'M6 12h.01 M12 12h.01 M18 12h.01'}];
-const CAT=Object.fromEntries(CATS.map(c=>[c.id,c]));CATS.forEach(c=>c.p=new Path2D(c.i));
+CATS.sort((a,b)=>(a.id==='otro')-(b.id==='otro')||a.n.localeCompare(b.n,'es'));const CAT=Object.fromEntries(CATS.map(c=>[c.id,c]));CATS.forEach(c=>c.p=new Path2D(c.i));
 const ESTADO={pendiente:'Pendiente',en_proceso:'En proceso',resuelto:'Resuelto'};
 const REPORTS=leerDato("d-reportes");
 function edificioEn(p,f){const b=S.buildings.find(b=>!b.bridge&&/^Edificio/.test(b.name)&&inPoly(p,(b.fp&&f&&b.fp[f])||b.pts));return b?b.name:''}

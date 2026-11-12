@@ -10,7 +10,7 @@
 <div class="pagina-reportes">
 <header class="lista-cab">
   <h1>Reportes</h1>
-  <p class="muted">{{ activos_campus }} activo{{ activos_campus|pluralize }} en el campus · ordenados por apoyos</p>
+  <p class="muted">{{ activos_campus }} activo{{ activos_campus|pluralize }} en el campus</p>
 </header>
 
 <nav class="pestanas" aria-label="Filtrar reportes">
@@ -22,9 +22,9 @@
 
 {% if chips %}
 <nav class="chips-cat" aria-label="Filtrar por categoría">
-  <a href="?ver={{ filtro }}" {% if not cat %}aria-current="true"{% endif %}>Todos</a>
+  <a href="?ver={{ filtro }}&amp;orden={{ orden }}" {% if not cat %}aria-current="true"{% endif %}>Todos</a>
   {% for clave, c in chips %}
-  <a href="?ver={{ filtro }}&amp;cat={{ clave }}" {% if cat == clave %}aria-current="true"{% endif %}>
+  <a href="?ver={{ filtro }}&amp;orden={{ orden }}&amp;cat={{ clave }}" {% if cat == clave %}aria-current="true"{% endif %}>
     <span class="cat-ico" style="background: {{ c.vis.color }}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ c.vis.icono }}"/></svg></span>
     {{ c.nombre }} · {{ c.n }}
   </a>
@@ -33,6 +33,16 @@
 {% endif %}
 
 {% if reportes %}
+  {# ordenar: mas apoyos, mas recientes o a-z. se aplica al elegir (y con el boton si no hay javascript) #}
+  <form class="orden-lista" method="get">
+    {% if filtro != "mios" %}<input type="hidden" name="ver" value="{{ filtro }}">{% endif %}
+    {% if cat %}<input type="hidden" name="cat" value="{{ cat }}">{% endif %}
+    <label for="orden">Ordenar por</label>
+    <select name="orden" id="orden" onchange="this.form.submit()">
+      {% for valor, texto in ordenes %}<option value="{{ valor }}" {% if orden == valor %}selected{% endif %}>{{ texto }}</option>{% endfor %}
+    </select>
+    <noscript><button type="submit" class="btn btn-borde">Ordenar</button></noscript>
+  </form>
   <div class="filas">
     {% for r in reportes %}
       <a class="fila" href="{% url 'reportes:detalle' r.pk %}">

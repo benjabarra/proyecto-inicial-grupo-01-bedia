@@ -9,7 +9,10 @@ from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
 from PIL import Image, ImageOps
 
-from .models import Reporte, Sala, Universidad, universidad_para_correo
+from django.db.models import Case, IntegerField, When
+
+from .categorias import orden_alfabetico
+from .models import Categoria, Reporte, Sala, Universidad, universidad_para_correo
 
 # tamaño maximo de la foto y lado maximo despues de achicarla
 MAX_MB = 8
@@ -59,6 +62,11 @@ class ReporteForm(forms.ModelForm):
         )
         self.fields["sala"].empty_label = "— No está en la lista —"
         self.fields["categoria"].empty_label = "— Elige una categoría —"
+        # categorias de la a a la z, con "Otro" al final
+        cats = sorted(Categoria.objects.all(), key=lambda c: orden_alfabetico(c.nombre))
+        self.fields["categoria"].queryset = Categoria.objects.order_by(
+            Case(*[When(pk=c.pk, then=i) for i, c in enumerate(cats)], output_field=IntegerField())
+        )
         self.fields["ubicacion"].required = False
         self.fields["ubicacion"].help_text = "Opcional si elegiste una sala. Ej: al fondo, junto a la ventana."
 
