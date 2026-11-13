@@ -715,23 +715,28 @@ const FIJ={a:null,t:0,sala:null,u:null,lejos:0,no:{},pregunta:null},PXM=1/0.17,T
 // aviso corto abajo (say() vive dentro de otro bloque del mapa y desde aqui no se ve)
 function avisoUb(t){const n=document.getElementById('notice');if(!n)return;n.hidden=false;n.textContent=t;clearTimeout(avisoUb.t);avisoUb.t=setTimeout(()=>{n.hidden=true},2600)}
 function centroSala(r){if(!r.c){let x=0,y=0;r.pts.forEach(p=>{x+=p[0];y+=p[1]});r.c=[x/r.pts.length,y/r.pts.length]}return r.c}
-function salaCerca(x,y,ac){const f=floor==='ext'?'1':floor;let best=null,bd=Math.max(10,Math.min(ac||10,18))*PXM;
-  (FLOORS_DATA[f]||[]).forEach(r=>{if(!r.label||!r.pts||!/^(sala|aula|depto|cafe|casino|gimnasio|servicio)$/.test(r.kind))return;const c=centroSala(r),d=Math.hypot(c[0]-x,c[1]-y);if(d<bd){bd=d;best={x:c[0],y:c[1],n:r.label}}});return best}
+// salas cerca de tu punto (hasta 4). si el gps es malo (mas de 40 m de error) no se adivina nada
+function salasCerca(x,y,ac){if(ac&&ac>40)return[];const f=floor==='ext'?'1':floor,t=Date.now(),R=Math.max(10,Math.min(ac||10,25))*PXM,L=[];
+  (FLOORS_DATA[f]||[]).forEach(r=>{if(!r.label||!r.pts||!/^(sala|aula|cafe|casino|gimnasio|servicio)$/.test(r.kind))return;if(FIJ.no[r.label]>t)return;const c=centroSala(r),d=Math.hypot(c[0]-x,c[1]-y);if(d<R)L.push({x:c[0],y:c[1],n:r.label,d})});
+  return L.sort((a,b)=>a.d-b.d).slice(0,4)}
 function fijar(x,y,ac){const t=Date.now();FIJ.u={x,y,ac};
   if(FIJ.sala){ // ya dijo que si: se suelta cuando se aleja (3 lecturas seguidas, para que el ruido del gps no la suelte)
     if(Math.hypot(x-FIJ.sala.x,y-FIJ.sala.y)>D_SUELTA*PXM){if(++FIJ.lejos>=3){FIJ.sala=null;FIJ.lejos=0;FIJ.a={x,y};FIJ.t=t}}else FIJ.lejos=0;
     return FIJ.sala}
   if(!FIJ.a||Math.hypot(x-FIJ.a.x,y-FIJ.a.y)>D_QUIETO*PXM){FIJ.a={x,y};FIJ.t=t;return null}
   if(t-FIJ.t<T_QUIETO||FIJ.pregunta||document.querySelector('.tuto'))return null;
-  const s=salaCerca(x,y,ac);if(!s||FIJ.no[s.n]>t)return null;
-  preguntarSala(s);return null}
-function preguntarSala(s){FIJ.pregunta=s;const el=document.getElementById('preg');if(!el)return;
-  el.innerHTML='<p class="preg-t">¿Estás en <b>'+s.n+'</b>?</p><p class="preg-x">Si dices que sí, te dejamos en la sala hasta que te alejes.</p><div class="preg-b"><button type="button" class="preg-no">No</button><button type="button" class="preg-si">Sí, estoy aquí</button></div>';
+  const L=salasCerca(x,y,ac);if(!L.length)return null;
+  preguntarSala(L);return null}
+function preguntarSala(L){FIJ.pregunta=L;const el=document.getElementById('preg');if(!el)return;
+  const uno=L.length===1,s0=L[0];
+  el.innerHTML=uno?'<p class="preg-t">¿Estás en <b>'+s0.n+'</b>?</p><p class="preg-x">Si dices que sí, te dejamos en la sala hasta que te alejes.</p><div class="preg-b"><button type="button" class="preg-no">No</button><button type="button" class="preg-si" data-i="0">Sí, estoy aquí</button></div>'
+   :'<p class="preg-t">¿En cuál sala estás?</p><p class="preg-x">Tu ubicación no es tan precisa. Elige la correcta y te dejamos ahí hasta que te alejes.</p><div class="preg-b">'+L.map((s,i)=>'<button type="button" class="preg-si" data-i="'+i+'">'+s.n+'</button>').join('')+'<button type="button" class="preg-no">Ninguna</button></div>';
   el.hidden=false;requestAnimationFrame(()=>el.classList.add('on'));
   const cierra=()=>{clearTimeout(FIJ.tp);el.classList.remove('on');setTimeout(()=>{el.hidden=true},250);FIJ.pregunta=null;FIJ.t=Date.now()};
-  el.querySelector('.preg-si').onclick=()=>{cierra();FIJ.sala=s;FIJ.lejos=0;me={x:s.x,y:s.y,acc:(FIJ.u&&FIJ.u.ac)||10};dirty=true;avisoUb('Listo, estás en '+s.n)};
-  el.querySelector('.preg-no').onclick=()=>{cierra();FIJ.no[s.n]=Date.now()+ESPERA;avisoUb('Ok, sigues libre')};
-  FIJ.tp=setTimeout(()=>{if(FIJ.pregunta===s){cierra();FIJ.no[s.n]=Date.now()+ESPERA/3}},25000)} // si no responde, cuenta como "no"
+  const nadie=k=>{L.forEach(s=>{FIJ.no[s.n]=Date.now()+ESPERA*k})};
+  el.querySelectorAll('.preg-si').forEach(b=>{b.onclick=()=>{const s=L[+b.dataset.i];cierra();FIJ.sala=s;FIJ.lejos=0;me={x:s.x,y:s.y,acc:(FIJ.u&&FIJ.u.ac)||10};dirty=true;avisoUb('Listo, estás en '+s.n)}});
+  el.querySelector('.preg-no').onclick=()=>{cierra();nadie(1);avisoUb('Ok, sigues libre')};
+  FIJ.tp=setTimeout(()=>{if(FIJ.pregunta===L){cierra();nadie(1/3)}},25000)} // si no responde, cuenta como "no"
 setInterval(()=>{if(gpsW===null||!FIJ.u||FIJ.sala||FIJ.pregunta)return;fijar(FIJ.u.x,FIJ.u.y,FIJ.u.ac)},4000);
 
 const gpsBtn=document.getElementById('gps'),gpsInfo=document.getElementById('gpsinfo');let gpsW=null,gpsFirst=true;
