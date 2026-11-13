@@ -551,7 +551,7 @@ html,body{margin:0}
 .preg[hidden]{display:none}
 .preg-t{margin:0 0 4px;font-size:19px;font-weight:800;letter-spacing:-.02em}
 .preg-x{margin:0 0 14px;font-size:14px;line-height:1.4;color:#6E6E73}
-.preg-b{display:flex;gap:10px;justify-content:flex-end}
+.preg-b{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end}
 .preg-b button{min-height:44px;padding:0 20px;border:0;border-radius:999px;font:700 15px Inter,var(--font);cursor:pointer}
 .preg-no{background:#F0EFEA;color:var(--ink)}
 .preg-si{background:#FFC72C;color:#2B2100}

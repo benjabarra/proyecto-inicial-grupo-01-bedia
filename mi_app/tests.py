@@ -934,3 +934,13 @@ class ActivosIgualesTests(TestCase):
         total = Reporte.objects.exclude(estado="resuelto").count()
         self.assertContains(self.client.get(reverse("reportes:mapa")), f'"nActivos": {total}')
         self.assertEqual(self.client.get(reverse("reportes:lista")).context["activos_campus"], total)
+
+
+# con gps malo (computador) la app no adivina la sala: ofrece las salas cercanas para elegir
+class UbicacionImpreciaTests(TestCase):
+    def test_mapa_incluye_la_eleccion_de_sala(self):
+        from pathlib import Path
+
+        js = (Path(__file__).parent / "static/mi_app/mapa/mapa.js").read_text(encoding="utf-8")
+        self.assertIn("¿En cuál sala estás?", js)
+        self.assertIn("ac>40", js)  # sin pregunta si el error es mayor a 40 m
