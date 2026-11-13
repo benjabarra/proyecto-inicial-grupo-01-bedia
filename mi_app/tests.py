@@ -920,3 +920,17 @@ class PedidosDePruebaTests(TestCase):
         self.assertTrue(Categoria.objects.filter(nombre="Infraestructura").exists())
         self.assertEqual(visual("Infraestructura").clave, "infra")
         self.assertNotEqual(visual("Infraestructura").color, visual("Otro").color)
+
+
+# el globito del mapa y la lista deben mostrar el mismo numero de reportes activos
+class ActivosIgualesTests(TestCase):
+    def test_mapa_manda_el_total_de_activos(self):
+        call_command("datos_demo", stdout=StringIO())
+        r = Reporte.objects.exclude(estado="resuelto").first()
+        r.sala = None
+        r.mapa_x = r.mapa_y = None
+        r.save()  # un reporte antiguo sin punto en el mapa
+        self.client.force_login(get_user_model().objects.get(email="fernanda.diaz@usm.cl"))
+        total = Reporte.objects.exclude(estado="resuelto").count()
+        self.assertContains(self.client.get(reverse("reportes:mapa")), f'"nActivos": {total}')
+        self.assertEqual(self.client.get(reverse("reportes:lista")).context["activos_campus"], total)
