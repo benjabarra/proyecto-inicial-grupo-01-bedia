@@ -544,3 +544,15 @@ html,body{margin:0}
 }
 /* si hay mas contenido del que cabe, un degradado abajo avisa que se puede subir la hoja para ver el resto */
 .sheet.mas::after{content:"";position:absolute;left:0;right:0;bottom:0;height:64px;border-radius:0 0 30px 30px;background:linear-gradient(to bottom,rgba(255,255,255,0),rgba(255,255,255,.98) 80%);pointer-events:none}
+
+/* tarjetas de ubicacion: "¿estas en a006?" y el permiso al abrir la app */
+.preg{position:absolute;z-index:12;left:50%;bottom:calc(86px + env(safe-area-inset-bottom,0px));transform:translate(-50%,16px);opacity:0;width:min(400px,calc(100vw - 32px));box-sizing:border-box;background:#fff;color:var(--ink);border-radius:22px;padding:18px 20px 16px;box-shadow:0 18px 48px rgba(30,22,0,.26),0 2px 8px rgba(30,22,0,.08);font-family:Inter,var(--font);transition:opacity .25s var(--e-out),transform .3s var(--e-out)}
+.preg.on{opacity:1;transform:translate(-50%,0)}
+.preg[hidden]{display:none}
+.preg-t{margin:0 0 4px;font-size:19px;font-weight:800;letter-spacing:-.02em}
+.preg-x{margin:0 0 14px;font-size:14px;line-height:1.4;color:#6E6E73}
+.preg-b{display:flex;gap:10px;justify-content:flex-end}
+.preg-b button{min-height:44px;padding:0 20px;border:0;border-radius:999px;font:700 15px Inter,var(--font);cursor:pointer}
+.preg-no{background:#F0EFEA;color:var(--ink)}
+.preg-si{background:#FFC72C;color:#2B2100}
+@media (prefers-reduced-motion:reduce){.preg{transition:none}}

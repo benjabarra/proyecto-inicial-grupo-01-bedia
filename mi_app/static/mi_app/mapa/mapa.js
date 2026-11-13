@@ -710,24 +710,37 @@ const GEO={lat0:-33.4915,lon0:-70.6185,KX:111320*Math.cos(33.49*Math.PI/180),KY:
 
 // pasa la posicion del gps (latitud y longitud) al plano del mapa
 function geoToMap(lat,lon){const e=(lon-GEO.lon0)*GEO.KX,n=(lat-GEO.lat0)*GEO.KY,M=GEO.M,k2=2*GEO.S*GEO.S;let x=e*M[0][0]+n*M[1][0]+M[2][0],y=e*M[0][1]+n*M[1][1]+M[2][1],dx=0,dy=0;GEO.P.forEach((p,i)=>{const w=Math.exp(-((x-p[0])**2+(y-p[1])**2)/k2);dx+=w*GEO.C[i][0];dy+=w*GEO.C[i][1]});return [x+dx,y+dy]}
-// si te quedas quieto un rato (20 s) cerca de una sala, tu punto se acomoda en esa sala; al alejarte 15 m se suelta
-const FIJ={a:null,t:0,sala:null,u:null},PXM=1/0.17;
+// si te quedas quieto 40 s cerca de una sala, la app pregunta "¿estas en x?": con "si" te deja en la sala hasta que te alejes 10 m; con "no" sigue libre y no vuelve a preguntar por esa sala durante 10 minutos
+const FIJ={a:null,t:0,sala:null,u:null,lejos:0,no:{},pregunta:null},PXM=1/0.17,T_QUIETO=40000,D_QUIETO=8,D_SUELTA=10,ESPERA=10*60000;
+// aviso corto abajo (say() vive dentro de otro bloque del mapa y desde aqui no se ve)
+function avisoUb(t){const n=document.getElementById('notice');if(!n)return;n.hidden=false;n.textContent=t;clearTimeout(avisoUb.t);avisoUb.t=setTimeout(()=>{n.hidden=true},2600)}
 function centroSala(r){if(!r.c){let x=0,y=0;r.pts.forEach(p=>{x+=p[0];y+=p[1]});r.c=[x/r.pts.length,y/r.pts.length]}return r.c}
+function salaCerca(x,y,ac){const f=floor==='ext'?'1':floor;let best=null,bd=Math.max(10,Math.min(ac||10,18))*PXM;
+  (FLOORS_DATA[f]||[]).forEach(r=>{if(!r.label||!r.pts||!/^(sala|aula|depto|cafe|casino|gimnasio|servicio)$/.test(r.kind))return;const c=centroSala(r),d=Math.hypot(c[0]-x,c[1]-y);if(d<bd){bd=d;best={x:c[0],y:c[1],n:r.label}}});return best}
 function fijar(x,y,ac){const t=Date.now();FIJ.u={x,y,ac};
-  if(FIJ.sala){if(Math.hypot(x-FIJ.sala.x,y-FIJ.sala.y)<15*PXM)return FIJ.sala;FIJ.sala=null}
-  if(!FIJ.a||Math.hypot(x-FIJ.a.x,y-FIJ.a.y)>8*PXM){FIJ.a={x,y};FIJ.t=t;return null}
-  if(t-FIJ.t<20000)return null;
-  const f=floor==='ext'?'1':floor;let best=null,bd=Math.max(10,Math.min(ac||10,18))*PXM;
-  (FLOORS_DATA[f]||[]).forEach(r=>{if(!r.label||!r.pts||!/^(sala|aula|depto|cafe|casino|gimnasio|servicio)$/.test(r.kind))return;const c=centroSala(r),d=Math.hypot(c[0]-x,c[1]-y);if(d<bd){bd=d;best={x:c[0],y:c[1],n:r.label}}});
-  FIJ.sala=best;return best}
-setInterval(()=>{if(gpsW===null||!FIJ.u||FIJ.sala)return;const u=FIJ.u,s=fijar(u.x,u.y,u.ac);if(s&&me){me={x:s.x,y:s.y,acc:u.ac};dirty=true}},4000);
+  if(FIJ.sala){ // ya dijo que si: se suelta cuando se aleja (3 lecturas seguidas, para que el ruido del gps no la suelte)
+    if(Math.hypot(x-FIJ.sala.x,y-FIJ.sala.y)>D_SUELTA*PXM){if(++FIJ.lejos>=3){FIJ.sala=null;FIJ.lejos=0;FIJ.a={x,y};FIJ.t=t}}else FIJ.lejos=0;
+    return FIJ.sala}
+  if(!FIJ.a||Math.hypot(x-FIJ.a.x,y-FIJ.a.y)>D_QUIETO*PXM){FIJ.a={x,y};FIJ.t=t;return null}
+  if(t-FIJ.t<T_QUIETO||FIJ.pregunta||document.querySelector('.tuto'))return null;
+  const s=salaCerca(x,y,ac);if(!s||FIJ.no[s.n]>t)return null;
+  preguntarSala(s);return null}
+function preguntarSala(s){FIJ.pregunta=s;const el=document.getElementById('preg');if(!el)return;
+  el.innerHTML='<p class="preg-t">¿Estás en <b>'+s.n+'</b>?</p><p class="preg-x">Si dices que sí, te dejamos en la sala hasta que te alejes.</p><div class="preg-b"><button type="button" class="preg-no">No</button><button type="button" class="preg-si">Sí, estoy aquí</button></div>';
+  el.hidden=false;requestAnimationFrame(()=>el.classList.add('on'));
+  const cierra=()=>{clearTimeout(FIJ.tp);el.classList.remove('on');setTimeout(()=>{el.hidden=true},250);FIJ.pregunta=null;FIJ.t=Date.now()};
+  el.querySelector('.preg-si').onclick=()=>{cierra();FIJ.sala=s;FIJ.lejos=0;me={x:s.x,y:s.y,acc:(FIJ.u&&FIJ.u.ac)||10};dirty=true;avisoUb('Listo, estás en '+s.n)};
+  el.querySelector('.preg-no').onclick=()=>{cierra();FIJ.no[s.n]=Date.now()+ESPERA;avisoUb('Ok, sigues libre')};
+  FIJ.tp=setTimeout(()=>{if(FIJ.pregunta===s){cierra();FIJ.no[s.n]=Date.now()+ESPERA/3}},25000)} // si no responde, cuenta como "no"
+setInterval(()=>{if(gpsW===null||!FIJ.u||FIJ.sala||FIJ.pregunta)return;fijar(FIJ.u.x,FIJ.u.y,FIJ.u.ac)},4000);
+
 const gpsBtn=document.getElementById('gps'),gpsInfo=document.getElementById('gpsinfo');let gpsW=null,gpsFirst=true;
 
 // mensaje del gps
 function gpsMsg(h){gpsInfo.hidden=!h;gpsInfo.innerHTML=h||''}
 
 // apaga el gps
-function gpsStop(){FIJ.a=null;FIJ.sala=null;FIJ.u=null;if(gpsW!==null)navigator.geolocation.clearWatch(gpsW);gpsW=null;gpsBtn.setAttribute('aria-pressed',false);if(me&&me.acc)me=null;gpsMsg('');dirty=true}
+function gpsStop(){FIJ.a=null;FIJ.sala=null;FIJ.u=null;FIJ.pregunta=null;if(gpsW!==null)navigator.geolocation.clearWatch(gpsW);gpsW=null;gpsBtn.setAttribute('aria-pressed',false);if(me&&me.acc)me=null;gpsMsg('');dirty=true}
 gpsBtn.onclick=()=>{
   if(gpsW!==null){gpsStop();return}
   if(walkT){document.getElementById('walk').click()}
@@ -901,7 +914,7 @@ lb.onclick=()=>{
   if(gpsW===null)gpsBtn.click();fly=true;lp.classList.add('wait');say('Buscando tu ubicación…');
   setTimeout(()=>{if(fly&&!me){fly=false;lp.classList.remove('wait');const t=gpsInfo.textContent;say(t&&!/Buscando/.test(t)?t:'No se pudo obtener tu ubicación.')}},15000)};
 // pedir la ubicación al abrir (como google maps); si no hay permiso, no molesta
-try{if('geolocation' in navigator&&window.isSecureContext){const ok=()=>{if(gpsW===null)gpsBtn.click()};if(navigator.permissions&&navigator.permissions.query)navigator.permissions.query({name:'geolocation'}).then(p=>{if(p.state==='granted')ok()}).catch(()=>{});}}catch(e){}
+
 // al tocar una sala: mover la cámara para verla completa sobre la hoja de abajo
 
 // mueve la camara para ver la sala completa encima de la hoja
@@ -944,7 +957,7 @@ function pass(r){return rpE==='all'||(rpE==='act'&&r.e!=='resuelto')||(rpE==='mi
 // lista de la seccion reportes, ordenada por apoyos
 function paintRep(){
   const base=REPORTS.filter(pass);
-  document.getElementById('rpSub').textContent=`${REPORTS.filter(r=>r.e!=='resuelto').length} activos en el campus · ordenados por apoyos`;
+  document.getElementById('rpSub').textContent=`${nAct()} activos en el campus · ordenados por apoyos`;
   chips.innerHTML='';
   const mk=(id,html)=>{const b=document.createElement('button');b.type='button';b.setAttribute('aria-pressed',rpCat===id);b.innerHTML=html;if(!id)b.className='all';b.onclick=()=>{rpCat=id;paintRep()};chips.appendChild(b)};
   if(rpCat&&!base.some(r=>r.cat===rpCat))rpCat=null;
@@ -959,10 +972,11 @@ function paintRep(){
 document.querySelectorAll('#pgRep .seg button').forEach(b=>b.onclick=()=>{rpE=b.dataset.e;document.querySelectorAll('#pgRep .seg button').forEach(x=>x.setAttribute('aria-pressed',x===b));paintRep()});
 document.getElementById('rpCfg').onclick=e=>{e.stopPropagation();if(!cfgMode)cCfg.click();cats.hidden=!cats.hidden};
 pgRep.addEventListener('pointerdown',e=>{if(!cats.hidden&&!e.target.closest('#rpCfg'))cats.hidden=true});
-function paintPerf(){document.getElementById('pfAp').textContent=REPORTS.filter(r=>r.yo).length;document.getElementById('pfAct').textContent=REPORTS.filter(r=>r.e!=='resuelto').length}
+function paintPerf(){document.getElementById('pfAp').textContent=REPORTS.filter(r=>r.yo).length;document.getElementById('pfAct').textContent=nAct()}
 document.getElementById('pfMine').onclick=()=>{setTab('rep');document.querySelector('#pgRep .seg [data-e="mine"]').click()};
 document.querySelectorAll('#pgPerf .pdemo').forEach(b=>b.onclick=()=>{const n=document.getElementById('pfNote');n.hidden=false;clearTimeout(n._t);n._t=setTimeout(()=>n.hidden=true,2200)});
-const tn=document.getElementById('tabN');const cnt=()=>{const n=REPORTS.filter(r=>r.e!=='resuelto').length;if(tn.textContent!==String(n))tn.textContent=n};cnt();setInterval(cnt,1000);
+let SIN0=null;function nAct(){const a=REPORTS.filter(r=>r.e!=='resuelto').length;if(SIN0===null)SIN0=Math.max(0,(UPIN.nActivos||0)-a);return a+SIN0}
+const tn=document.getElementById('tabN');const cnt=()=>{const n=nAct();if(tn.textContent!==String(n))tn.textContent=n};cnt();setInterval(cnt,1000);
 const lb=document.getElementById('loc');lb.addEventListener('click',()=>{lb.classList.remove('ping');void lb.offsetWidth;lb.classList.add('ping')});
 })();
 
@@ -1251,3 +1265,30 @@ document.querySelectorAll('.sheet .xbtn').forEach(x=>x.closest('.sheet').appendC
   const mira=()=>{const m=!sh.classList.contains('full')&&sh.classList.contains('open')&&sh.scrollHeight>sh.clientHeight+6;if(sh.classList.contains('mas')!==m)sh.classList.toggle('mas',m)};
   new MutationObserver(()=>requestAnimationFrame(mira)).observe(sh,{attributes:true,attributeFilter:['class'],childList:true,subtree:true});
   sh.addEventListener('transitionend',mira);addEventListener('resize',mira)});
+
+// permiso de ubicacion: se pide apenas empieza la app (despues del tutorial si es la primera vez), con una tarjeta propia
+// asi no hay que adivinar que la carita sirve para eso. si ya hay permiso, se activa sola
+(function(){
+if(!('geolocation' in navigator)||!window.isSecureContext)return;
+const CLAVE='upin_ubic_no';
+const dijoNo=()=>{try{return sessionStorage.getItem(CLAVE)==='1'}catch(e){return false}};
+const el=document.getElementById('permiso');if(!el)return;
+const activa=()=>{if(gpsW===null)gpsBtn.click()};
+function tarjeta(){
+  el.innerHTML='<p class="preg-t">Usa tu ubicación</p><p class="preg-x">Así te mostramos dónde estás en el campus y te ayudamos a reportar en la sala correcta. Solo la usamos mientras tienes el mapa abierto.</p><div class="preg-b"><button type="button" class="preg-no">Ahora no</button><button type="button" class="preg-si">Permitir ubicación</button></div>';
+  el.hidden=false;requestAnimationFrame(()=>el.classList.add('on'));
+  const cierra=()=>{el.classList.remove('on');setTimeout(()=>{el.hidden=true},250)};
+  el.querySelector('.preg-si').onclick=()=>{cierra();activa()}; // el toque cuenta como gesto, asi tambien funciona en safari
+  el.querySelector('.preg-no').onclick=()=>{cierra();try{sessionStorage.setItem(CLAVE,'1')}catch(e){}};
+}
+function decidir(){
+  const pr=navigator.permissions&&navigator.permissions.query?navigator.permissions.query({name:'geolocation'}):Promise.reject();
+  pr.then(p=>{
+    if(p.state==='granted')activa();
+    else if(p.state==='denied')avisoUb('La ubicación está bloqueada. Actívala en los ajustes del navegador para verte en el mapa.');
+    else if(!dijoNo())tarjeta();
+  }).catch(()=>{if(!dijoNo())tarjeta()});
+}
+// espera a que termine el tutorial (el primero se abre a los 0,7 s)
+let n=0;const esp=setInterval(()=>{n++;if(n>2&&!document.querySelector('.tuto')){clearInterval(esp);decidir()}if(n>240)clearInterval(esp)},500);
+})();

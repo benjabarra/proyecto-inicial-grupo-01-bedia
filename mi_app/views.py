@@ -346,6 +346,7 @@ def mapa(request):
                 "urlCrear": reverse("reportes:crear"),
                 "urlPerfil": reverse("reportes:perfil"),
                 "urlLista": reverse("reportes:lista"),
+                "nActivos": Reporte.objects.exclude(estado=Reporte.Estado.RESUELTO).count(),
                 "suelo": static("mi_app/mapa/suelo.png"),
                 "sueloHd": static("mi_app/mapa/suelo_hd.png"),
                 "sueloMd": static("mi_app/mapa/suelo_md.png"),
