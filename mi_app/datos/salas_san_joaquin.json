@@ -1,5 +1,5 @@
 {
-"nota": "salas del campus san joaquin. forma = esquinas en coordenadas del plano del mapa u-pin; extra = datos de dibujo del mapa. fuente: plano de Isidora Morales (mapa USM) y OpenStreetMap, corregido por el equipo.",
+"nota": "salas del campus san joaquin. forma = esquinas en coordenadas del plano del mapa u-pin; extra = datos de dibujo del mapa. fuente: plano del campus en PDF y OpenStreetMap, corregido por el equipo.",
 "edificios": [
 {
 "letra": "A",
